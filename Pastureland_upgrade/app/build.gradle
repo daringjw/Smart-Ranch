@@ -27,7 +27,7 @@ android {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         buildToolsVersion = "26.0.2"
-        versionCode 4
+        versionCode 3
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -103,6 +103,10 @@ dependencies {
 
     //tablayout
     compile 'com.android.support:design:22.2.1'
+
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile 'com.daimajia.slider:library:1.1.5@aar'
 
 
 }

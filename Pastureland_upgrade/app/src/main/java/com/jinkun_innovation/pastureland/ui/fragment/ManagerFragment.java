@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
 import com.jinkun_innovation.pastureland.ui.UploadCheckedActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
@@ -111,6 +112,8 @@ public class ManagerFragment extends Fragment {
             case R.id.btnGrass:
                 break;
             case R.id.btnLianJiangPastureland:
+
+                startActivity(new Intent(getActivity(),LianJiangPasturelandActivity.class));
                 break;
         }
     }
