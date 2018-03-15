@@ -32,7 +32,6 @@ import com.jinkun_innovation.pastureland.utilcode.util.ActivityUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
-import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 
 import java.io.File;
@@ -63,7 +62,6 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         checkRuntimePermissions();
 
-        Bugly.init(getApplicationContext(), "19277f0293", false);
 
         Button btnVersion = (Button) findViewById(R.id.btnVersion);
         boolean appDebug = AppUtils.isAppDebug();

@@ -1,5 +1,9 @@
 [
     {
+        "merged": "F:\\projects6\\Smart-Ranch\\Pastureland_upgrade\\LibZxing\\build\\intermediates\\res\\merged\\release\\layout-ldpi-v4\\capture.xml",
+        "source": "F:\\projects6\\Smart-Ranch\\Pastureland_upgrade\\LibZxing\\res\\layout-ldpi\\capture.xml"
+    },
+    {
         "merged": "F:\\projects4\\Pastureland_upgrade\\LibZxing\\build\\intermediates\\res\\merged\\release\\layout-ldpi-v4\\capture.xml",
         "source": "F:\\projects4\\Pastureland_upgrade\\LibZxing\\res\\layout-ldpi\\capture.xml"
     }

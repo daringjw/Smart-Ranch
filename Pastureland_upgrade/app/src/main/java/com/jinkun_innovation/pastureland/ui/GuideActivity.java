@@ -29,7 +29,11 @@ public class GuideActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //bugly  集成令人愉快的开发方式
         Bugly.init(getApplicationContext(), "19277f0293", false);
+
+
+
 
         new CountDownTimer(1000, 3000) {
             @Override
@@ -49,6 +53,7 @@ public class GuideActivity extends BaseActivity {
 
         }.start();
     }
+
 
 
 }

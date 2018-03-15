@@ -56,7 +56,7 @@ public class NetInterfaceActivity extends AppCompatActivity {
 
                 OkGo.<String>get(Constants.BASE_URL + Constants.VERIFY_CODE)
                         .tag(this)
-                        .params("cellPhoneNum","17610893073")
+                        .params("cellPhoneNum","1761089307")
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
