@@ -1,0 +1,142 @@
+package com.jinkun_innovation.claim.categroy_model;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.jinkun_innovation.claim.R;
+import com.jinkun_innovation.claim.base.BaseFragment;
+import com.jinkun_innovation.claim.bean.LivestockTypeBean;
+import com.jinkun_innovation.claim.net.ApiCall;
+import com.jinkun_innovation.claim.net.RetrofitManger;
+import com.jinkun_innovation.claim.utilcode.util.ActivityUtils;
+import com.jinkun_innovation.claim.weight.recyclerview.CommonAdapter;
+import com.jinkun_innovation.claim.weight.recyclerview.MultiItemTypeAdapter;
+import com.jinkun_innovation.claim.weight.recyclerview.base.ViewHolder;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+/**
+ * Created by yangxing on 2018/3/10.
+ */
+
+public class CategoryLiveStockFragment extends BaseFragment {
+    @BindView(R.id.recycle_category)
+    RecyclerView mRecycleCategory;
+    Unbinder unbinder;
+
+    private CommonAdapter<String> mCommonAdapter;
+    private List<String> mStrings = new ArrayList<>();
+
+    @Override
+    protected int getContentViewLayoutID() {
+        return R.layout.fragment_categroy_recycle;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        unbinder = ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        loadDate();
+        initRecycle();
+    }
+
+    private void initRecycle() {
+        LinearLayoutManager linearLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mRecycleCategory.setLayoutManager(linearLayoutManager);
+        mCommonAdapter = new CommonAdapter<String>(getActivity(), R.layout.item_category_livestock, mStrings) {
+            @Override
+            protected void convert(ViewHolder holder, String s, int position) {
+                String type = "";
+                switch (s) {
+                    case "1":
+                        type = "羊";
+                        break;
+                    case "2":
+                        type = "牛";
+                        break;
+                    case "3":
+                        type = "马";
+                        break;
+                    case "4":
+                        type = "猪";
+                        break;
+                    case "5":
+                        type = "鸡";
+                        break;
+                }
+                holder.setText(R.id.tv_category, type);
+
+            }
+        };
+        mRecycleCategory.setAdapter(mCommonAdapter);
+
+        mCommonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), CategorySingleLivestockActivity.class);
+                intent.putExtra("id", mStrings.get(position));
+                ActivityUtils.startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+    }
+
+    private void loadDate() {
+        RetrofitManger.getInstance().createReq(ApiCall.class)
+                .getLivestockType()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<LivestockTypeBean>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(LivestockTypeBean livestockTypeBean) {
+                        String[] s = livestockTypeBean.getLivestockType().split(",");
+                        for (int i = 0; i < s.length; i++) {
+                            mStrings.add(s[i]);
+                        }
+                        mCommonAdapter.notifyDataSetChanged();
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+}

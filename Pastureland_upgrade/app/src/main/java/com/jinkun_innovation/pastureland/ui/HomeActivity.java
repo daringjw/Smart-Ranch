@@ -1,0 +1,100 @@
+package com.jinkun_innovation.pastureland.ui;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
+
+import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.fragment.ManagerFragment;
+import com.jinkun_innovation.pastureland.ui.fragment.MuqunFragment;
+import com.jinkun_innovation.pastureland.ui.fragment.RenlingFragment;
+import com.jinkun_innovation.pastureland.ui.fragment.WodeFragment;
+
+/**
+ * Created by Guan on 2018/3/14.
+ */
+
+public class HomeActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_home);
+
+        //Fragment+ViewPager+FragmentViewPager组合的使用
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),
+                this);
+        viewPager.setAdapter(adapter);
+
+        //TabLayout
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.button_location_selector);
+        tabLayout.getTabAt(1).setIcon(R.drawable.button_location_selector);
+        tabLayout.getTabAt(2).setIcon(R.drawable.button_location_selector);
+        tabLayout.getTabAt(3).setIcon(R.drawable.button_location_selector);
+
+//        tabLayout.getTabAt(0).getCustomView().setSelected(true);
+
+
+    }
+
+    class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+
+        public final int COUNT = 4;
+        private String[] titles = new String[]{"管理", "牧群", "认领", "我的"};
+        private SparseArray<Fragment> fragmentMap;
+
+        private Context context;
+
+        public MyFragmentPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+
+
+            if (fragmentMap == null) {
+                fragmentMap = new SparseArray();
+                fragmentMap.put(0, new ManagerFragment());
+                fragmentMap.put(1, new MuqunFragment());
+                fragmentMap.put(2, new RenlingFragment());
+                fragmentMap.put(3, new WodeFragment());
+
+            }
+
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentMap.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return COUNT;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+
+
+    }
+
+
+}

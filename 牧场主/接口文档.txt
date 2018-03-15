@@ -1,0 +1,29 @@
+1，登录
+
+请求路径：http://222.249.165.94:10100/rancher/login.do
+发送数据：account  账号   pwd  密码
+
+
+2，获取认领列表
+
+请求路径： http://222.249.165.94:10100/mobile/rancher/ClaimList.do
+发送数据： token     userId     userName
+
+
+3,确认按钮
+
+请求路径： http://222.249.165.94:10100/mobile/rancher/confirmClaim.do
+发送数据： claimId    token   userId
+
+4,创建电子编码
+
+请求路径：http://222.249.165.94:10100/manager/livestockERecode/createERecode.do
+发送数据：file  deviceNo  variety   phase  token  userId   userName  companyId
+
+5,生活照
+
+请求路径：http://222.249.165.94:10100/manager/livestockERecode/livephoto.do
+发送数据：file   userName  
+
+
+

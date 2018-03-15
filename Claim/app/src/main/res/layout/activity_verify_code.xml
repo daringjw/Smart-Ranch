@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/edt_verify_code_num"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/oval_grey_bg"
+        android:ems="10"
+        android:hint="请输入电话号码"
+        android:inputType="number"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_verify_send_code"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/oval_green_bg"
+        android:text="验证码"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/edt_verify_code"
+        app:layout_constraintRight_toRightOf="@+id/edt_verify_code_num"
+        app:layout_constraintTop_toTopOf="@+id/edt_verify_code"
+        />
+
+    <TextView
+        android:id="@+id/tv_verify_code_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="45s"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_verify_send_code"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_verify_send_code"
+        app:layout_constraintRight_toRightOf="@+id/btn_verify_send_code"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <EditText
+        android:id="@+id/edt_verify_code"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/oval_grey_bg"
+        android:ems="10"
+        android:inputType="number"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp"
+        android:textSize="18sp"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/edt_verify_code_num"
+        app:layout_constraintRight_toLeftOf="@+id/btn_verify_send_code"
+        app:layout_constraintTop_toBottomOf="@+id/edt_verify_code_num"/>
+
+    <Button
+        android:id="@+id/btn_verify_code_next"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/oval_green_bg"
+        android:text="下一步"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edt_verify_code"/>
+
+</android.support.constraint.ConstraintLayout>
