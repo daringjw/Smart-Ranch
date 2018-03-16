@@ -16,6 +16,7 @@ import com.jinkun_innovation.pastureland.ui.fragment.ManagerFragment;
 import com.jinkun_innovation.pastureland.ui.fragment.MuqunFragment;
 import com.jinkun_innovation.pastureland.ui.fragment.RenlingFragment;
 import com.jinkun_innovation.pastureland.ui.fragment.WodeFragment;
+import com.jinkun_innovation.pastureland.utilcode.AppManager;
 
 /**
  * Created by Guan on 2018/3/14.
@@ -28,6 +29,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);
+
+        AppManager.getAppManager().addActivity(this);
+
+
 
         //Fragment+ViewPager+FragmentViewPager组合的使用
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);

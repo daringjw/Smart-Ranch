@@ -243,6 +243,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View view) {
 
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                finish();
 
 
             }
