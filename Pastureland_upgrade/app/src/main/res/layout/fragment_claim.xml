@@ -3,13 +3,29 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
-    <TextView
-        android:id="@+id/textView"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="认领"
-        android:textColor="#000"
-        />
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="认领"/>
+
+      <ImageView
+          android:id="@+id/ivAdd"
+          android:layout_marginRight="15dp"
+          android:layout_centerVertical="true"
+          android:layout_alignParentRight="true"
+          android:src="@mipmap/add"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>

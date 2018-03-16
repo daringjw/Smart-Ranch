@@ -108,5 +108,10 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
 
+    //1.1.0 API改动过大，老用户升级需谨慎
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-1'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-1'//没有使用特殊Header，可以不加这行
+
+
 
 }
