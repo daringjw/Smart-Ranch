@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="type">
+        <item>羊 </item>
+        <item>牛</item>
+        <item>马</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="variety">
+        <item>新疆黑头养 </item>
+        <item>产毛羊</item>
+        <item>肉羊</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="weight">
+        <item>20kg </item>
+        <item>25kg</item>
+        <item>30kg</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="age">
+        <item>2个月 </item>
+        <item>5个月</item>
+        <item>1年</item>
+        <item>其他</item>
+    </string-array>
+
+
+</resources>

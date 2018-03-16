@@ -1,10 +1,9 @@
-package com.jinkun_innovation.pastureland.ui.fragment;
+package com.jinkun_innovation.pastureland.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,9 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
-import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -24,49 +21,29 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 /**
- * Created by Guan on 2018/3/15.
+ * Created by Guan on 2018/3/16.
  */
 
-public class RenlingFragment extends Fragment {
+public class YangListActivity extends AppCompatActivity{
 
-    private static final int SCAN_REQUEST_CODE = 100;
-
-
-    private void startScanActivity() {
-        Intent intent = new Intent(getActivity(), CaptureActivity2.class);
-        intent.putExtra(CaptureActivity2.USE_DEFUALT_ISBN_ACTIVITY, true);
-        intent.putExtra("inputUnable", 0);
-        intent.putExtra("lightUnable", 1);
-        intent.putExtra("albumUnable", 1);
-        intent.putExtra("cancleUnable", 1);
-        startActivityForResult(intent, SCAN_REQUEST_CODE);
-
-    }
-
-
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_yang_list);
 
-        View view = View.inflate(getActivity(), R.layout.fragment_claim, null);
-
-        ImageView ivAdd = view.findViewById(R.id.ivAdd);
-        ivAdd.setOnClickListener(new View.OnClickListener() {
+        ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                startActivity(new Intent(getActivity(),PublishClaimActivity.class));
+                finish();
 
             }
         });
 
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
+        RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -84,17 +61,17 @@ public class RenlingFragment extends Fragment {
             }
         });
 
-        FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(getActivity());
+        FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(this);
         //设置 Header 为 Material样式
         refreshLayout.setRefreshHeader(funGameHitBlockHeader);
         //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity())
+        refreshLayout.setRefreshFooter(new BallPulseFooter(this)
                 .setSpinnerStyle(SpinnerStyle.Scale));
 
 
-        mRecyclerView = view.findViewById(R.id.my_recycler_view);
+        mRecyclerView = findViewById(R.id.my_recycler_view);
 //创建默认的线性LayoutManager
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
@@ -103,7 +80,8 @@ public class RenlingFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
 
-        return view;
+
+
 
     }
 
@@ -192,6 +170,8 @@ public class RenlingFragment extends Fragment {
         }
 
     }
+
+
 
 
 }

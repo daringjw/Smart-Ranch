@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
@@ -65,6 +68,7 @@ public class ManagerFragment extends Fragment {
     private int checkedItem = 0;
     private String scanMessage;
 
+    private SliderLayout mSliderShow;
 
     @Nullable
     @Override
@@ -76,6 +80,35 @@ public class ManagerFragment extends Fragment {
         View view = View.inflate(getActivity(), R.layout.fragment_manager, null);
 
         unbinder = ButterKnife.bind(this, view);
+
+
+
+        mSliderShow =  view.findViewById(R.id.slider);
+        TextSliderView textSliderView = new TextSliderView(getActivity());
+
+        textSliderView
+                .description("示例图片1")
+                .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
+                .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg")
+        ;
+
+        TextSliderView textSliderView1 = new TextSliderView(getActivity());
+        textSliderView1
+                .description("牧场2")
+                .image("http://pic1.sc.chinaz.com/files/pic/pic9/201803/bpic5936.jpg");
+
+        TextSliderView textSliderView2 = new TextSliderView(getActivity());
+        textSliderView2
+                .description("示例图片3")
+                .image("http://pics.sc.chinaz.com/files/pic/pic9/201802/zzpic10394.jpg");
+
+
+        mSliderShow.addSlider(textSliderView);
+        mSliderShow.addSlider(textSliderView1);
+        mSliderShow.addSlider(textSliderView2);
+
+        mSliderShow.setPresetTransformer(SliderLayout.Transformer.RotateUp);
+
         return view;
 
     }
