@@ -14,18 +14,30 @@
             android:layout_centerInParent="true"
             android:text="认领"/>
 
-      <ImageView
-          android:id="@+id/ivAdd"
-          android:layout_marginRight="15dp"
-          android:layout_centerVertical="true"
-          android:layout_alignParentRight="true"
-          android:src="@mipmap/add"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/ivAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/add"/>
 
     </RelativeLayout>
 
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#fff"
+            android:overScrollMode="never"/>
 
 
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </LinearLayout>

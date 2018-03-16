@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    >
+
+    <ImageView
+        android:id="@+id/ivGhoat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@mipmap/ghoat"/>
+
+    <LinearLayout
+        android:id="@+id/llDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/ivGhoat"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAnimalName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小黑"/>
+
+        <TextView
+            android:id="@+id/tvId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID:1234567890"/>
+
+        <TextView
+            android:id="@+id/tvAnimalAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="年龄：12个月"/>
+
+        <TextView
+            android:id="@+id/tvMuChang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="牧场：内蒙兴安盟连江牧场"/>
+
+        <TextView
+            android:id="@+id/tvClaimTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="认领时间：2017-01-01至2022-01-01"
+            android:textColor="#f00"/>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/llDetail"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvClaimOrNot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已认领"/>
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥666"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        ></View>
+
+</RelativeLayout>
