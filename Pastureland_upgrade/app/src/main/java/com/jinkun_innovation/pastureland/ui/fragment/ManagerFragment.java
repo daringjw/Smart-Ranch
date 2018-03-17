@@ -2,6 +2,7 @@ package com.jinkun_innovation.pastureland.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +27,23 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
 import com.jinkun_innovation.pastureland.ui.UploadCheckedActivity;
+import com.jinkun_innovation.pastureland.ui.VideoContainerActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 
 /**
  * Created by Guan on 2018/3/15.
@@ -59,6 +68,7 @@ public class ManagerFragment extends Fragment {
 
     private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 3;//权限请求
     private static final int SCAN_REQUEST_CODE = 100;
+    private static final int CAMERA_ACTIVITY = 6;  //视频
 
     private String imagePath;
     private File photoFile;
@@ -69,6 +79,7 @@ public class ManagerFragment extends Fragment {
     private String scanMessage;
 
     private SliderLayout mSliderShow;
+
 
     @Nullable
     @Override
@@ -81,9 +92,31 @@ public class ManagerFragment extends Fragment {
 
         unbinder = ButterKnife.bind(this, view);
 
+        Button btnVideo = view.findViewById(R.id.btnVideo);
+        btnVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent mIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                mIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0.5);//画质0.5
+                mIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 70000);//70s
+                startActivityForResult(mIntent, CAMERA_ACTIVITY);//CAMERA_ACTIVITY = 1
+
+            }
+        });
+
+        Button btnVideoContainer = view.findViewById(R.id.btnVideoContainer);
+        btnVideoContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getActivity(),VideoContainerActivity.class));
+
+            }
+        });
 
 
-        mSliderShow =  view.findViewById(R.id.slider);
+        mSliderShow = view.findViewById(R.id.slider);
         TextSliderView textSliderView = new TextSliderView(getActivity());
 
         textSliderView
@@ -146,7 +179,7 @@ public class ManagerFragment extends Fragment {
                 break;
             case R.id.btnLianJiangPastureland:
 
-                startActivity(new Intent(getActivity(),LianJiangPasturelandActivity.class));
+                startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
                 break;
         }
     }
@@ -165,6 +198,35 @@ public class ManagerFragment extends Fragment {
                         Toast.makeText(getActivity(), "解析到的内容为" + isbn, Toast.LENGTH_LONG).show();
                         openCamera();
                     }
+                    break;
+
+                case CAMERA_ACTIVITY:
+
+                    try {
+                        AssetFileDescriptor videoAsset = getActivity().getContentResolver()
+                                .openAssetFileDescriptor(data.getData(), "r");
+                        FileInputStream fis = videoAsset.createInputStream();
+                        File tmpFile = new File(Environment.getExternalStorageDirectory(),
+                                TimeUtils.getNowString()+".mp4");
+
+                        FileOutputStream fos = new FileOutputStream(tmpFile);
+                        byte[] buf = new byte[1024];
+                        int len;
+                        while ((len = fis.read(buf)) > 0) {
+                            fos.write(buf, 0, len);
+                        }
+                        fis.close();
+                        fos.close();
+
+                        Log.d("ManagerFragment",tmpFile.getAbsolutePath());
+                        PrefUtils.setString(getActivity(),"v1",tmpFile.getAbsolutePath());
+
+
+                    } catch (IOException io_e) {
+                        // TODO: handle error
+
+                    }
+
                     break;
 
                 case REQUEST_CAPTURE://拍照

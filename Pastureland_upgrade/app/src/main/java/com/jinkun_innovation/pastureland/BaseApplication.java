@@ -24,7 +24,9 @@ public class BaseApplication extends Application {
         initLog();
 
         //崩溃日志保存在本地，测试
-        CrashUtils.init(Environment.getExternalStorageDirectory() + "/app1/");
+        CrashUtils.init(Environment.getExternalStorageDirectory() + "/Pastureland/crash/");
+
+
 
 
     }

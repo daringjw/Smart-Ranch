@@ -33,8 +33,6 @@ public class GuideActivity extends BaseActivity {
         Bugly.init(getApplicationContext(), "19277f0293", false);
 
 
-
-
         new CountDownTimer(1000, 3000) {
             @Override
             public void onTick(long l) {
@@ -53,7 +51,6 @@ public class GuideActivity extends BaseActivity {
 
         }.start();
     }
-
 
 
 }

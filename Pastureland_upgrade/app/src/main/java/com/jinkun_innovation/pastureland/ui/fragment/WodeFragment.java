@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.GeRenXinxiActivity;
+import com.jinkun_innovation.pastureland.ui.MuchangActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,6 +75,7 @@ public class WodeFragment extends Fragment {
                 break;
             case R.id.ivMuchang:
 
+                startActivity(new Intent(getActivity(),MuchangActivity.class));
 
                 break;
             case R.id.ivMuqun:

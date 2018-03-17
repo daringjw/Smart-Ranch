@@ -175,7 +175,7 @@ public class RenlingFragment extends Fragment {
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 150;
+            return 20;
         }
 
 

@@ -121,7 +121,7 @@ public class YangListActivity extends AppCompatActivity{
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_claim, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_yang_list, viewGroup, false);
             ViewHolder vh = new ViewHolder(view);
 
             //将创建的View注册点击事件
@@ -153,7 +153,7 @@ public class YangListActivity extends AppCompatActivity{
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 150;
+            return 109;
         }
 
 

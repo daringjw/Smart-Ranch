@@ -88,6 +88,13 @@
             android:name=".ui.YangListActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.MuchangActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.VideoContainerActivity"
+            android:screenOrientation="portrait"/>
 
 
         <activity

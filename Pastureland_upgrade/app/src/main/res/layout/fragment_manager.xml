@@ -5,7 +5,6 @@
               android:orientation="vertical">
 
 
-
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
@@ -50,6 +49,29 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="视频"/>
+
+        <Button
+            android:id="@+id/btnVideoContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="视频文件"/>
+
+
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -81,10 +103,10 @@
     </LinearLayout>
 
     <TextView
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:text="牧场"/>
 
     <Button
