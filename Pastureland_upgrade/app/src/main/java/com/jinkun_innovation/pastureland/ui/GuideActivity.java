@@ -42,9 +42,9 @@ public class GuideActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 if (SpUtil.getLoginState()) {
-                    ActivityUtils.startActivity(MainActivity.class);
+                    ActivityUtils.startActivity(HomeActivity.class);
                 } else {
-                    ActivityUtils.startActivity(LoginActivity.class);
+                    ActivityUtils.startActivity(LoginActivity1.class);
                 }
                 AppManager.getAppManager().finishActivity();
             }

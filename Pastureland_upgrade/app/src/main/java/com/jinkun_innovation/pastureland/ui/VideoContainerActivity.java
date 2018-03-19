@@ -3,9 +3,11 @@ package com.jinkun_innovation.pastureland.ui;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -19,6 +21,7 @@ import com.jinkun_innovation.pastureland.utils.PrefUtils;
 
 public class VideoContainerActivity extends AppCompatActivity {
 
+    private static final String TAG = VideoContainerActivity.class.getSimpleName();
     private VideoView videoView;
     private Uri mUri;
 
@@ -30,8 +33,9 @@ public class VideoContainerActivity extends AppCompatActivity {
 
         String v1 = PrefUtils.getString(getApplicationContext(), "v1", null);
         if (!TextUtils.isEmpty(v1)) {
-
-            mUri = Uri.parse(v1);
+            Log.d(TAG, v1);
+            Log.d(TAG, Environment.getExternalStorageDirectory().getPath());
+            mUri = Uri.parse(Environment.getExternalStorageDirectory().getPath()+"/2018-03-17 16:55:49.mp4");
 
         }
 

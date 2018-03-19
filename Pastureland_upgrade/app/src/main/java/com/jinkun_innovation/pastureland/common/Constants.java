@@ -7,7 +7,9 @@ package com.jinkun_innovation.pastureland.common;
 public class Constants {
 
 
-    public static final String BASE_URL = "http://182.92.3.109:10100";
+    public static final String BASE_URL = "http://222.249.165.94:10100";
+
+
 
     public static final int ranchID = 1;
     public static final String token = "ce5cc971-5904-4454-b639-cb8d48215963";
@@ -15,10 +17,10 @@ public class Constants {
 
     //牧场主找回密码
     //1)点击发送验证码：
-    public static final String VERIFY_CODE = "/mobleClaim/txCode.do";
+    public static final String VERIFY_CODE = BASE_URL+ "/mobleClaim/txCode.do";
 
     //2)修改密码:
-    public static final String MODIFY_PASSWORD = BASE_URL + "/ranchLogin/backPass.do";
+    public static final String MODIFY_PASSWORD = BASE_URL+ "/ranchLogin/backPass.do";
 
     //登录:
     public static final String LOGIN = BASE_URL + "/ranchLogin/login.do";

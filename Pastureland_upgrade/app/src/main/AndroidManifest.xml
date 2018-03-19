@@ -96,6 +96,30 @@
             android:name=".ui.VideoContainerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.LoginActivity1"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.GrassActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.ToolsActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
+            android:name=".ui.FindPwdActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.ResetPwdActivity"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"

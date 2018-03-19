@@ -24,7 +24,9 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.GrassActivity;
 import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
+import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
 import com.jinkun_innovation.pastureland.ui.UploadCheckedActivity;
 import com.jinkun_innovation.pastureland.ui.VideoContainerActivity;
@@ -174,13 +176,21 @@ public class ManagerFragment extends Fragment {
 
                 break;
             case R.id.btnMechanicalTools:
+
+                startActivity(new Intent(getActivity(),ToolsActivity.class));
+
+
                 break;
             case R.id.btnGrass:
+
+                startActivity(new Intent(getActivity(),GrassActivity.class));
+
                 break;
             case R.id.btnLianJiangPastureland:
 
                 startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
                 break;
+
         }
     }
 
