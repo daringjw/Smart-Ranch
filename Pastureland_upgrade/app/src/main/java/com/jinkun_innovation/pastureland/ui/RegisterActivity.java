@@ -188,8 +188,8 @@ public class RegisterActivity extends Activity {
                 mPDialog = new SweetAlertDialog(RegisterActivity.this,
                         SweetAlertDialog.PROGRESS_TYPE);
                 mPDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                mPDialog.setTitleText("Loading");
-                mPDialog.setCancelable(false);
+                mPDialog.setTitleText("上传中...");
+                mPDialog.setCancelable(true);
                 mPDialog.show();
 
                 Log.d(TAG1, mType1);

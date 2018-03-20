@@ -137,7 +137,6 @@ public class ManagerFragment extends Fragment {
         mUsername = PrefUtils.getString(getActivity(), "username", null);
 
 
-
         //牧场名
         mTvMuchangName = view.findViewById(R.id.tvMuchangName);
         if (!TextUtils.isEmpty(mLogin_success)) {
@@ -148,19 +147,19 @@ public class ManagerFragment extends Fragment {
         TextSliderView textSliderView = new TextSliderView(getActivity());
 
         textSliderView
-                .description("示例图片1")
+                .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
                 .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg")
         ;
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
-                .description("牧场2")
+                .description("网络图片")
                 .image("http://pic1.sc.chinaz.com/files/pic/pic9/201803/bpic5936.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(getActivity());
         textSliderView2
-                .description("示例图片3")
+                .description("金坤技术")
                 .image("http://pics.sc.chinaz.com/files/pic/pic9/201802/zzpic10394.jpg");
 
 
@@ -169,6 +168,44 @@ public class ManagerFragment extends Fragment {
         mSliderShow.addSlider(textSliderView2);
 
         mSliderShow.setPresetTransformer(SliderLayout.Transformer.RotateUp);
+
+
+        //获取牧场牲畜类型和每种类型牲畜的数量
+        OkGo.<String>post(Constants.QUERYTYPEANDSUM)
+               .tag(this)
+                .params("token",mLoginSuccess.getToken())
+                .params("username",mUsername)
+                .params("ranchID",mLoginSuccess.getRanchID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1,s);
+
+                    }
+                });
+
+        //通过牲畜类型查询所有牲畜
+        OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
+                .tag(this)
+                .params("token",mLoginSuccess.getToken())
+                .params("username",mUsername)
+                .params("ranchID",mLoginSuccess.getRanchID())
+                .params("livestockType",1)
+                .params("current",0)
+                .params("pagesize",10)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1,s);
+
+                    }
+                });
+
+
 
         return view;
 
@@ -232,10 +269,10 @@ public class ManagerFragment extends Fragment {
                         LogUtils.e(isbn);
                         scanMessage = isbn;
                         Toast.makeText(getActivity(), "解析到的内容为" + isbn, Toast.LENGTH_LONG).show();
-                        Log.d(TAG1,mLoginSuccess.getToken());
-                        Log.d(TAG1,mUsername);
-                        Log.d(TAG1,isbn);
-                        Log.d(TAG1,mLoginSuccess.getRanchID()+"");
+                        Log.d(TAG1, mLoginSuccess.getToken());
+                        Log.d(TAG1, mUsername);
+                        Log.d(TAG1, isbn);
+                        Log.d(TAG1, mLoginSuccess.getRanchID() + "");
                         //判断设备是否被绑定
                         OkGo.<String>post(Constants.ISDEVICEBINDED)
                                 .tag(this)
@@ -248,19 +285,18 @@ public class ManagerFragment extends Fragment {
                                     public void onSuccess(Response<String> response) {
 
                                         String result = response.body().toString();
-                                        Log.d(TAG1,result);
-                                        if (result.contains("true")){
+                                        Log.d(TAG1, result);
+                                        if (result.contains("true")) {
 
                                             //已绑定
-                                            Toast.makeText(getActivity(),"该设备已登记",
+                                            Toast.makeText(getActivity(), "该设备已登记",
                                                     Toast.LENGTH_SHORT)
                                                     .show();
 
 
-                                        }else {
+                                        } else {
                                             //未绑定
                                             openCamera();
-
 
 
                                         }

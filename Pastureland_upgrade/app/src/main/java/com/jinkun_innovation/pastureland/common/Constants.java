@@ -85,5 +85,12 @@ public class Constants {
     //文件上传（图片、视频）
     public static final String HEADIMGURL = BASE_URL + "/adminMember/headImgUrl.do";
 
+    //获取牧场牲畜类型和每种类型牲畜的数量
+    public static final String QUERYTYPEANDSUM =BASE_URL +"/releaseLivestocks/queryTypeAndSum.do";
+
+    //通过牲畜类型查询所有牲畜
+    public static final String QUERYLIVESTOCKVARIETYLIST =BASE_URL +"/releaseLivestocks/queryLivestockVarietyList.do";
+
+
 
 }

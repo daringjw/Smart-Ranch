@@ -44,7 +44,6 @@ public class RenlingFragment extends Fragment {
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -54,13 +53,14 @@ public class RenlingFragment extends Fragment {
 
         View view = View.inflate(getActivity(), R.layout.fragment_claim, null);
 
+
         ImageView ivAdd = view.findViewById(R.id.ivAdd);
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                startActivity(new Intent(getActivity(),PublishClaimActivity.class));
+                startActivity(new Intent(getActivity(), PublishClaimActivity.class));
 
             }
         });
@@ -120,12 +120,13 @@ public class RenlingFragment extends Fragment {
     private MyAdapter mAdapter;
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , String[] data);
+        void onItemClick(View view, String[] data);
 
 
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.mOnItemClickListener = listener;
 
@@ -133,7 +134,7 @@ public class RenlingFragment extends Fragment {
     }
 
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
         public String[] datas = null;
 
         public MyAdapter(String[] datas) {

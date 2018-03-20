@@ -70,19 +70,19 @@ public class LianJiangPasturelandActivity extends AppCompatActivity {
 
         TextSliderView textSliderView = new TextSliderView(this);
         textSliderView
-                .description("示例图片1")
+                .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
                 .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg")
         ;
 
         TextSliderView textSliderView1 = new TextSliderView(this);
         textSliderView1
-                .description("牧场2")
+                .description("金坤科创")
                 .image("http://pic1.sc.chinaz.com/files/pic/pic9/201803/bpic5936.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(this);
         textSliderView2
-                .description("示例图片3")
+                .description("科技改变世界")
                 .image("http://pics.sc.chinaz.com/files/pic/pic9/201802/zzpic10394.jpg");
 
 

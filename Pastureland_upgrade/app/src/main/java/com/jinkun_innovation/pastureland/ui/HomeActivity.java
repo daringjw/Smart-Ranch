@@ -24,6 +24,13 @@ import com.jinkun_innovation.pastureland.utilcode.AppManager;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public TabLayout mTabLayout;
+
+    public TabLayout getTablayout() {
+
+        return mTabLayout;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +40,6 @@ public class HomeActivity extends AppCompatActivity {
         AppManager.getAppManager().addActivity(this);
 
 
-
         //Fragment+ViewPager+FragmentViewPager组合的使用
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),
@@ -41,18 +47,18 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
 
         //TabLayout
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mTabLayout.setupWithViewPager(viewPager);
+        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
 
-        tabLayout.getTabAt(0).setIcon(R.drawable.button_location_selector);
-        tabLayout.getTabAt(1).setIcon(R.drawable.button_location_selector);
-        tabLayout.getTabAt(2).setIcon(R.drawable.button_location_selector);
-        tabLayout.getTabAt(3).setIcon(R.drawable.button_location_selector);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.button_location_selector);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.button_location_selector);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.button_location_selector);
+        mTabLayout.getTabAt(3).setIcon(R.drawable.button_location_selector);
 
 //        tabLayout.getTabAt(0).getCustomView().setSelected(true);
 

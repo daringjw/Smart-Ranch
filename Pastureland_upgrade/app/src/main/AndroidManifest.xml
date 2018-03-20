@@ -116,6 +116,16 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.MuqunActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.RenlingActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name=".ui.FindPwdActivity"

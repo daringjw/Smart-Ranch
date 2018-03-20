@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,6 +16,11 @@ import android.widget.TextView;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.GeRenXinxiActivity;
 import com.jinkun_innovation.pastureland.ui.MuchangActivity;
+import com.jinkun_innovation.pastureland.ui.MuqunActivity;
+import com.jinkun_innovation.pastureland.ui.RenlingActivity;
+import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.tencent.bugly.beta.Beta;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +36,8 @@ public class WodeFragment extends Fragment {
 
     @BindView(R.id.ivIcon)
     ImageView mIvIcon;
-    @BindView(R.id.tvUserName)
-    TextView mTvUserName;
+    @BindView(R.id.tvMyPhone)
+    TextView myPhone;
     @BindView(R.id.rlGeRenXinxi)
     RelativeLayout mRlGeRenXinxi;
     @BindView(R.id.ivMuchang)
@@ -53,6 +60,34 @@ public class WodeFragment extends Fragment {
         View view = View.inflate(getActivity(), R.layout.fragment_wode, null);
 
         unbinder = ButterKnife.bind(this, view);
+
+        String username = PrefUtils.getString(getActivity(), "username", null);
+        if (!TextUtils.isEmpty(username)) {
+
+            myPhone.setText(username);
+
+        }
+
+
+        /**
+         * 升级
+         */
+        Button btnVersion = (Button) view.findViewById(R.id.btnVersion);
+        boolean appDebug = AppUtils.isAppDebug();
+        if (appDebug) {
+            btnVersion.setText("测试版本 1.0." + AppUtils.getAppVersionCode());
+        } else {
+            btnVersion.setText("正式版本 1.0." + AppUtils.getAppVersionCode());
+        }
+
+        btnVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Beta.checkUpgrade();
+            }
+        });
+
         return view;
 
     }
@@ -70,20 +105,23 @@ public class WodeFragment extends Fragment {
             case R.id.rlGeRenXinxi:
 
 
-                startActivity(new Intent(getActivity(),GeRenXinxiActivity.class));
+                startActivity(new Intent(getActivity(), GeRenXinxiActivity.class));
 
                 break;
             case R.id.ivMuchang:
 
-                startActivity(new Intent(getActivity(),MuchangActivity.class));
+                startActivity(new Intent(getActivity(), MuchangActivity.class));
 
                 break;
             case R.id.ivMuqun:
 
+                startActivity(new Intent(getActivity(),MuqunActivity.class));
 
                 break;
+
             case R.id.ivRenling:
 
+                startActivity(new Intent(getActivity(),RenlingActivity.class));
 
                 break;
             case R.id.ivShebeiXiaoXi:
