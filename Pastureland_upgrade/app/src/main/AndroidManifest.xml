@@ -111,6 +111,11 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name=".ui.FindPwdActivity"

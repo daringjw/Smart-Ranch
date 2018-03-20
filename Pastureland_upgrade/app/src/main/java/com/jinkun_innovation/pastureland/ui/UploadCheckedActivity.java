@@ -1,7 +1,9 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -11,13 +13,7 @@ import android.widget.RadioButton;
 import com.bumptech.glide.Glide;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.base.BaseActivity;
-import com.jinkun_innovation.pastureland.bean.ConfirmClaimBean;
-import com.jinkun_innovation.pastureland.net.ApiCall;
-import com.jinkun_innovation.pastureland.net.BaseSubscriber;
-import com.jinkun_innovation.pastureland.net.ExceptionHandle;
-import com.jinkun_innovation.pastureland.net.RetrofitManger;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
-import com.jinkun_innovation.pastureland.utilcode.SpUtil;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
@@ -27,11 +23,7 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
 
@@ -175,46 +167,26 @@ public class UploadCheckedActivity extends BaseActivity {
 
     @OnClick(R.id.btn_submit)
     public void onClick() {
-        // TODO: 2018/1/16 上传图片
-        RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), mPhotoFile);
+
+        final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("上传中...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                pDialog.cancel();
+                finish();
+
+            }
+        }, 2000);
+
+
+
+        /*RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), mPhotoFile);
         MultipartBody.Part photo = MultipartBody.Part.createFormData("imgUrl", mPhotoFile.getName(), photoRequestBody);
-//        RetrofitManger.getInstance().createReq(ApiCall.class)
-//                .uploadPhoto(photo, RequestBody.create(null, mDeviceNo),
-//                        RequestBody.create(null, variety),
-//                        RequestBody.create(null, String.valueOf(mPhase)),
-//                        RequestBody.create(null, SpUtil.getToken()),
-//                        RequestBody.create(null, SpUtil.getUserId()),
-//                        RequestBody.create(null, SpUtil.getAccount()))
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Subscriber<ConfirmClaimBean>() {
-//                    @Override
-//                    public void onStart() {
-//                        showProgress("正在上传");
-//                    }
-//
-//                    @Override
-//                    public void onCompleted() {
-//                        hiddenProgress();
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        hiddenProgress();
-//                        ToastUtils.showShort(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(ConfirmClaimBean confirmClaimBean) {
-//                        if (confirmClaimBean.getCode().equals("200")) {
-//                            AppManager.getAppManager().finishActivity();
-//                            ToastUtils.showShort("上传成功");
-//                        } else {
-//                            ToastUtils.showShort("上传失败，" + confirmClaimBean.getMsg());
-//                        }
-//                    }
-//                });
 
         RetrofitManger.getInstance().createReq(ApiCall.class)
                 .uploadPhoto(photo, RequestBody.create(null, mDeviceNo),
@@ -255,7 +227,7 @@ public class UploadCheckedActivity extends BaseActivity {
                             ToastUtils.showShort("上传失败，" + confirmClaimBean.getMsg());
                         }
                     }
-                });
+                });*/
 
     }
 }

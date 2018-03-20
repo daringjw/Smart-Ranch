@@ -27,8 +27,13 @@ public class Constants {
 
 
     //发布认领
+    //判断是被是否被绑定
+    public static final String ISDEVICEBINDED =BASE_URL +"/releaseLivestocks/isDeviceBinded.do";
+
+
     //1、查看发布情况selectLivestock.do，未发布执行release.do
     public static final String SELECT_LIVE_STOCK = BASE_URL + "/releaseLivestocks/selectLivestock.do";
+
 
     //根据字典表类型选字典表品种(牲畜扫描时选类型时调用)
     public static final String SELECTVARIETY = BASE_URL + "/releaseLivestocks/selectVariety.do";

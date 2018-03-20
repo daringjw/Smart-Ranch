@@ -17,23 +17,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.GrassActivity;
 import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
+import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
-import com.jinkun_innovation.pastureland.ui.UploadCheckedActivity;
 import com.jinkun_innovation.pastureland.ui.VideoContainerActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,6 +60,8 @@ import butterknife.Unbinder;
 
 public class ManagerFragment extends Fragment {
 
+
+    private static final String TAG1 = ManagerFragment.class.getSimpleName();
 
     @BindView(R.id.btnJieGao)
     Button mBtnJieGao;
@@ -81,6 +90,10 @@ public class ManagerFragment extends Fragment {
     private String scanMessage;
 
     private SliderLayout mSliderShow;
+    private LoginSuccess mLoginSuccess;
+    private TextView mTvMuchangName;
+    private String mLogin_success;
+    private String mUsername;
 
 
     @Nullable
@@ -112,11 +125,24 @@ public class ManagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(getActivity(),VideoContainerActivity.class));
+                startActivity(new Intent(getActivity(), VideoContainerActivity.class));
 
             }
         });
 
+
+        mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+
+
+        //牧场名
+        mTvMuchangName = view.findViewById(R.id.tvMuchangName);
+        if (!TextUtils.isEmpty(mLogin_success)) {
+            mTvMuchangName.setText(mLoginSuccess.getName());
+        }
 
         mSliderShow = view.findViewById(R.id.slider);
         TextSliderView textSliderView = new TextSliderView(getActivity());
@@ -177,13 +203,13 @@ public class ManagerFragment extends Fragment {
                 break;
             case R.id.btnMechanicalTools:
 
-                startActivity(new Intent(getActivity(),ToolsActivity.class));
+                startActivity(new Intent(getActivity(), ToolsActivity.class));
 
 
                 break;
             case R.id.btnGrass:
 
-                startActivity(new Intent(getActivity(),GrassActivity.class));
+                startActivity(new Intent(getActivity(), GrassActivity.class));
 
                 break;
             case R.id.btnLianJiangPastureland:
@@ -206,7 +232,63 @@ public class ManagerFragment extends Fragment {
                         LogUtils.e(isbn);
                         scanMessage = isbn;
                         Toast.makeText(getActivity(), "解析到的内容为" + isbn, Toast.LENGTH_LONG).show();
-                        openCamera();
+                        Log.d(TAG1,mLoginSuccess.getToken());
+                        Log.d(TAG1,mUsername);
+                        Log.d(TAG1,isbn);
+                        Log.d(TAG1,mLoginSuccess.getRanchID()+"");
+                        //判断设备是否被绑定
+                        OkGo.<String>post(Constants.ISDEVICEBINDED)
+                                .tag(this)
+                                .params("token", mLoginSuccess.getToken())
+                                .params("username", mUsername) //用户手机号
+                                .params("deviceNO", isbn)
+                                .params("ranchID", mLoginSuccess.getRanchID())
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+
+                                        String result = response.body().toString();
+                                        Log.d(TAG1,result);
+                                        if (result.contains("true")){
+
+                                            //已绑定
+                                            Toast.makeText(getActivity(),"该设备已登记",
+                                                    Toast.LENGTH_SHORT)
+                                                    .show();
+
+
+                                        }else {
+                                            //未绑定
+                                            openCamera();
+
+
+
+                                        }
+
+
+                                    }
+                                });
+
+
+
+                        /*OkGo.<String>post(Constants.SELECT_LIVE_STOCK)
+                                .params("token", mLoginSuccess.getToken())
+                                .params("username", mLoginSuccess.getName())
+                                .params("deviceNO", isbn)
+                                .params("ranchID", mLoginSuccess.getRanchID())
+                                .tag(this)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+
+                                        String result = response.body().toString();
+                                        Log.d(TAG1,result);
+
+
+                                    }
+                                });*/
+
+
                     }
                     break;
 
@@ -217,7 +299,7 @@ public class ManagerFragment extends Fragment {
                                 .openAssetFileDescriptor(data.getData(), "r");
                         FileInputStream fis = videoAsset.createInputStream();
                         File tmpFile = new File(Environment.getExternalStorageDirectory(),
-                                TimeUtils.getNowString()+".mp4");
+                                TimeUtils.getNowString() + ".mp4");
 
                         FileOutputStream fos = new FileOutputStream(tmpFile);
                         byte[] buf = new byte[1024];
@@ -228,8 +310,8 @@ public class ManagerFragment extends Fragment {
                         fis.close();
                         fos.close();
 
-                        Log.d("ManagerFragment",tmpFile.getAbsolutePath());
-                        PrefUtils.setString(getActivity(),"v1",tmpFile.getAbsolutePath());
+                        Log.d("ManagerFragment", tmpFile.getAbsolutePath());
+                        PrefUtils.setString(getActivity(), "v1", tmpFile.getAbsolutePath());
 
 
                     } catch (IOException io_e) {
@@ -248,7 +330,7 @@ public class ManagerFragment extends Fragment {
 
                     switch (checkedItem) {
                         case 2:
-                            intent.setClass(getActivity(), UploadCheckedActivity.class);
+                            intent.setClass(getActivity(), RegisterActivity.class);
                             break;
                         case 3:
 

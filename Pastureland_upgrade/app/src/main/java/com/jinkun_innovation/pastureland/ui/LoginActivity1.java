@@ -1,15 +1,22 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +27,9 @@ import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +51,7 @@ public class LoginActivity1 extends AppCompatActivity {
     @BindView(R.id.tvForgetPwd)
     TextView mTvForgetPwd;
     @BindView(R.id.btnLogin)
-    Button mBtnLogin;
+    ImageView mBtnLogin;
 
 
     private SweetAlertDialog mPDialog;
@@ -53,8 +63,51 @@ public class LoginActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_login1);
         ButterKnife.bind(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            checkRuntimePermissions();
+        }
+
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void checkRuntimePermissions() {
+        List<String> permissions = new ArrayList<>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.CAMERA);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (permissions.size() > 0) {
+            ActivityCompat.requestPermissions(LoginActivity1.this, permissions.toArray(new String[permissions.size()]),
+                    REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+        } else {
+//            startScanActivity();
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    Toast.makeText(LoginActivity1.this, "请手动打开摄像头权限", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 3;//权限请求
 
 
     @OnClick({R.id.tvForgetPwd, R.id.btnLogin})
@@ -69,7 +122,7 @@ public class LoginActivity1 extends AppCompatActivity {
                 break;
             case R.id.btnLogin:
 
-                String account = mTieAccount.getText().toString().trim();
+                final String account = mTieAccount.getText().toString().trim();
                 String pwd = mTiePwd.getText().toString();
 
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
@@ -101,6 +154,7 @@ public class LoginActivity1 extends AppCompatActivity {
                                     } else {
                                         //登陆成功
                                         PrefUtils.setString(getApplicationContext(), "login_success", result);
+                                        PrefUtils.setString(getApplicationContext(),"username",account);
                                         mPDialog.cancel();
                                         SpUtil.saveLoginState(true);
                                         Toast.makeText(getApplicationContext(), "登录成功",

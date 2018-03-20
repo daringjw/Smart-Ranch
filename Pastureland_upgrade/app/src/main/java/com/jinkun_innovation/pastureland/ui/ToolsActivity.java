@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
@@ -31,6 +32,15 @@ public class ToolsActivity extends Activity{
 
 
         setContentView(R.layout.activity_tools);
+
+        ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+
+            }
+        });
 
 
         RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
@@ -68,6 +78,8 @@ public class ToolsActivity extends Activity{
 //创建并设置Adapter
         mAdapter = new MyAdapter(getDummyDatas());
         mRecyclerView.setAdapter(mAdapter);
+
+
 
     }
 
@@ -108,7 +120,7 @@ public class ToolsActivity extends Activity{
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_yang_list, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_tool, viewGroup, false);
             ViewHolder vh = new ViewHolder(view);
 
             //将创建的View注册点击事件
