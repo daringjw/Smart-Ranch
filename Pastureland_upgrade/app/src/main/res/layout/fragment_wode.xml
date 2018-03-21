@@ -23,17 +23,17 @@
     <RelativeLayout
         android:id="@+id/rlGeRenXinxi"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="90dp"
         android:background="#127c39"
         >
 
         <ImageView
             android:id="@+id/ivIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="30dp"
-            android:src="@mipmap/jiqiren"/>
+            android:src="@mipmap/touxiang"/>
 
 
         <TextView

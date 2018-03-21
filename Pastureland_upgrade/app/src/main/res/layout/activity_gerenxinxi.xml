@@ -27,26 +27,37 @@
 
 
     <ImageView
-        android:layout_marginTop="20dp"
+        android:id="@+id/ivTouxiang"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:src="@mipmap/jiqiren"/>
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/touxiang"/>
 
 
     <TextView
+        android:id="@+id/tvAdminName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:text="名字：张三"/>
 
     <TextView
+        android:id="@+id/tvSex"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:text="性别：男"/>
+
+    <TextView
+        android:id="@+id/tvPhone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="手机号：17899999999"/>
 
 
     <Button

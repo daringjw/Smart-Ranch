@@ -152,7 +152,7 @@ public class LoginActivity1 extends AppCompatActivity {
                                                 "账号或者密码错误",
                                                 Toast.LENGTH_SHORT).show();
                                         mPDialog.cancel();
-                                    } else {
+                                    } else if(result.contains("token")){
                                         //登陆成功
                                         PrefUtils.setString(getApplicationContext(), "login_success", result);
                                         PrefUtils.setString(getApplicationContext(),"username",account);
@@ -163,6 +163,11 @@ public class LoginActivity1 extends AppCompatActivity {
                                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         finish();
 
+                                    }else {
+                                        Toast.makeText(getApplicationContext(),
+                                                "账号或者密码错误",
+                                                Toast.LENGTH_SHORT).show();
+                                        mPDialog.cancel();
 
                                     }
 
