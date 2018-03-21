@@ -69,6 +69,8 @@ public class LoginActivity1 extends AppCompatActivity {
         }
 
 
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -128,52 +130,52 @@ public class LoginActivity1 extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
 
-                     if (PhoneFormatCheckUtils.isChinaPhoneLegal(account)) {
+                    if (PhoneFormatCheckUtils.isMobile(account)) {
 
-                    //大陆号码，可以登录
-                    mPDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-                    mPDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                    mPDialog.setTitleText("正在登录...");
-                    mPDialog.setCancelable(false);
-                    mPDialog.show();
+                        //大陆号码，可以登录
+                        mPDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+                        mPDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        mPDialog.setTitleText("正在登录...");
+                        mPDialog.setCancelable(false);
+                        mPDialog.show();
 
-                    OkGo.<String>post(Constants.LOGIN)
-                            .tag(this)
-                            .params("username", account)
-                            .params("password", pwd)
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
+                        OkGo.<String>post(Constants.LOGIN)
+                                .tag(this)
+                                .params("username", account)
+                                .params("password", pwd)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
 
-                                    String result = response.body().toString();
-                                    Log.d(TAG1, result);
-                                    if (result.contains("error")) {
-                                        Toast.makeText(getApplicationContext(),
-                                                "账号或者密码错误",
-                                                Toast.LENGTH_SHORT).show();
-                                        mPDialog.cancel();
-                                    } else if(result.contains("token")){
-                                        //登陆成功
-                                        PrefUtils.setString(getApplicationContext(), "login_success", result);
-                                        PrefUtils.setString(getApplicationContext(),"username",account);
-                                        mPDialog.cancel();
-                                        SpUtil.saveLoginState(true);
-                                        Toast.makeText(getApplicationContext(), "登录成功",
-                                                Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                        finish();
+                                        String result = response.body().toString();
+                                        Log.d(TAG1, result);
+                                        if (result.contains("error")) {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "账号或者密码错误",
+                                                    Toast.LENGTH_SHORT).show();
+                                            mPDialog.cancel();
+                                        } else if (result.contains("token")) {
+                                            //登陆成功
+                                            PrefUtils.setString(getApplicationContext(), "login_success", result);
+                                            PrefUtils.setString(getApplicationContext(), "username", account);
+                                            mPDialog.cancel();
+                                            SpUtil.saveLoginState(true);
+                                            Toast.makeText(getApplicationContext(), "登录成功",
+                                                    Toast.LENGTH_SHORT).show();
+                                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                            finish();
 
-                                    }else {
-                                        Toast.makeText(getApplicationContext(),
-                                                "账号或者密码错误",
-                                                Toast.LENGTH_SHORT).show();
-                                        mPDialog.cancel();
+                                        } else {
+                                            Toast.makeText(getApplicationContext(),
+                                                    "账号或者密码错误",
+                                                    Toast.LENGTH_SHORT).show();
+                                            mPDialog.cancel();
+
+                                        }
+
 
                                     }
-
-
-                                }
-                            });
+                                });
 
 
                     } else {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -64,6 +65,7 @@ public class RenlingFragment extends Fragment {
 
     }
 
+    int count = 1;
 
     @Nullable
     @Override
@@ -92,18 +94,63 @@ public class RenlingFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 
-
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
 
             }
         });
 
+
         mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+            public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
 
 
-                refreshLayout.finishLoadMore(2000);
+                Log.d(TAG1, "count=" + count);
+
+                OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+//                .params("isClaimed",)
+                        .params("current", 10 * count)
+                        .params("pagesize", 10)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                count++;
+
+                                String s = response.body().toString();
+                                Log.d(TAG1, s);
+                                Gson gson1 = new Gson();
+                                RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
+                                if (livestockList1.size()==0){
+
+                                    Toast.makeText(getActivity(),
+                                            "没有更多数据了",
+                                            Toast.LENGTH_SHORT).show();
+                                    refreshLayout.finishLoadMore();
+
+                                    return;
+                                }else {
+
+                                    for (int i = 0; i < livestockList1.size(); i++) {
+                                        mLivestockList.add(livestockList1.get(i));
+                                    }
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockList);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                    refreshLayout.finishLoadMore();
+                                }
+
+
+
+
+                            }
+                        });
+
 
             }
         });
@@ -148,7 +195,7 @@ public class RenlingFragment extends Fragment {
                 .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
                 .params("current", 0)
-                .params("pagesize", 99)
+                .params("pagesize", 15)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {

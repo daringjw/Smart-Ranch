@@ -78,22 +78,27 @@
 
         <activity
             android:name=".ui.GeRenXinxiActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.PublishClaimActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.YangListActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.MuchangActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.VideoContainerActivity"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
         <activity
