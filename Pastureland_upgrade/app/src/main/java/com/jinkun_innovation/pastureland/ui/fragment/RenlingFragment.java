@@ -1,27 +1,41 @@
 package com.jinkun_innovation.pastureland.ui.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.RenLing;
+import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.util.List;
 
 /**
  * Created by Guan on 2018/3/15.
@@ -30,6 +44,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 public class RenlingFragment extends Fragment {
 
     private static final int SCAN_REQUEST_CODE = 100;
+    private static final String TAG1 = RenlingFragment.class.getSimpleName();
+
+    private List<RenLing.LivestockListBean> mLivestockList;
+    final int pageSize = 10; // 固定大小
+    int startIndex = -1;  // 起始页（从0开始）
+    private RefreshLayout mRefreshLayout;
+    private int mTempStartIndex;
 
 
     private void startScanActivity() {
@@ -66,44 +87,88 @@ public class RenlingFragment extends Fragment {
         });
 
 
-        RefreshLayout refreshLayout = view.findViewById(R.id.refreshLayout);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        mRefreshLayout = view.findViewById(R.id.refreshLayout);
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+
+
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+
             }
         });
 
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+        mRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
 
-                refreshLayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                refreshLayout.finishLoadMore(2000);
 
             }
         });
 
         FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(getActivity());
         //设置 Header 为 Material样式
-        refreshLayout.setRefreshHeader(funGameHitBlockHeader);
+        mRefreshLayout.setRefreshHeader(funGameHitBlockHeader);
         //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity())
+        mRefreshLayout.setRefreshFooter(new BallPulseFooter(getActivity())
                 .setSpinnerStyle(SpinnerStyle.Scale));
 
 
         mRecyclerView = view.findViewById(R.id.my_recycler_view);
-//创建默认的线性LayoutManager
+        //创建默认的线性LayoutManager
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
-//如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-//创建并设置Adapter
-        mAdapter = new MyAdapter(getDummyDatas());
-        mRecyclerView.setAdapter(mAdapter);
+
+        initData();
 
 
         return view;
+
+    }
+
+    String mLogin_success;
+    LoginSuccess mLoginSuccess;
+    String mUsername;
+
+    private void initData() {
+
+        mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+        OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+//                .params("isClaimed",)
+                .params("current", 0)
+                .params("pagesize", 99)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        startIndex = 0;
+
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        Gson gson1 = new Gson();
+                        RenLing renLing = gson1.fromJson(s, RenLing.class);
+                        mLivestockList = renLing.getLivestockList();
+
+                        //创建并设置Adapter
+                        mAdapter = new MyAdapter(mLivestockList);
+                        mRecyclerView.setAdapter(mAdapter);
+
+
+                    }
+                });
+
 
     }
 
@@ -135,9 +200,10 @@ public class RenlingFragment extends Fragment {
 
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
-        public String[] datas = null;
+        public List<RenLing.LivestockListBean> datas = null;
 
-        public MyAdapter(String[] datas) {
+        public MyAdapter(List<RenLing.LivestockListBean> datas) {
+
             this.datas = datas;
         }
 
@@ -162,6 +228,36 @@ public class RenlingFragment extends Fragment {
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
+            String imgUrl = datas.get(position).getImgUrl();
+            if (!TextUtils.isEmpty(imgUrl)) {
+                Uri uri = Uri.parse(datas.get(position).getImgUrl());
+                viewHolder.ivGhoat.setImageURI(uri);
+            } else {
+                //网络无图片
+
+            }
+
+
+            String livestockName = datas.get(position).getLivestockName();
+            if (livestockName.equals("100")) {
+                viewHolder.tvAnimalName.setText("乌珠穆泣黑头羊");
+            } else {
+                viewHolder.tvAnimalName.setText(livestockName);
+            }
+            viewHolder.tvId.setText("设备号：" + datas.get(position).getDeviceNo());
+            viewHolder.tvAnimalAge.setText("出生日期：" + datas.get(position).getBirthTime());
+            viewHolder.tvMuChang.setText("特点：" + datas.get(position).getCharacteristics());
+            viewHolder.tvClaimTime.setText("认领时间：" + datas.get(position).getClaimTime());
+            String isClaimed = datas.get(position).getIsClaimed();
+            if (isClaimed.equals("0")) {
+                viewHolder.tvClaimOrNot.setText("未认领");
+            } else if (isClaimed.equals("1")) {
+                viewHolder.tvClaimOrNot.setText("已认领");
+            }
+
+            viewHolder.tvPrice.setText("价格：" + datas.get(position).getPrice());
+
+
         }
 
         @Override
@@ -176,17 +272,35 @@ public class RenlingFragment extends Fragment {
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 20;
+            return datas.size();
         }
 
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView mTextView;
+
+            SimpleDraweeView ivGhoat;
+            TextView tvAnimalName;
+            TextView tvId;
+            TextView tvAnimalAge;
+            TextView tvMuChang;
+            TextView tvClaimTime;
+            TextView tvClaimOrNot;
+            TextView tvPrice;
+
 
             public ViewHolder(View view) {
                 super(view);
 //                mTextView = view.findViewById(R.id.tvClaim);
+                ivGhoat = view.findViewById(R.id.ivGhoat);
+                tvAnimalName = view.findViewById(R.id.tvAnimalName);
+                tvId = view.findViewById(R.id.tvId);
+                tvAnimalAge = view.findViewById(R.id.tvAnimalAge);
+                tvMuChang = view.findViewById(R.id.tvMuChang);
+                tvClaimTime = view.findViewById(R.id.tvClaimTime);
+                tvClaimOrNot = view.findViewById(R.id.tvClaimOrNot);
+                tvPrice = view.findViewById(R.id.tvPrice);
+
 
             }
 

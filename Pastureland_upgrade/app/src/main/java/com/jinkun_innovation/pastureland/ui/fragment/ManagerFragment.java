@@ -169,19 +169,19 @@ public class ManagerFragment extends Fragment {
 
         mSliderShow.setPresetTransformer(SliderLayout.Transformer.RotateUp);
 
+/*
 
         //获取牧场牲畜类型和每种类型牲畜的数量
         OkGo.<String>post(Constants.QUERYTYPEANDSUM)
-               .tag(this)
-                .params("token",mLoginSuccess.getToken())
-                .params("username",mUsername)
-                .params("ranchID",mLoginSuccess.getRanchID())
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
                         String s = response.body().toString();
-                        Log.d(TAG1,s);
 
                     }
                 });
@@ -189,22 +189,21 @@ public class ManagerFragment extends Fragment {
         //通过牲畜类型查询所有牲畜
         OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
                 .tag(this)
-                .params("token",mLoginSuccess.getToken())
-                .params("username",mUsername)
-                .params("ranchID",mLoginSuccess.getRanchID())
-                .params("livestockType",1)
-                .params("current",0)
-                .params("pagesize",10)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .params("livestockType", 1)
+                .params("current", 0)
+                .params("pagesize", 10)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
                         String s = response.body().toString();
-                        Log.d(TAG1,s);
 
                     }
                 });
-
+*/
 
 
         return view;
@@ -273,37 +272,64 @@ public class ManagerFragment extends Fragment {
                         Log.d(TAG1, mUsername);
                         Log.d(TAG1, isbn);
                         Log.d(TAG1, mLoginSuccess.getRanchID() + "");
-                        //判断设备是否被绑定
-                        OkGo.<String>post(Constants.ISDEVICEBINDED)
-                                .tag(this)
-                                .params("token", mLoginSuccess.getToken())
-                                .params("username", mUsername) //用户手机号
-                                .params("deviceNO", isbn)
-                                .params("ranchID", mLoginSuccess.getRanchID())
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
 
-                                        String result = response.body().toString();
-                                        Log.d(TAG1, result);
-                                        if (result.contains("true")) {
+                        switch (checkedItem) {
 
-                                            //已绑定
-                                            Toast.makeText(getActivity(), "该设备已登记",
-                                                    Toast.LENGTH_SHORT)
-                                                    .show();
+                            case 2:
+                                //接羔
+                                //判断设备是否被绑定
+                                OkGo.<String>post(Constants.ISDEVICEBINDED)
+                                        .tag(this)
+                                        .params("token", mLoginSuccess.getToken())
+                                        .params("username", mUsername) //用户手机号
+                                        .params("deviceNO", isbn)
+                                        .params("ranchID", mLoginSuccess.getRanchID())
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onSuccess(Response<String> response) {
 
+                                                String result = response.body().toString();
+                                                Log.d(TAG1, result);
+                                                if (result.contains("true")) {
 
-                                        } else {
-                                            //未绑定
-                                            openCamera();
-
-
-                                        }
+                                                    //已绑定
+                                                    Toast.makeText(getActivity(), "该设备已登记",
+                                                            Toast.LENGTH_SHORT)
+                                                            .show();
 
 
-                                    }
-                                });
+                                                } else {
+                                                    //未绑定
+                                                    openCamera();
+
+
+                                                }
+
+
+                                            }
+                                        });
+
+                                break;
+
+                            case 3:
+                                //剪毛
+                                openCamera();
+
+
+
+
+
+                                break;
+
+                            case 0:
+                                //拍照
+
+
+                                break;
+
+                        }
+
+
 
 
 
@@ -369,6 +395,8 @@ public class ManagerFragment extends Fragment {
                             intent.setClass(getActivity(), RegisterActivity.class);
                             break;
                         case 3:
+                            //剪毛
+                            intent.setClass(getActivity(),UpLoadActivity.class);
 
                         case 0:
                             intent.setClass(getActivity(), UpLoadActivity.class);

@@ -12,7 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -41,6 +48,8 @@ public class YangListActivity extends AppCompatActivity{
 
             }
         });
+
+        initData();
 
 
         RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
@@ -81,6 +90,47 @@ public class YangListActivity extends AppCompatActivity{
 
 
 
+
+
+    }
+
+    String mLogin_success;
+    LoginSuccess mLoginSuccess;
+    String mUsername;
+
+
+    private void initData() {
+
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        final Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
+
+        //通过牲畜类型查询所有牲畜
+        OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .params("livestockType", 1)
+                .params("current", 0)
+                .params("pagesize", 10)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Gson gson1 = new Gson();
+                        /*QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
+                        List<QueryByYang.LivestockVarietyListBean> livestockVarietyList =
+                                queryByYang.getLivestockVarietyList();*/
+
+
+
+
+
+                    }
+                });
 
 
     }

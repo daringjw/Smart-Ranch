@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
+import com.jinkun_innovation.pastureland.utils.PhoneFormatCheckUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -127,7 +128,7 @@ public class LoginActivity1 extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(pwd)) {
 
-                    // if (PhoneFormatCheckUtils.isChinaPhoneLegal(account)) {
+                     if (PhoneFormatCheckUtils.isChinaPhoneLegal(account)) {
 
                     //大陆号码，可以登录
                     mPDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
@@ -170,14 +171,14 @@ public class LoginActivity1 extends AppCompatActivity {
                             });
 
 
-                    /*} else {
+                    } else {
 
                         //非法电话号码
                         Toast.makeText(getApplicationContext(),
                                 "请输入正确的电话号码",
                                 Toast.LENGTH_SHORT).show();
 
-                    }*/
+                    }
 
                 } else {
 

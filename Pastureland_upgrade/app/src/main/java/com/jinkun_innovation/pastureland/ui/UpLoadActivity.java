@@ -1,20 +1,29 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.base.BaseActivity;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import java.io.File;
 
@@ -30,6 +39,7 @@ import top.zibin.luban.OnCompressListener;
  */
 
 public class UpLoadActivity extends BaseActivity {
+    private static final String TAG1 = UpLoadActivity.class.getSimpleName();
     @BindView(R.id.pb_loading)
     ProgressBar mPbLoading;
     private File mPhotoFile;
@@ -39,6 +49,7 @@ public class UpLoadActivity extends BaseActivity {
 
     @BindView(R.id.img_upload)
     ImageView mImgUpload;
+    private int mCheckedItem;
 
     @Override
     protected void initToolBar() {
@@ -65,6 +76,10 @@ public class UpLoadActivity extends BaseActivity {
         return R.layout.activity_upload;
     }
 
+    String mLogin_success;
+    LoginSuccess mLoginSuccess;
+    String mUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +87,15 @@ public class UpLoadActivity extends BaseActivity {
         mPhase = getIntent().getIntExtra(getString(R.string.checked_Item), 0);
         mDeviceNo = getIntent().getStringExtra(getString(R.string.scan_Message));
         cropImage(getIntent().getStringExtra(getString(R.string.img_Url)));
+
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
+
+
+        mCheckedItem = getIntent().getIntExtra(getString(R.string.checked_Item), 0);
+
 //        url = getIntent().getStringExtra(getString(R.string.img_Url));
 //        Glide.with(UpLoadActivity.this).load(FileUtils.getFileByPath(url)).into(mImgUpload);
 //        mPbLoading.setVisibility(View.GONE);
@@ -101,6 +125,8 @@ public class UpLoadActivity extends BaseActivity {
                             mPhotoFile = file;
                             LogUtils.e("onSuccess");
                             LogUtils.e(file.getAbsolutePath());
+
+
                             Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
                             mPbLoading.setVisibility(View.GONE);
@@ -128,14 +154,99 @@ public class UpLoadActivity extends BaseActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                pDialog.cancel();
-                finish();
+        String imgUrl = mPhotoFile.getAbsolutePath();
 
-            }
-        }, 2000);
+
+        switch (mCheckedItem){
+            case 2:
+
+                break;
+            case 3:
+                //剪毛
+                //剪毛
+                OkGo.<String>post(Constants.SHEARING)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+                        .params("deviceNO", mDeviceNo)
+                        .params("imgUrl", imgUrl)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String s = response.body().toString();
+                                Log.d(TAG1, s);
+                                pDialog.cancel();
+
+                                if (s.contains("success")) {
+                                    //
+                                    Toast.makeText(getApplicationContext(),
+                                            "剪毛登记成功",
+                                            Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    finish();
+
+
+                                } else {
+                                    //fail
+                                    Toast.makeText(getApplicationContext(),
+                                            "没有找到此牲畜无法剪毛",
+                                            Toast.LENGTH_SHORT).show();
+
+
+                                }
+
+                            }
+                        });
+
+                break;
+            case 0:
+                //拍照
+                OkGo.<String>post(Constants.RANCHIMGVIDEO)
+                        .tag(this)
+                        .params("token",mLoginSuccess.getToken())
+                        .params("username",mUsername)
+                        .params("ranchID",mLoginSuccess.getRanchID())
+                        .params("fileType",1)
+                        .params("imgUrl",imgUrl)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String s = response.body().toString();
+                                pDialog.cancel();
+
+                                if (s.contains("success")){
+                                    Toast.makeText(getApplicationContext(),"上传成功",Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                                    finish();
+
+                                }else {
+
+                                    Toast.makeText(getApplicationContext(),"上传失败",Toast.LENGTH_SHORT).show();
+
+                                }
+
+                            }
+                        });
+
+
+                break;
+            case 4:
+
+
+                break;
+
+
+
+
+        }
+
+
+
+
+
        /* RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), mPhotoFile);
         MultipartBody.Part photo = MultipartBody.Part.createFormData("imgUrl", mPhotoFile.getName(), photoRequestBody);
 //        RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), FileUtils.getFileByPath(url));

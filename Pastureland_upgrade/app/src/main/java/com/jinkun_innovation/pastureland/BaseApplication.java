@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.jinkun_innovation.pastureland.utilcode.util.CrashUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.Utils;
@@ -22,6 +23,8 @@ public class BaseApplication extends Application {
         super.onCreate();
         Utils.init(this);
         initLog();
+
+        Fresco.initialize(this);
 
         //崩溃日志保存在本地，测试
         CrashUtils.init(Environment.getExternalStorageDirectory() + "/Pastureland/crash/");

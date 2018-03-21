@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="110dp"
     >
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivGhoat"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
-        android:src="@mipmap/ghoat"/>
+        fresco:placeholderImage="@mipmap/ghoat"
+        />
+
+
 
     <LinearLayout
         android:id="@+id/llDetail"
@@ -22,6 +26,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_marginTop="10dp"
             android:id="@+id/tvAnimalName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -49,7 +54,6 @@
             android:id="@+id/tvClaimTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="认领时间：2017-01-01至2022-01-01"
             android:textColor="#f00"/>
 
 
@@ -57,6 +61,7 @@
 
 
     <LinearLayout
+        android:layout_marginLeft="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

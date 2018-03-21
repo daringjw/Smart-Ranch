@@ -34,6 +34,15 @@ public class RenlingActivity extends Activity{
             }
         });
 
+        ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                finish();
+            }
+        });
+
 
 
     }
