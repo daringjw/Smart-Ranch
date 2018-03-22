@@ -32,5 +32,12 @@
         <item>8个月+</item>
     </string-array>
 
+    <string-array name="claim">
+        <item>全部</item>
+        <item>未认领</item>
+        <item>已认领</item>
+
+    </string-array>
+
 
 </resources>

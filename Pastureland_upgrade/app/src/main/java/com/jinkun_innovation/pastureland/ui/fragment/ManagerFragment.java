@@ -149,8 +149,7 @@ public class ManagerFragment extends Fragment {
         textSliderView
                 .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
-                .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg")
-        ;
+                .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg");
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
@@ -300,7 +299,14 @@ public class ManagerFragment extends Fragment {
 
                                                 } else {
                                                     //未绑定
-                                                    openCamera();
+//                                                    openCamera();
+                                                    Intent intent = new Intent(getActivity()
+                                                            , RegisterActivity.class);
+
+                                                    intent.putExtra(getString(R.string.scan_Message),
+                                                            scanMessage);
+
+                                                    startActivity(intent);
 
 
                                                 }
@@ -314,9 +320,6 @@ public class ManagerFragment extends Fragment {
                             case 3:
                                 //剪毛
                                 openCamera();
-
-
-
 
 
                                 break;
@@ -396,7 +399,7 @@ public class ManagerFragment extends Fragment {
                             break;
                         case 3:
                             //剪毛
-                            intent.setClass(getActivity(),UpLoadActivity.class);
+                            intent.setClass(getActivity(), UpLoadActivity.class);
 
                         case 0:
                             intent.setClass(getActivity(), UpLoadActivity.class);

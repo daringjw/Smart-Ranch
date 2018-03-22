@@ -6,9 +6,9 @@
 
 
     <RelativeLayout
-        android:background="#127c39"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="40dp"
+        android:background="#127c39">
 
         <ImageView
             android:id="@+id/ivBack"
@@ -19,21 +19,29 @@
             android:src="@mipmap/back"/>
 
         <TextView
-            android:textColor="#fff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="认领发布"/>
+            android:text="认领发布"
+            android:textColor="#fff"/>
 
 
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/ivTakePhoto"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        android:src="@mipmap/big_ghoat"/>
+        android:src="@mipmap/take_photo"/>
 
+    <EditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/etDeviceNo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="请输入设备号"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -79,6 +87,7 @@
 
 
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"

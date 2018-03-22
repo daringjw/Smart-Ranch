@@ -2,10 +2,14 @@ package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +22,8 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
-import com.jinkun_innovation.pastureland.utilcode.util.ImageUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -27,6 +32,8 @@ import com.lzy.okgo.model.Response;
 import java.io.File;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.jinkun_innovation.pastureland.R.id.ivTakePhoto;
 
 /**
  * Created by Guan on 2018/3/20.
@@ -38,29 +45,94 @@ public class RegisterActivity extends Activity {
     private LoginSuccess mLoginSuccess;
     private String mUsername;
     private String mDeviceNO;
-    private String mImgUrl;
+//    private String mImgUrl;
 
 
     private String mType1;
     private String mVariety1;
     private String mWeight1;
     private String mAge1;
+
+
     private SweetAlertDialog mPDialog;
 
+
+    private File photoFile;
+    private Uri imageUri;//原图保存地址
+    private static final int REQUEST_CAPTURE = 2;  //拍照
+    private ImageView mIvTakePhoto;
+
+
+    private void openCamera() {
+
+        String rootDir = "/Pastureland/photo";
+        FileUtils.createOrExistsDir(new File(Environment.getExternalStorageDirectory(), rootDir));
+        File file = new File(Environment.getExternalStorageDirectory(), rootDir);
+        photoFile = new File(file, TimeUtils.getNowString() + ".jpg");
+
+        Log.d(TAG1, photoFile.getAbsolutePath());
+        FileUtils.createOrExistsFile(photoFile);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            imageUri = FileProvider.getUriForFile(this,
+                    "com.jinkun_innovation.pastureland.fileProvider",
+                    photoFile);//通过FileProvider创建一个content类型的Uri
+        } else {
+            imageUri = Uri.fromFile(photoFile);
+        }
+        Intent intent = new Intent();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+        }
+        intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+        startActivityForResult(intent, REQUEST_CAPTURE);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+
+                case REQUEST_CAPTURE:
+
+                    mIvTakePhoto.setImageURI(imageUri);
+
+                    PrefUtils.setString(getApplicationContext(), "img_route",
+                            photoFile.getAbsolutePath());
+
+                    break;
+
+            }
+
+
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_register);
-        ImageView ivTakePhoto = (ImageView) findViewById(R.id.ivTakePhoto);
+        mIvTakePhoto = (ImageView) findViewById(ivTakePhoto);
+
+        mIvTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                openCamera();
+
+            }
+        });
+
+
         Intent intent = getIntent();
-        mImgUrl = intent.getStringExtra("imgUrl");
+//        mImgUrl = intent.getStringExtra("imgUrl");
         mDeviceNO = intent.getStringExtra("scanMessage");
 
-        File file = new File(mImgUrl);
-        Bitmap bitmap = ImageUtils.getBitmap(file);
-        ivTakePhoto.setImageBitmap(bitmap);
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -76,16 +148,13 @@ public class RegisterActivity extends Activity {
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
 
-
                 String[] type = getResources().getStringArray(R.array.type);
 //                Log.d(TAG1, "种类" + type[pos]);
                 mType1 = type[pos];
-
 
             }
 
@@ -210,49 +279,57 @@ public class RegisterActivity extends Activity {
                 Log.d(TAG1, weight3 + "");
                 Log.d(TAG1, "" + age3);
 
+                if (photoFile != null) {
+                    OkGo.<String>post(Constants.SAVELIVESTOCK)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("deviceNO", mDeviceNO)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("livestockType", type3)
+                            .params("variety", variety3)
+                            .params("weight", weight3)
+                            .params("age", age3)
+                            .params("imgUrl", photoFile.getAbsolutePath())
 
-                OkGo.<String>post(Constants.SAVELIVESTOCK)
-                        .tag(this)
-                        .params("token", mLoginSuccess.getToken())
-                        .params("username", mUsername)
-                        .params("deviceNO", mDeviceNO)
-                        .params("ranchID", mLoginSuccess.getRanchID())
-                        .params("livestockType", type3)
-                        .params("variety", variety3)
-                        .params("weight", weight3)
-                        .params("age", age3)
-                        .params("imgUrl", mImgUrl)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
 
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
+                                    mPDialog.cancel();
 
-                                mPDialog.cancel();
+                                    String result = response.body().toString();
+                                    Log.d(TAG1, result);
+                                    if (result.contains("error")) {
+                                        //失败
+                                        Toast.makeText(getApplicationContext(),
+                                                "登记失败",
+                                                Toast.LENGTH_SHORT)
+                                                .show();
 
-                                String result = response.body().toString();
-                                Log.d(TAG1, result);
-                                if (result.contains("error")) {
-                                    //失败
-                                    Toast.makeText(getApplicationContext(),
-                                            "登记失败",
-                                            Toast.LENGTH_SHORT)
-                                            .show();
+                                    } else {
+                                        //成功
+                                        Toast.makeText(getApplicationContext(),
+                                                "登记成功",
+                                                Toast.LENGTH_SHORT)
+                                                .show();
 
-                                } else {
-                                    //成功
-                                    Toast.makeText(getApplicationContext(),
-                                            "登记成功",
-                                            Toast.LENGTH_SHORT)
-                                            .show();
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        finish();
 
-                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                    finish();
 
+                                    }
 
                                 }
+                            });
+                } else {
 
-                            }
-                        });
+                    mPDialog.cancel();
+                    Toast.makeText(getApplicationContext(),"请先拍照",Toast.LENGTH_SHORT).show();
+
+                }
+
+
 
 
                 /*new Handler().postDelayed(new Runnable() {

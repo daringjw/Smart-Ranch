@@ -6,9 +6,11 @@ package com.jinkun_innovation.pastureland.common;
 
 public class Constants {
 
+    //朱之用
+//    public static final String BASE_URL = "http://192.168.50.215:8080";
 
+    //测试
     public static final String BASE_URL = "http://222.249.165.94:10100";
-
 
 
     public static final int ranchID = 1;
@@ -17,10 +19,10 @@ public class Constants {
 
     //牧场主找回密码
     //1)点击发送验证码：
-    public static final String VERIFY_CODE = BASE_URL+ "/mobleClaim/txCode.do";
+    public static final String VERIFY_CODE = BASE_URL + "/mobleClaim/txCode.do";
 
     //2)修改密码:
-    public static final String MODIFY_PASSWORD = BASE_URL+ "/ranchLogin/backPass.do";
+    public static final String MODIFY_PASSWORD = BASE_URL + "/ranchLogin/backPass.do";
 
     //登录:
     public static final String LOGIN = BASE_URL + "/ranchLogin/login.do";
@@ -28,7 +30,7 @@ public class Constants {
 
     //发布认领
     //判断是被是否被绑定
-    public static final String ISDEVICEBINDED =BASE_URL +"/releaseLivestocks/isDeviceBinded.do";
+    public static final String ISDEVICEBINDED = BASE_URL + "/releaseLivestocks/isDeviceBinded.do";
 
 
     //1、查看发布情况selectLivestock.do，未发布执行release.do
@@ -86,14 +88,10 @@ public class Constants {
     public static final String HEADIMGURL = BASE_URL + "/adminMember/headImgUrl.do";
 
     //获取牧场牲畜类型和每种类型牲畜的数量
-    public static final String QUERYTYPEANDSUM =BASE_URL +"/releaseLivestocks/queryTypeAndSum.do";
+    public static final String QUERYTYPEANDSUM = BASE_URL + "/releaseLivestocks/queryTypeAndSum.do";
 
     //通过牲畜类型查询所有牲畜
-    public static final String QUERYLIVESTOCKVARIETYLIST =BASE_URL +"/releaseLivestocks/queryLivestockVarietyList.do";
-
-
-
-
+    public static final String QUERYLIVESTOCKVARIETYLIST = BASE_URL + "/releaseLivestocks/queryLivestockVarietyList.do";
 
 
 }

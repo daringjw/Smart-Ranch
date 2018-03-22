@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.DeviceMsgActivity;
 import com.jinkun_innovation.pastureland.ui.GeRenXinxiActivity;
 import com.jinkun_innovation.pastureland.ui.MuchangActivity;
 import com.jinkun_innovation.pastureland.ui.MuqunActivity;
@@ -126,6 +127,7 @@ public class WodeFragment extends Fragment {
                 break;
             case R.id.ivShebeiXiaoXi:
 
+                startActivity(new Intent(getActivity(),DeviceMsgActivity.class));
 
                 break;
         }

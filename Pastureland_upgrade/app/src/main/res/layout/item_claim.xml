@@ -3,90 +3,90 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
+    android:layout_height="250dp"
     >
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivGhoat"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        fresco:placeholderImage="@mipmap/ghoat"
-        />
+        android:layout_marginLeft="20dp"
+        fresco:placeholderImage="@mipmap/big_ghoat"
 
+        />
 
 
     <LinearLayout
         android:id="@+id/llDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/ivGhoat"
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="10dp"
             android:id="@+id/tvAnimalName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="小黑"/>
+            android:layout_marginTop="20dp"
+            android:text="品种：大山羊"/>
 
         <TextView
             android:id="@+id/tvId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ID:1234567890"/>
+            android:text="设备号:1234567890"/>
 
         <TextView
             android:id="@+id/tvAnimalAge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="年龄：12个月"/>
+            android:text="出生日期：12个月"/>
 
         <TextView
             android:id="@+id/tvMuChang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="牧场：内蒙兴安盟连江牧场"/>
+            android:text="特点：内蒙兴安盟连江牧场"/>
 
         <TextView
             android:id="@+id/tvClaimTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="认领时间：2018-03-05 10：57：27"
             android:textColor="#f00"/>
 
+        <TextView
+            android:id="@+id/tvPriceAndClaim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="价格：￥666    已认领"
+            android:textColor="#127c39"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/tvClaimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="认领人：番斌"/>
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电话：13655556666"/>
+
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_marginLeft="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/llDetail"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tvClaimOrNot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="已认领"/>
-
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="￥666"/>
-
-
-    </LinearLayout>
 
     <View
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
         android:background="#000"
         ></View>
 

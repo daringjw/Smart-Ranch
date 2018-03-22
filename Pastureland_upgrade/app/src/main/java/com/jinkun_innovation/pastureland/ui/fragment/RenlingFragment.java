@@ -1,6 +1,7 @@
 package com.jinkun_innovation.pastureland.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +55,7 @@ public class RenlingFragment extends Fragment {
     int startIndex = -1;  // 起始页（从0开始）
     private RefreshLayout mRefreshLayout;
     private int mTempStartIndex;
+    private String mState;
 
 
     private void startScanActivity() {
@@ -89,6 +93,134 @@ public class RenlingFragment extends Fragment {
         });
 
 
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner1);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+
+                String[] claim = getResources().getStringArray(R.array.claim);
+
+                mState = claim[pos];
+
+                if (mState.equals("全部")) {
+
+                    mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+                    Gson gson = new Gson();
+                    mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                    mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+//                .params("isClaimed",)
+                            .params("current", 0)
+                            .params("pagesize", 15)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    startIndex = 0;
+
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    mLivestockList = renLing.getLivestockList();
+
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockList);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+
+                                }
+                            });
+
+                } else if (claim[pos].equals("未认领")) {
+
+                    mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+                    Gson gson = new Gson();
+                    mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                    mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("isClaimed", 0)  //未认领
+                            .params("current", 0)
+                            .params("pagesize", 15)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    startIndex = 0;
+
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    mLivestockList = renLing.getLivestockList();
+
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockList);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+
+                                }
+                            });
+
+                } else if (claim[pos].equals("已认领")) {
+
+                    mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+                    Gson gson = new Gson();
+                    mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                    mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("isClaimed", 1)
+                            .params("current", 0)
+                            .params("pagesize", 15)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    startIndex = 0;
+
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    mLivestockList = renLing.getLivestockList();
+
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockList);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+
+                                }
+                            });
+
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+
+        });
+
+
         mRefreshLayout = view.findViewById(R.id.refreshLayout);
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -107,49 +239,147 @@ public class RenlingFragment extends Fragment {
 
                 Log.d(TAG1, "count=" + count);
 
-                OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
-                        .tag(this)
-                        .params("token", mLoginSuccess.getToken())
-                        .params("username", mUsername)
-                        .params("ranchID", mLoginSuccess.getRanchID())
+                if (mState.equals("全部")) {
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                        .params("current", 10 * count)
-                        .params("pagesize", 10)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
+                            .params("current", count)
+                            .params("pagesize", 10)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
 
-                                count++;
+                                    count++;
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
+                                    if (livestockList1.size() == 0) {
 
-                                String s = response.body().toString();
-                                Log.d(TAG1, s);
-                                Gson gson1 = new Gson();
-                                RenLing renLing = gson1.fromJson(s, RenLing.class);
-                                List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
-                                if (livestockList1.size()==0){
+                                        Toast.makeText(getActivity(),
+                                                "没有更多数据了",
+                                                Toast.LENGTH_SHORT).show();
+                                        refreshLayout.finishLoadMore();
 
-                                    Toast.makeText(getActivity(),
-                                            "没有更多数据了",
-                                            Toast.LENGTH_SHORT).show();
-                                    refreshLayout.finishLoadMore();
+                                        return;
+                                    } else {
 
-                                    return;
-                                }else {
+                                        for (int i = 0; i < livestockList1.size(); i++) {
+                                            mLivestockList.add(livestockList1.get(i));
+                                        }
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        MoveToPosition(mLayoutManager, 15 * count);
 
-                                    for (int i = 0; i < livestockList1.size(); i++) {
-                                        mLivestockList.add(livestockList1.get(i));
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                        refreshLayout.finishLoadMore();
+
                                     }
-                                    //创建并设置Adapter
-                                    mAdapter = new MyAdapter(mLivestockList);
-                                    mRecyclerView.setAdapter(mAdapter);
-                                    refreshLayout.finishLoadMore();
+
+
                                 }
+                            });
+
+                } else if (mState.equals("未认领")) {
+
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("isClaimed", 0)
+                            .params("current", count)
+                            .params("pagesize", 10)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    count++;
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
+                                    if (livestockList1.size() == 0) {
+
+                                        Toast.makeText(getActivity(),
+                                                "没有更多数据了",
+                                                Toast.LENGTH_SHORT).show();
+                                        refreshLayout.finishLoadMore();
+
+                                        return;
+                                    } else {
+
+                                        for (int i = 0; i < livestockList1.size(); i++) {
+                                            mLivestockList.add(livestockList1.get(i));
+                                        }
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        MoveToPosition(mLayoutManager, 15 * count);
+
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                        refreshLayout.finishLoadMore();
+
+                                    }
 
 
+                                }
+                            });
+
+                } else if (mState.equals("已认领")) {
+
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("isClaimed", 1)
+                            .params("current", count)
+                            .params("pagesize", 10)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    count++;
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    Gson gson1 = new Gson();
+                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                    List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
+                                    if (livestockList1.size() == 0) {
+
+                                        Toast.makeText(getActivity(),
+                                                "没有更多数据了",
+                                                Toast.LENGTH_SHORT).show();
+                                        refreshLayout.finishLoadMore();
+
+                                        return;
+                                    } else {
+
+                                        for (int i = 0; i < livestockList1.size(); i++) {
+                                            mLivestockList.add(livestockList1.get(i));
+                                        }
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        MoveToPosition(mLayoutManager, 15 * count);
+
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                        refreshLayout.finishLoadMore();
+
+                                    }
 
 
-                            }
-                        });
+                                }
+                            });
+
+                }
 
 
             }
@@ -170,7 +400,7 @@ public class RenlingFragment extends Fragment {
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 
-        initData();
+//        initData();
 
 
         return view;
@@ -245,8 +475,21 @@ public class RenlingFragment extends Fragment {
 
     }
 
+    /**
+     * RecyclerView 移动到当前位置，
+     *
+     * @param manager 设置RecyclerView对应的manager
+     * @param n       要跳转的位置
+     */
+    public static void MoveToPosition(LinearLayoutManager manager, int n) {
+        manager.scrollToPositionWithOffset(n, 0);
+        manager.setStackFromEnd(true);
+    }
+
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
+
+
         public List<RenLing.LivestockListBean> datas = null;
 
         public MyAdapter(List<RenLing.LivestockListBean> datas) {
@@ -297,12 +540,21 @@ public class RenlingFragment extends Fragment {
             viewHolder.tvClaimTime.setText("认领时间：" + datas.get(position).getClaimTime());
             String isClaimed = datas.get(position).getIsClaimed();
             if (isClaimed.equals("0")) {
-                viewHolder.tvClaimOrNot.setText("未认领");
+
+                viewHolder.tvPriceAndClaim.setTextColor(Color.GRAY);
+                viewHolder.tvPriceAndClaim.setText(" 未认领");
+
             } else if (isClaimed.equals("1")) {
-                viewHolder.tvClaimOrNot.setText("已认领");
+
+                viewHolder.tvPriceAndClaim.setText("价格：" +
+                        datas.get(position).getPrice()
+                        + "     已认领");
+
             }
 
-            viewHolder.tvPrice.setText("价格：" + datas.get(position).getPrice());
+            viewHolder.tvPhone.setText(
+                    "手机号：" +
+                            datas.get(position).getCellphone());
 
 
         }
@@ -332,8 +584,10 @@ public class RenlingFragment extends Fragment {
             TextView tvAnimalAge;
             TextView tvMuChang;
             TextView tvClaimTime;
-            TextView tvClaimOrNot;
-            TextView tvPrice;
+
+            TextView tvPriceAndClaim;
+            TextView tvClaimer;
+            TextView tvPhone;
 
 
             public ViewHolder(View view) {
@@ -345,8 +599,10 @@ public class RenlingFragment extends Fragment {
                 tvAnimalAge = view.findViewById(R.id.tvAnimalAge);
                 tvMuChang = view.findViewById(R.id.tvMuChang);
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
-                tvClaimOrNot = view.findViewById(R.id.tvClaimOrNot);
-                tvPrice = view.findViewById(R.id.tvPrice);
+
+                tvPriceAndClaim = view.findViewById(R.id.tvPriceAndClaim);
+                tvClaimer = view.findViewById(R.id.tvClaimer);
+                tvPhone = view.findViewById(R.id.tvPhone);
 
 
             }
