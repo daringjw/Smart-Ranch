@@ -14,7 +14,7 @@ import android.util.SparseArray;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.fragment.ManagerFragment;
 import com.jinkun_innovation.pastureland.ui.fragment.MuqunFragment;
-import com.jinkun_innovation.pastureland.ui.fragment.RenlingFragment;
+import com.jinkun_innovation.pastureland.ui.fragment.RenlingFragment1;
 import com.jinkun_innovation.pastureland.ui.fragment.WodeFragment;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 
@@ -82,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
                 fragmentMap = new SparseArray();
                 fragmentMap.put(0, new ManagerFragment());
                 fragmentMap.put(1, new MuqunFragment());
-                fragmentMap.put(2, new RenlingFragment());
+                fragmentMap.put(2, new RenlingFragment1());
                 fragmentMap.put(3, new WodeFragment());
 
             }

@@ -26,8 +26,11 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -36,6 +39,8 @@ import com.lzy.okgo.model.Response;
 import java.io.File;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * Created by Guan on 2018/3/16.
@@ -63,6 +68,79 @@ public class PublishClaimActivity extends AppCompatActivity {
     private String mImgUrl;
 
 
+    private void cropImage(final String imgUrl) {
+        String rootDir = "/Pastureland/crop";
+        File file = new File(Environment.getExternalStorageDirectory(), rootDir);
+
+        if (FileUtils.createOrExistsDir(file)) {
+            LogUtils.e(file.getAbsolutePath());
+            Luban.with(this)
+                    .load(FileUtils.getFileByPath(imgUrl))                                   // 传人要压缩的图片列表
+                    .ignoreBy(100)                                  // 忽略不压缩图片的大小
+                    .setTargetDir(file.getAbsolutePath())
+                    .setCompressListener(new OnCompressListener() { //设置回调
+                        @Override
+                        public void onStart() {
+                            // TODO 压缩开始前调用，可以在方法内启动 loading UI
+                            LogUtils.e("onStart");
+//                            mPbLoading.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onSuccess(File file) {
+                            // TODO 压缩成功后调用，返回压缩后的图片文件
+//                            mPhotoFile = file;
+                            LogUtils.e("onSuccess");
+                            LogUtils.e(file.getAbsolutePath());
+
+                            mLogin_success = PrefUtils.getString(getApplicationContext(), "login_success", null);
+                            Gson gson = new Gson();
+                            mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                            mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
+
+                            OkGo.<String>post(Constants.HEADIMGURL)
+                                    .tag(this)
+                                    .isMultipart(true)
+                                    .params("token", mLoginSuccess.getToken())
+                                    .params("username", mUsername)
+                                    .params("uploadFile", file)
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+
+                                            String s = response.body().toString();
+                                            Log.d(TAG1, s);
+                                            Gson gson = new Gson();
+                                            ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
+                                            mImgUrl = imgUrlBean.getImgUrl();
+                                            int j = mImgUrl.indexOf("j");
+                                            mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
+                                            Log.d(TAG1, mImgUrl);
+
+
+                                        }
+                                    });
+
+
+//                            Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
+//                            FileUtils.deleteFile(imgUrl);
+//                            mPbLoading.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            // TODO 当压缩过程出现问题时调用
+                            LogUtils.e(e.getMessage());
+                            ToastUtils.showShort("压缩出现问题，请重新拍摄");
+                            AppManager.getAppManager().finishActivity();
+//                            mPbLoading.setVisibility(View.GONE);
+                        }
+                    }).launch();
+        }
+
+
+    }
+
     private void openCamera() {
 
         String rootDir = "/Pastureland/photo";
@@ -86,29 +164,6 @@ public class PublishClaimActivity extends AppCompatActivity {
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
 
-        OkGo.<String>post(Constants.HEADIMGURL)
-                .tag(this)
-                .isMultipart(true)
-                .params("token", mLoginSuccess.getToken())
-                .params("username", mUsername)
-                .params("uploadFile", photoFile)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        String s = response.body().toString();
-                        Log.d(TAG1, s);
-                        Gson gson = new Gson();
-                        ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
-                        mImgUrl = imgUrlBean.getImgUrl();
-                        int j = mImgUrl.indexOf("j");
-                        mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
-                        Log.d(TAG1, mImgUrl);
-
-
-                    }
-                });
-
 
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -129,6 +184,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                 case REQUEST_CAPTURE:
 
+                    cropImage(photoFile.getAbsolutePath());
 
                     mIvTakePhoto.setImageURI(imageUri);
 
@@ -295,6 +351,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                         pDialog.setCancelable(false);
                         pDialog.show();
 
+                        Log.d(TAG1, "mImgUrl1==" + mImgUrl);
+
                         OkGo.<String>post(Constants.RELEASE)
                                 .tag(this)
                                 .params("token", mLoginSuccess.getToken())
@@ -309,6 +367,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onSuccess(Response<String> response) {
+
+                                        Log.d(TAG1, "mImgUrl2==" + mImgUrl);
 
                                         String s = response.body().toString();
                                         if (s.contains("success")) {
@@ -327,7 +387,6 @@ public class PublishClaimActivity extends AppCompatActivity {
                                             //发布认领失败
                                             Toast.makeText(getApplicationContext(), "发布认领失败",
                                                     Toast.LENGTH_SHORT).show();
-
 
 
                                         }

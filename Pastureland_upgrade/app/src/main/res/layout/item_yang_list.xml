@@ -5,10 +5,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
-        android:layout_marginLeft="20dp"
+    <com.facebook.drawee.view.DraweeView
+        android:id="@+id/dvYang"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginLeft="20dp"
         android:src="@mipmap/heitouyang"/>
 
     <LinearLayout
@@ -19,34 +20,35 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvYangName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="鄂尔多斯黑头羊"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/tvDeviceNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="ID:123456789"/>
 
         <TextView
+            android:id="@+id/tvPublishTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="发布时间：2018-3-19 17:39"/>
 
         <TextView
+            android:id="@+id/tvLocation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="内蒙古兴安盟连江牧场"/>
+            android:text="位置：内蒙古兴安盟连江牧场"/>
 
 
     </LinearLayout>
-
-
-
 
 
 </LinearLayout>

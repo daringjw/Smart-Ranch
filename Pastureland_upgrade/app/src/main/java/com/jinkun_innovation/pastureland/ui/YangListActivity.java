@@ -6,15 +6,18 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.DraweeView;
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.QueryByYang;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -27,11 +30,16 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.List;
+
 /**
  * Created by Guan on 2018/3/16.
  */
 
-public class YangListActivity extends AppCompatActivity{
+public class YangListActivity extends AppCompatActivity {
+
+    private static final String TAG1 = YangListActivity.class.getSimpleName();
+    private List<QueryByYang.LivestockVarietyListBean> mLivestockVarietyList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -84,13 +92,10 @@ public class YangListActivity extends AppCompatActivity{
         mRecyclerView.setLayoutManager(mLayoutManager);
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
-//创建并设置Adapter
-        mAdapter = new MyAdapter(getDummyDatas());
+
+        //创建并设置Adapter
+        mAdapter = new MyAdapter(mLivestockVarietyList);
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-
 
     }
 
@@ -106,6 +111,7 @@ public class YangListActivity extends AppCompatActivity{
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
 
+
         //通过牲畜类型查询所有牲畜
         OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
                 .tag(this)
@@ -114,18 +120,21 @@ public class YangListActivity extends AppCompatActivity{
                 .params("ranchID", mLoginSuccess.getRanchID())
                 .params("livestockType", 1)
                 .params("current", 0)
-                .params("pagesize", 10)
+                .params("pagesize", 2)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
 
                         String s = response.body().toString();
+                        Log.d(TAG1, s);
+
                         Gson gson1 = new Gson();
-                        /*QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
-                        List<QueryByYang.LivestockVarietyListBean> livestockVarietyList =
-                                queryByYang.getLivestockVarietyList();*/
+                        QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
+                        mLivestockVarietyList = queryByYang.getLivestockVarietyList();
 
-
+                        //创建并设置Adapter
+                        mAdapter = new MyAdapter(mLivestockVarietyList);
+                        mRecyclerView.setAdapter(mAdapter);
 
 
 
@@ -148,12 +157,13 @@ public class YangListActivity extends AppCompatActivity{
     private MyAdapter mAdapter;
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , String[] data);
+        void onItemClick(View view, String[] data);
 
 
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.mOnItemClickListener = listener;
 
@@ -161,10 +171,11 @@ public class YangListActivity extends AppCompatActivity{
     }
 
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
-        public String[] datas = null;
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
 
-        public MyAdapter(String[] datas) {
+        public List<QueryByYang.LivestockVarietyListBean> datas = null;
+
+        public MyAdapter(List<QueryByYang.LivestockVarietyListBean> datas) {
             this.datas = datas;
         }
 
@@ -189,6 +200,22 @@ public class YangListActivity extends AppCompatActivity{
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
+        /*    String imgUrl = datas.get(position).getImgUrl();
+            imgUrl = Constants.BASE_URL + imgUrl;
+            if (!TextUtils.isEmpty(imgUrl)) {
+                Uri uri = Uri.parse(imgUrl);
+                viewHolder.dvYang.setImageURI(uri);
+            } else {
+                //网络无图片
+            }
+
+            String variety = datas.get(position).getVariety();
+//            if (variety.equals(""))
+            viewHolder.tvYangName.setText("品种：" + datas.get(position).getVariety());
+            viewHolder.tvDeviceNo.setText("设备号：" + datas.get(position).getDeviceNo());
+            viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getCreateTime());
+            viewHolder.tvLocation.setText("体重：" + datas.get(position).getWeight());*/
+
         }
 
         @Override
@@ -210,18 +237,25 @@ public class YangListActivity extends AppCompatActivity{
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView mTextView;
+            public DraweeView dvYang;
+            public TextView tvYangName, tvDeviceNo, tvPublishTime, tvLocation;
+
 
             public ViewHolder(View view) {
                 super(view);
 //                mTextView = view.findViewById(R.id.tvClaim);
+                dvYang = view.findViewById(R.id.dvYang);
+                tvYangName = view.findViewById(R.id.tvYangName);
+                tvDeviceNo = view.findViewById(R.id.tvDeviceNo);
+                tvPublishTime = view.findViewById(R.id.tvPublishTime);
+                tvLocation = view.findViewById(R.id.tvLocation);
+
 
             }
 
         }
 
     }
-
-
 
 
 }

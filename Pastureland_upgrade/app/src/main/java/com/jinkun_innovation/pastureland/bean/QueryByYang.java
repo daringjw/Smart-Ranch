@@ -21,77 +21,107 @@ public class QueryByYang {
 
     public static class LivestockVarietyListBean {
         /**
-         * startTime : null
-         * endTime : null
-         * id : 241
-         * deviceNo : 0002180100000250
          * deviceType : 2
-         * deviceNoHistory : null
-         * weight : 0.0
-         * livestockType : 1
-         * variety : 100
-         * health : 3
+         * phase : 2
          * color : 2
-         * imgUrl : null
-         * imgUrlQrCode : null
-         * isClaimed : 0
-         * phase : 1
-         * bindStatus : 0
-         * createTime : 1521169027000
-         * updateTime : 1521169027000
-         * imgUrlTime : null
-         * unbindTime : null
-         * ranchId : 1
-         * qiId : 1
          * sumuId : 1
+         * qiId : 1
+         * weight : 20.0
+         * health : 1
+         * updateTime : 2018-03-23 10:57:54
+         * deviceNo : 999979499467887
+         * imgUrl : /jkimg/20180323/f2bf0f42ae85333abe4a891049dfa65d.jpg
+         * variety : 100
+         * createTime : 2018-01-23 10:57:54
+         * imgUrlTime : 2018-03-23 10:57:54
+         * ranchId : 1
+         * livestockType : 1
+         * id : 306
+         * isClaimed : 0
+         * bindStatus : 1
          */
 
-        private Object startTime;
-        private Object endTime;
-        private int id;
+        private String deviceType;
+        private String phase;
+        private String color;
+        private String sumuId;
+        private String qiId;
+        private String weight;
+        private String health;
+        private String updateTime;
         private String deviceNo;
-        private int deviceType;
-        private Object deviceNoHistory;
-        private double weight;
-        private int livestockType;
-        private int variety;
-        private int health;
-        private int color;
-        private Object imgUrl;
-        private Object imgUrlQrCode;
-        private int isClaimed;
-        private int phase;
-        private int bindStatus;
-        private long createTime;
-        private long updateTime;
-        private Object imgUrlTime;
-        private Object unbindTime;
-        private int ranchId;
-        private int qiId;
-        private int sumuId;
+        private String imgUrl;
+        private String variety;
+        private String createTime;
+        private String imgUrlTime;
+        private String ranchId;
+        private String livestockType;
+        private String id;
+        private String isClaimed;
+        private String bindStatus;
 
-        public Object getStartTime() {
-            return startTime;
+        public String getDeviceType() {
+            return deviceType;
         }
 
-        public void setStartTime(Object startTime) {
-            this.startTime = startTime;
+        public void setDeviceType(String deviceType) {
+            this.deviceType = deviceType;
         }
 
-        public Object getEndTime() {
-            return endTime;
+        public String getPhase() {
+            return phase;
         }
 
-        public void setEndTime(Object endTime) {
-            this.endTime = endTime;
+        public void setPhase(String phase) {
+            this.phase = phase;
         }
 
-        public int getId() {
-            return id;
+        public String getColor() {
+            return color;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public String getSumuId() {
+            return sumuId;
+        }
+
+        public void setSumuId(String sumuId) {
+            this.sumuId = sumuId;
+        }
+
+        public String getQiId() {
+            return qiId;
+        }
+
+        public void setQiId(String qiId) {
+            this.qiId = qiId;
+        }
+
+        public String getWeight() {
+            return weight;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+
+        public String getHealth() {
+            return health;
+        }
+
+        public void setHealth(String health) {
+            this.health = health;
+        }
+
+        public String getUpdateTime() {
+            return updateTime;
+        }
+
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
         }
 
         public String getDeviceNo() {
@@ -102,156 +132,76 @@ public class QueryByYang {
             this.deviceNo = deviceNo;
         }
 
-        public int getDeviceType() {
-            return deviceType;
-        }
-
-        public void setDeviceType(int deviceType) {
-            this.deviceType = deviceType;
-        }
-
-        public Object getDeviceNoHistory() {
-            return deviceNoHistory;
-        }
-
-        public void setDeviceNoHistory(Object deviceNoHistory) {
-            this.deviceNoHistory = deviceNoHistory;
-        }
-
-        public double getWeight() {
-            return weight;
-        }
-
-        public void setWeight(double weight) {
-            this.weight = weight;
-        }
-
-        public int getLivestockType() {
-            return livestockType;
-        }
-
-        public void setLivestockType(int livestockType) {
-            this.livestockType = livestockType;
-        }
-
-        public int getVariety() {
-            return variety;
-        }
-
-        public void setVariety(int variety) {
-            this.variety = variety;
-        }
-
-        public int getHealth() {
-            return health;
-        }
-
-        public void setHealth(int health) {
-            this.health = health;
-        }
-
-        public int getColor() {
-            return color;
-        }
-
-        public void setColor(int color) {
-            this.color = color;
-        }
-
-        public Object getImgUrl() {
+        public String getImgUrl() {
             return imgUrl;
         }
 
-        public void setImgUrl(Object imgUrl) {
+        public void setImgUrl(String imgUrl) {
             this.imgUrl = imgUrl;
         }
 
-        public Object getImgUrlQrCode() {
-            return imgUrlQrCode;
+        public String getVariety() {
+            return variety;
         }
 
-        public void setImgUrlQrCode(Object imgUrlQrCode) {
-            this.imgUrlQrCode = imgUrlQrCode;
+        public void setVariety(String variety) {
+            this.variety = variety;
         }
 
-        public int getIsClaimed() {
-            return isClaimed;
-        }
-
-        public void setIsClaimed(int isClaimed) {
-            this.isClaimed = isClaimed;
-        }
-
-        public int getPhase() {
-            return phase;
-        }
-
-        public void setPhase(int phase) {
-            this.phase = phase;
-        }
-
-        public int getBindStatus() {
-            return bindStatus;
-        }
-
-        public void setBindStatus(int bindStatus) {
-            this.bindStatus = bindStatus;
-        }
-
-        public long getCreateTime() {
+        public String getCreateTime() {
             return createTime;
         }
 
-        public void setCreateTime(long createTime) {
+        public void setCreateTime(String createTime) {
             this.createTime = createTime;
         }
 
-        public long getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(long updateTime) {
-            this.updateTime = updateTime;
-        }
-
-        public Object getImgUrlTime() {
+        public String getImgUrlTime() {
             return imgUrlTime;
         }
 
-        public void setImgUrlTime(Object imgUrlTime) {
+        public void setImgUrlTime(String imgUrlTime) {
             this.imgUrlTime = imgUrlTime;
         }
 
-        public Object getUnbindTime() {
-            return unbindTime;
-        }
-
-        public void setUnbindTime(Object unbindTime) {
-            this.unbindTime = unbindTime;
-        }
-
-        public int getRanchId() {
+        public String getRanchId() {
             return ranchId;
         }
 
-        public void setRanchId(int ranchId) {
+        public void setRanchId(String ranchId) {
             this.ranchId = ranchId;
         }
 
-        public int getQiId() {
-            return qiId;
+        public String getLivestockType() {
+            return livestockType;
         }
 
-        public void setQiId(int qiId) {
-            this.qiId = qiId;
+        public void setLivestockType(String livestockType) {
+            this.livestockType = livestockType;
         }
 
-        public int getSumuId() {
-            return sumuId;
+        public String getId() {
+            return id;
         }
 
-        public void setSumuId(int sumuId) {
-            this.sumuId = sumuId;
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getIsClaimed() {
+            return isClaimed;
+        }
+
+        public void setIsClaimed(String isClaimed) {
+            this.isClaimed = isClaimed;
+        }
+
+        public String getBindStatus() {
+            return bindStatus;
+        }
+
+        public void setBindStatus(String bindStatus) {
+            this.bindStatus = bindStatus;
         }
     }
 }

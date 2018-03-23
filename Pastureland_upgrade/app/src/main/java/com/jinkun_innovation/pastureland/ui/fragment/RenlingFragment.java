@@ -117,7 +117,7 @@ public class RenlingFragment extends Fragment {
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
                             .params("current", 0)
-                            .params("pagesize", 15)
+                            .params("pagesize", 4)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -126,13 +126,25 @@ public class RenlingFragment extends Fragment {
 
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
-                                    Gson gson1 = new Gson();
-                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
-                                    mLivestockList = renLing.getLivestockList();
+                                    if (s.contains("error")) {
+                                        Toast.makeText(getActivity(), "获取发布到认领输出信息异常", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else if (s.contains("成功")) {
 
-                                    //创建并设置Adapter
-                                    mAdapter = new MyAdapter(mLivestockList);
-                                    mRecyclerView.setAdapter(mAdapter);
+                                        Gson gson1 = new Gson();
+                                        RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                        mLivestockList = renLing.getLivestockList();
+
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                    }else {
+
+                                        Toast.makeText(getActivity(), "获取发布到认领输出信息异常",
+                                                Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
 
 
                                 }
@@ -152,7 +164,7 @@ public class RenlingFragment extends Fragment {
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 0)  //未认领
                             .params("current", 0)
-                            .params("pagesize", 15)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -187,7 +199,7 @@ public class RenlingFragment extends Fragment {
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 1)
                             .params("current", 0)
-                            .params("pagesize", 15)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -226,6 +238,38 @@ public class RenlingFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 
+                mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
+                Gson gson = new Gson();
+                mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                mUsername = PrefUtils.getString(getActivity(), "username", null);
+
+                OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+//                .params("isClaimed",)
+                        .params("current", 0)
+                        .params("pagesize", 2)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                startIndex = 0;
+
+                                String s = response.body().toString();
+                                Log.d(TAG1, s);
+                                Gson gson1 = new Gson();
+                                RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                mLivestockList = renLing.getLivestockList();
+
+                                //创建并设置Adapter
+                                mAdapter = new MyAdapter(mLivestockList);
+                                mRecyclerView.setAdapter(mAdapter);
+
+
+                            }
+                        });
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
 
             }
@@ -258,25 +302,33 @@ public class RenlingFragment extends Fragment {
                                     Gson gson1 = new Gson();
                                     RenLing renLing = gson1.fromJson(s, RenLing.class);
                                     List<RenLing.LivestockListBean> livestockList1 = renLing.getLivestockList();
-                                    if (livestockList1.size() == 0) {
 
-                                        Toast.makeText(getActivity(),
-                                                "没有更多数据了",
-                                                Toast.LENGTH_SHORT).show();
-                                        refreshLayout.finishLoadMore();
+                                    if (livestockList1 != null) {
+                                        if (livestockList1.size() == 0) {
 
-                                        return;
+                                            Toast.makeText(getActivity(),
+                                                    "没有更多数据了",
+                                                    Toast.LENGTH_SHORT).show();
+                                            refreshLayout.finishLoadMore();
+
+                                            return;
+                                        } else {
+
+                                            for (int i = 0; i < livestockList1.size(); i++) {
+                                                mLivestockList.add(livestockList1.get(i));
+                                            }
+                                            //创建并设置Adapter
+                                            mAdapter = new MyAdapter(mLivestockList);
+                                            MoveToPosition(mLayoutManager, 10 * count);
+
+                                            mRecyclerView.setAdapter(mAdapter);
+
+                                            refreshLayout.finishLoadMore();
+
+                                        }
                                     } else {
 
-                                        for (int i = 0; i < livestockList1.size(); i++) {
-                                            mLivestockList.add(livestockList1.get(i));
-                                        }
-                                        //创建并设置Adapter
-                                        mAdapter = new MyAdapter(mLivestockList);
-                                        MoveToPosition(mLayoutManager, 10 * count);
-
-                                        mRecyclerView.setAdapter(mAdapter);
-
+                                        Toast.makeText(getActivity(), "抱歉，服务器无响应", Toast.LENGTH_SHORT).show();
                                         refreshLayout.finishLoadMore();
 
                                     }

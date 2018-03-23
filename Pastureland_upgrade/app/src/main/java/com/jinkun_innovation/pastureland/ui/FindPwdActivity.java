@@ -83,7 +83,7 @@ public class FindPwdActivity extends Activity {
                     /**
                      * 判断是否为中国大陆合法号码
                      */
-                    if (PhoneFormatCheckUtils.isChinaPhoneLegal(mPhone)) {
+                    if (PhoneFormatCheckUtils.isMobile(mPhone)) {
 
                         //合法
                         new SweetAlertDialog(this)
@@ -154,7 +154,7 @@ public class FindPwdActivity extends Activity {
                 //号码不为空，并且是大陆号码
                 if (!TextUtils.isEmpty(mPhone)) {
 
-                    if (PhoneFormatCheckUtils.isChinaPhoneLegal(mPhone)) {
+                    if (PhoneFormatCheckUtils.isMobile(mPhone)) {
                         if (TextUtils.isEmpty(mVerifyCode)) {
                             Toast.makeText(getApplicationContext(), "验证码不能为空", Toast.LENGTH_SHORT).show();
                         } else {
