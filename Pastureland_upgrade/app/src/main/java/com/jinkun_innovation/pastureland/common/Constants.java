@@ -12,8 +12,11 @@ public class Constants {
     //测试
     public static final String BASE_URL = "http://222.249.165.94:10100";
 
+    //正式
+//    public static final String BASE_URL = "http://182.92.3.109:10100";
 
     public static final int ranchID = 1;
+
     public static final String token = "ce5cc971-5904-4454-b639-cb8d48215963";
 
 
@@ -84,7 +87,7 @@ public class Constants {
     //2）更新个人信息
     public static final String UPDADMIN = BASE_URL + "/adminMember/updAdmin.do";
 
-    //文件上传（图片、视频）
+    //文件上传（图片、视频） /adminMember/headImgUrl.do
     public static final String HEADIMGURL = BASE_URL + "/adminMember/headImgUrl.do";
 
     //获取牧场牲畜类型和每种类型牲畜的数量

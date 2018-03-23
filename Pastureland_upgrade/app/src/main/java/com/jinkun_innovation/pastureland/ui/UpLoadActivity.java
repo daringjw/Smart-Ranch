@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.base.BaseActivity;
+import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
@@ -101,6 +102,9 @@ public class UpLoadActivity extends BaseActivity {
 //        mPbLoading.setVisibility(View.GONE);
     }
 
+    String mImgUrl;
+
+
     private void cropImage(final String imgUrl) {
         String rootDir = "/Pastureland/crop";
         File file = new File(Environment.getExternalStorageDirectory(), rootDir);
@@ -126,6 +130,34 @@ public class UpLoadActivity extends BaseActivity {
                             LogUtils.e("onSuccess");
                             LogUtils.e(file.getAbsolutePath());
 
+                            mLogin_success = PrefUtils.getString(getApplicationContext(), "login_success", null);
+                            Gson gson = new Gson();
+                            mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+                            mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
+
+                            OkGo.<String>post(Constants.HEADIMGURL)
+                                    .tag(this)
+                                    .isMultipart(true)
+                                    .params("token", mLoginSuccess.getToken())
+                                    .params("username", mUsername)
+                                    .params("uploadFile", file)
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+
+                                            String s = response.body().toString();
+                                            Log.d(TAG1, s);
+                                            Gson gson = new Gson();
+                                            ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
+                                            mImgUrl = imgUrlBean.getImgUrl();
+                                            int j = mImgUrl.indexOf("j");
+                                            mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
+                                            Log.d(TAG1, mImgUrl);
+
+
+                                        }
+                                    });
+
 
                             Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
@@ -142,6 +174,8 @@ public class UpLoadActivity extends BaseActivity {
                         }
                     }).launch();
         }
+
+
     }
 
     @OnClick(R.id.btn_submit)
@@ -163,14 +197,13 @@ public class UpLoadActivity extends BaseActivity {
                 break;
             case 3:
                 //剪毛
-                //剪毛
                 OkGo.<String>post(Constants.SHEARING)
                         .tag(this)
                         .params("token", mLoginSuccess.getToken())
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
                         .params("deviceNO", mDeviceNo)
-                        .params("imgUrl", imgUrl)
+                        .params("imgUrl", mImgUrl)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
@@ -209,7 +242,7 @@ public class UpLoadActivity extends BaseActivity {
                         .params("username",mUsername)
                         .params("ranchID",mLoginSuccess.getRanchID())
                         .params("fileType",1)
-                        .params("imgUrl",imgUrl)
+                        .params("imgUrl",mImgUrl)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {

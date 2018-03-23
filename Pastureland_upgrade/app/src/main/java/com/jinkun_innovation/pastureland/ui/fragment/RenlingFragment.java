@@ -273,7 +273,7 @@ public class RenlingFragment extends Fragment {
                                         }
                                         //创建并设置Adapter
                                         mAdapter = new MyAdapter(mLivestockList);
-                                        MoveToPosition(mLayoutManager, 15 * count);
+                                        MoveToPosition(mLayoutManager, 10 * count);
 
                                         mRecyclerView.setAdapter(mAdapter);
 

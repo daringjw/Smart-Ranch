@@ -2,6 +2,7 @@ package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
@@ -32,6 +34,8 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.io.File;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Guan on 2018/3/16.
@@ -56,6 +60,7 @@ public class PublishClaimActivity extends AppCompatActivity {
     private Uri imageUri;//原图保存地址
     private static final int REQUEST_CAPTURE = 2;  //拍照
     private ImageView mIvTakePhoto;
+    private String mImgUrl;
 
 
     private void openCamera() {
@@ -75,6 +80,36 @@ public class PublishClaimActivity extends AppCompatActivity {
         } else {
             imageUri = Uri.fromFile(photoFile);
         }
+
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
+
+        OkGo.<String>post(Constants.HEADIMGURL)
+                .tag(this)
+                .isMultipart(true)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("uploadFile", photoFile)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        Gson gson = new Gson();
+                        ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
+                        mImgUrl = imgUrlBean.getImgUrl();
+                        int j = mImgUrl.indexOf("j");
+                        mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
+                        Log.d(TAG1, mImgUrl);
+
+
+                    }
+                });
+
+
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
@@ -93,6 +128,7 @@ public class PublishClaimActivity extends AppCompatActivity {
             switch (requestCode) {
 
                 case REQUEST_CAPTURE:
+
 
                     mIvTakePhoto.setImageURI(imageUri);
 
@@ -113,6 +149,10 @@ public class PublishClaimActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_publish_claim);
 
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
 
         mIvTakePhoto = (ImageView) findViewById(R.id.ivTakePhoto);
         mIvTakePhoto.setOnClickListener(new View.OnClickListener() {
@@ -223,14 +263,6 @@ public class PublishClaimActivity extends AppCompatActivity {
         });
 
 
-
-
-        mLogin_success = PrefUtils.getString(this, "login_success", null);
-        Gson gson = new Gson();
-        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
-        mUsername = PrefUtils.getString(this, "username", null);
-
-
         Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,67 +271,82 @@ public class PublishClaimActivity extends AppCompatActivity {
                 EditText etDeviceNo = (EditText) findViewById(R.id.etDeviceNo);
                 mDeviceNo = etDeviceNo.getText().toString().trim();
                 //// TODO: 2018/3/22
-                if (!TextUtils.isEmpty(mDeviceNo)) {
 
-                    String type2 = mType1.substring(0, 1);
-                    int type3 = Integer.parseInt(type2);
-                    String variety2 = mVariety1.substring(0, 3);
-                    int variety3 = Integer.parseInt(variety2);
-                    String weight2 = mWeight1.substring(0, 2);
-                    int weight3 = Integer.parseInt(weight2);
-                    String age2 = mAge1.substring(0, 1);
-                    int age3 = Integer.parseInt(age2);
-                    Log.d(TAG1, type3 + "");
-                    Log.d(TAG1, "" + variety3);
-                    Log.d(TAG1, weight3 + "");
-                    Log.d(TAG1, "" + age3);
+                if (!TextUtils.isEmpty(mImgUrl)) {
+                    if (!TextUtils.isEmpty(mDeviceNo)) {
+
+                        String type2 = mType1.substring(0, 1);
+                        final int type3 = Integer.parseInt(type2);
+                        String variety2 = mVariety1.substring(0, 3);
+                        final int variety3 = Integer.parseInt(variety2);
+                        String weight2 = mWeight1.substring(0, 2);
+                        final int weight3 = Integer.parseInt(weight2);
+                        String age2 = mAge1.substring(0, 1);
+                        final int age3 = Integer.parseInt(age2);
+                        Log.d(TAG1, type3 + "");
+                        Log.d(TAG1, "" + variety3);
+                        Log.d(TAG1, weight3 + "");
+                        Log.d(TAG1, "" + age3);
+
+                        final SweetAlertDialog pDialog = new SweetAlertDialog(PublishClaimActivity.this,
+                                SweetAlertDialog.PROGRESS_TYPE);
+                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        pDialog.setTitleText("正在发布...");
+                        pDialog.setCancelable(false);
+                        pDialog.show();
+
+                        OkGo.<String>post(Constants.RELEASE)
+                                .tag(this)
+                                .params("token", mLoginSuccess.getToken())
+                                .params("username", mUsername)
+                                .params("deviceNO", mDeviceNo)
+                                .params("ranchID", mLoginSuccess.getRanchID())
+                                .params("livestockType", type3)
+                                .params("variety", variety3)
+                                .params("weight", weight3)
+                                .params("age", age3)
+                                .params("imgUrl", mImgUrl)
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+
+                                        String s = response.body().toString();
+                                        if (s.contains("success")) {
+
+                                            pDialog.cancel();
+                                            //发布认领成功
+                                            Toast.makeText(getApplicationContext(), "发布认领成功",
+                                                    Toast.LENGTH_SHORT).show();
+
+                                            finish();
 
 
-                    OkGo.<String>post(Constants.RELEASE)
-                            .tag(this)
-                            .params("token", mLoginSuccess.getToken())
-                            .params("username", mUsername)
-                            .params("deviceNO", mDeviceNo)
-                            .params("ranchID", mLoginSuccess.getRanchID())
-                            .params("livestockType", type3)
-                            .params("variety", variety3)
-                            .params("weight", weight3)
-                            .params("age", age3)
-                            .params("imgUrl",
-                                    Environment.getExternalStorageDirectory()
-                                            + "/photo"
-                                            + TimeUtils.getNowString()
-                            )
+                                        } else {
 
-                            .execute(new StringCallback() {
-                                @Override
-                                public void onSuccess(Response<String> response) {
-
-                                    String s = response.body().toString();
-                                    if (s.contains("success")) {
-
-                                        //发布认领成功
-                                        Toast.makeText(getApplicationContext(), "发布认领成功", Toast.LENGTH_SHORT).show();
-                                        finish();
+                                            pDialog.cancel();
+                                            //发布认领失败
+                                            Toast.makeText(getApplicationContext(), "发布认领失败",
+                                                    Toast.LENGTH_SHORT).show();
 
 
-                                    } else {
-                                        //发布认领失败
-                                        Toast.makeText(getApplicationContext(), "发布认领失败", Toast.LENGTH_SHORT).show();
 
+                                        }
 
                                     }
-
-                                }
-                            });
+                                });
 
 
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), "设备号不能为空",
+                                Toast.LENGTH_SHORT).show();
+
+
+                    }
                 } else {
 
-                    Toast.makeText(getApplicationContext(), "设备号不能为空",
+                    Toast.makeText(getApplicationContext(), "请先拍照",
                             Toast.LENGTH_SHORT).show();
-
-
                 }
 
 

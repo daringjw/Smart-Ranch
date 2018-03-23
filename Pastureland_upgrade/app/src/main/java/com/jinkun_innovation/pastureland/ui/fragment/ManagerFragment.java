@@ -402,6 +402,7 @@ public class ManagerFragment extends Fragment {
                             intent.setClass(getActivity(), UpLoadActivity.class);
 
                         case 0:
+
                             intent.setClass(getActivity(), UpLoadActivity.class);
                             break;
 

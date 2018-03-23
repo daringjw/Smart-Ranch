@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
@@ -80,6 +81,35 @@ public class RegisterActivity extends Activity {
         } else {
             imageUri = Uri.fromFile(photoFile);
         }
+
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
+
+        OkGo.<String>post(Constants.HEADIMGURL)
+                .tag(this)
+                .isMultipart(true)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("uploadFile", photoFile)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        Gson gson = new Gson();
+                        ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
+                        mImgUrl = imgUrlBean.getImgUrl();
+                        int j = mImgUrl.indexOf("j");
+                        mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
+                        Log.d(TAG1, mImgUrl);
+
+
+                    }
+                });
+
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
@@ -89,6 +119,10 @@ public class RegisterActivity extends Activity {
         startActivityForResult(intent, REQUEST_CAPTURE);
 
     }
+
+    String mImgUrl;
+    String mLogin_success;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -290,7 +324,7 @@ public class RegisterActivity extends Activity {
                             .params("variety", variety3)
                             .params("weight", weight3)
                             .params("age", age3)
-                            .params("imgUrl", photoFile.getAbsolutePath())
+                            .params("imgUrl", mImgUrl)
 
                             .execute(new StringCallback() {
                                 @Override
