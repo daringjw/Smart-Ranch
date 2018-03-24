@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:layout_marginTop="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
-    <com.facebook.drawee.view.DraweeView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/dvYang"
+        fresco:placeholderImage="@mipmap/heitouyang"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginLeft="20dp"
-        android:src="@mipmap/heitouyang"/>
+
+
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

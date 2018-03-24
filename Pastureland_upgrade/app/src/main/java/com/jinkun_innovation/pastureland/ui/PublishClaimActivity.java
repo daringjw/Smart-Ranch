@@ -16,9 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -66,6 +66,7 @@ public class PublishClaimActivity extends AppCompatActivity {
     private static final int REQUEST_CAPTURE = 2;  //拍照
     private ImageView mIvTakePhoto;
     private String mImgUrl;
+    private String mIsbn;
 
 
     private void cropImage(final String imgUrl) {
@@ -205,6 +206,13 @@ public class PublishClaimActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_publish_claim);
 
+        Intent intent = getIntent();
+        mIsbn = intent.getStringExtra("isbn");
+
+        TextView etDeviceNo = (TextView) findViewById(R.id.etDeviceNo);
+        etDeviceNo.setText(mIsbn);
+        mDeviceNo = etDeviceNo.getText().toString();
+
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
@@ -324,8 +332,7 @@ public class PublishClaimActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                EditText etDeviceNo = (EditText) findViewById(R.id.etDeviceNo);
-                mDeviceNo = etDeviceNo.getText().toString().trim();
+
                 //// TODO: 2018/3/22
 
                 if (!TextUtils.isEmpty(mImgUrl)) {
@@ -357,7 +364,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 .tag(this)
                                 .params("token", mLoginSuccess.getToken())
                                 .params("username", mUsername)
-                                .params("deviceNO", mDeviceNo)
+                                .params("deviceNO", mIsbn)
                                 .params("ranchID", mLoginSuccess.getRanchID())
                                 .params("livestockType", type3)
                                 .params("variety", variety3)

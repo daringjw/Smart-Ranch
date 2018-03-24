@@ -1,5 +1,6 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.DraweeView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
@@ -39,7 +40,10 @@ import java.util.List;
 public class YangListActivity extends AppCompatActivity {
 
     private static final String TAG1 = YangListActivity.class.getSimpleName();
+
     private List<QueryByYang.LivestockVarietyListBean> mLivestockVarietyList;
+
+    int index = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,14 +61,54 @@ public class YangListActivity extends AppCompatActivity {
             }
         });
 
-        initData();
-
 
         RefreshLayout refreshLayout = findViewById(R.id.refreshLayout);
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
+
+                index = 1;
+
+                //通过牲畜类型查询所有牲畜
+                OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+                        .params("livestockType", 1)
+                        .params("current", 0)
+                        .params("pagesize", 10)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String s = response.body().toString();
+                                Log.d(TAG1, s);
+
+                                if (s.contains("imgUrl")) {
+                                    //有数据
+                                    Gson gson1 = new Gson();
+                                    QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
+                                    mLivestockVarietyList = queryByYang.getLivestockVarietyList();
+                                    String deviceNo = mLivestockVarietyList.get(0).getDeviceNo();
+                                    Log.d(TAG1, deviceNo);
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockVarietyList);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+                                } else {
+
+
+
+                                }
+
+
+                            }
+                        });
+
+
                 refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+
             }
         });
 
@@ -72,6 +116,47 @@ public class YangListActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
 
+
+                //通过牲畜类型查询所有牲畜
+                OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+                        .params("livestockType", 1)
+                        .params("current", index)
+                        .params("pagesize", 10)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                index++;
+                                String s = response.body().toString();
+                                Log.d(TAG1, s);
+
+                                if (s.contains("imgUrl")) {
+                                    //有数据
+                                    Gson gson1 = new Gson();
+                                    QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
+                                    List<QueryByYang.LivestockVarietyListBean> l1 =
+                                            queryByYang.getLivestockVarietyList();
+                                    for (int i = 0; i < l1.size(); i++) {
+                                        mLivestockVarietyList.add(l1.get(i));
+                                    }
+
+                                    //创建并设置Adapter
+                                    mAdapter = new MyAdapter(mLivestockVarietyList);
+                                    mRecyclerView.setAdapter(mAdapter);
+
+                                } else {
+
+
+
+                                }
+
+
+                            }
+                        });
 
                 refreshLayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
 
@@ -93,9 +178,8 @@ public class YangListActivity extends AppCompatActivity {
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 
-        //创建并设置Adapter
-        mAdapter = new MyAdapter(mLivestockVarietyList);
-        mRecyclerView.setAdapter(mAdapter);
+        initData();
+
 
     }
 
@@ -120,7 +204,7 @@ public class YangListActivity extends AppCompatActivity {
                 .params("ranchID", mLoginSuccess.getRanchID())
                 .params("livestockType", 1)
                 .params("current", 0)
-                .params("pagesize", 2)
+                .params("pagesize", 10)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -128,14 +212,22 @@ public class YangListActivity extends AppCompatActivity {
                         String s = response.body().toString();
                         Log.d(TAG1, s);
 
-                        Gson gson1 = new Gson();
-                        QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
-                        mLivestockVarietyList = queryByYang.getLivestockVarietyList();
+                        if (s.contains("imgUrl")) {
+                            //有数据
+                            Gson gson1 = new Gson();
+                            QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
+                            mLivestockVarietyList = queryByYang.getLivestockVarietyList();
+                            String deviceNo = mLivestockVarietyList.get(0).getDeviceNo();
+                            Log.d(TAG1, deviceNo);
+                            //创建并设置Adapter
+                            mAdapter = new MyAdapter(mLivestockVarietyList);
+                            mRecyclerView.setAdapter(mAdapter);
 
-                        //创建并设置Adapter
-                        mAdapter = new MyAdapter(mLivestockVarietyList);
-                        mRecyclerView.setAdapter(mAdapter);
+                        } else {
 
+
+
+                        }
 
 
                     }
@@ -176,13 +268,17 @@ public class YangListActivity extends AppCompatActivity {
         public List<QueryByYang.LivestockVarietyListBean> datas = null;
 
         public MyAdapter(List<QueryByYang.LivestockVarietyListBean> datas) {
+
             this.datas = datas;
         }
 
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_yang_list, viewGroup, false);
+            View view = LayoutInflater.from(
+                    viewGroup.getContext()).inflate(R.layout.item_yang_list,
+                    viewGroup, false);
+
             ViewHolder vh = new ViewHolder(view);
 
             //将创建的View注册点击事件
@@ -200,21 +296,20 @@ public class YangListActivity extends AppCompatActivity {
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
-        /*    String imgUrl = datas.get(position).getImgUrl();
+            String imgUrl = datas.get(position).getImgUrl();
             imgUrl = Constants.BASE_URL + imgUrl;
-            if (!TextUtils.isEmpty(imgUrl)) {
-                Uri uri = Uri.parse(imgUrl);
-                viewHolder.dvYang.setImageURI(uri);
-            } else {
-                //网络无图片
-            }
+            Uri uri = Uri.parse(imgUrl);
+            viewHolder.dvYang.setImageURI(uri);
 
             String variety = datas.get(position).getVariety();
-//            if (variety.equals(""))
-            viewHolder.tvYangName.setText("品种：" + datas.get(position).getVariety());
+            if (variety.equals("100")) {
+                viewHolder.tvYangName.setText("品种：乌珠木漆黑羊");
+            } else {
+                viewHolder.tvYangName.setText("品种：山羊");
+            }
             viewHolder.tvDeviceNo.setText("设备号：" + datas.get(position).getDeviceNo());
             viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getCreateTime());
-            viewHolder.tvLocation.setText("体重：" + datas.get(position).getWeight());*/
+            viewHolder.tvLocation.setText("体重：" + datas.get(position).getWeight() + " KG");
 
         }
 
@@ -230,14 +325,14 @@ public class YangListActivity extends AppCompatActivity {
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 109;
+            return datas.size();
         }
 
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         public class ViewHolder extends RecyclerView.ViewHolder {
             public TextView mTextView;
-            public DraweeView dvYang;
+            public SimpleDraweeView dvYang;
             public TextView tvYangName, tvDeviceNo, tvPublishTime, tvLocation;
 
 

@@ -79,6 +79,7 @@ public class ManagerFragment extends Fragment {
 
     private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 3;//权限请求
     private static final int SCAN_REQUEST_CODE = 100;
+
     private static final int CAMERA_ACTIVITY = 6;  //视频
 
     private String imagePath;
@@ -450,4 +451,6 @@ public class ManagerFragment extends Fragment {
         intent.putExtra("cancleUnable", 1);
         startActivityForResult(intent, SCAN_REQUEST_CODE);
     }
+
+
 }

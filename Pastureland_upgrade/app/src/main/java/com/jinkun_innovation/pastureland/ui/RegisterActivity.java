@@ -99,6 +99,14 @@ public class RegisterActivity extends Activity {
                             mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
                             mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
 
+                            final SweetAlertDialog pDialog = new SweetAlertDialog(
+                                    RegisterActivity.this,
+                                    SweetAlertDialog.PROGRESS_TYPE);
+                            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            pDialog.setTitleText("上传图片...");
+                            pDialog.setCancelable(false);
+                            pDialog.show();
+
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
                                     .isMultipart(true)
@@ -117,6 +125,7 @@ public class RegisterActivity extends Activity {
                                             int j = mImgUrl.indexOf("j");
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
+                                            pDialog.cancel();
 
 
                                         }
@@ -417,9 +426,12 @@ public class RegisterActivity extends Activity {
                                     if (result.contains("error")) {
                                         //失败
                                         Toast.makeText(getApplicationContext(),
-                                                "登记失败",
+                                                "此设备已被登记",
                                                 Toast.LENGTH_SHORT)
                                                 .show();
+
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        finish();
 
                                     } else {
                                         //成功
