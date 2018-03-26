@@ -23,10 +23,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="认领详情"
+            android:text="牲畜详情"
             android:textColor="#fff"/>
 
     </RelativeLayout>
+
+    <!--/**
+    * deviceType : 2
+    * phase : 2
+    * color : 2
+    * sumuId : 1
+    * qiId : 1
+    * weight : 20.0
+    * health : 1
+    * updateTime : 2018-03-23 10:57:54
+    * deviceNo : 999979499467887
+    * imgUrl : /jkimg/20180323/f2bf0f42ae85333abe4a891049dfa65d.jpg
+    * variety : 100
+    * createTime : 2018-01-23 10:57:54
+    * imgUrlTime : 2018-03-23 10:57:54
+    * ranchId : 1
+    * livestockType : 1
+    * id : 306
+    * isClaimed : 0
+    * bindStatus : 1
+    */-->
 
 
     <com.facebook.drawee.view.SimpleDraweeView
@@ -50,7 +71,6 @@
             android:text="品种名称：鄂尔多斯黑头羊"/>
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tvDevcieNO"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,63 +78,37 @@
             android:text="设备号：202356985655"/>
 
         <TextView
-            android:id="@+id/tvCharacter"
+            android:id="@+id/tvWeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="特点：202356985655"/>
+            android:text="体重：202356985655"/>
 
 
         <TextView
-            android:id="@+id/tvPhone"
+            android:id="@+id/tvBindStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="认领人手机：202356985655"/>
+            android:text="绑定状态：202356985655"/>
 
         <TextView
-            android:id="@+id/tvPublishTime"
+            android:id="@+id/tvCreateTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="发布时间：202356985655"/>
+            android:text="登记时间：202356985655"/>
 
-        <TextView
-            android:id="@+id/tvPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="价格：202356985655"/>
 
         <TextView
             android:id="@+id/tvState"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="认领状态：202356985655"/>
+            android:text="认领状态：未认领"/>
 
 
-        <TextView
-            android:id="@+id/tvLifeTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="一般寿命：202356985655 个月"/>
 
-        <TextView
-            android:id="@+id/tvBirthDay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="生日：202356985655 个月"/>
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tvClaimTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="认领时间：202356985655 个月"/>
 
 
     </LinearLayout>

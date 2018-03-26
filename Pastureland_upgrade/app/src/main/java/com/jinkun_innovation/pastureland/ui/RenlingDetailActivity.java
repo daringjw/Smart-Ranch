@@ -65,6 +65,9 @@ public class RenlingDetailActivity extends Activity {
         String getLivestockName = intent.getStringExtra("getLivestockName");
         mTvVariety.setText("品种：" + getLivestockName);
 
+      /*  String getDeviceNo = intent.getStringExtra("getDeviceNo");
+        mTvDevcieNO.setText("设备号："+getDeviceNo);*/
+
         String getCharacteristics = intent.getStringExtra("getCharacteristics");
         mTvCharacter.setText("特点：" + getCharacteristics);
 
@@ -72,7 +75,7 @@ public class RenlingDetailActivity extends Activity {
         mTvPhone.setText("认领人手机：" + getCellphone);
 
         String getCreateTime = intent.getStringExtra("getCreateTime");
-        mTvPublishTime.setText("发布时间：" + getCreateTime);
+        tvBirthDay.setText("生日：" + getCreateTime);
 
         String getPrice = intent.getStringExtra("getPrice");
         mTvPrice.setText("价格：￥" + getPrice);
@@ -88,10 +91,10 @@ public class RenlingDetailActivity extends Activity {
         tvLifeTime.setText("一般寿命：" + getLifeTime + "个月");
 
         String getBirthTime = intent.getStringExtra("getBirthTime");
-        tvBirthDay.setText("生日：" + getBirthTime);
+        mTvPublishTime.setText("发布时间：" + getBirthTime);
 
-        String getClaimTime = intent.getStringExtra("getClaimTime");
-        tvClaimTime.setText("认领时间：" + getClaimTime);
+//        String getClaimTime = intent.getStringExtra("getClaimTime");
+//        tvClaimTime.setText("认领时间：" + getClaimTime);
 
 
     }

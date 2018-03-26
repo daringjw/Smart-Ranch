@@ -10,10 +10,11 @@ public class Constants {
 //    public static final String BASE_URL = "http://192.168.50.215:8080";
 
     //测试
-    public static final String BASE_URL = "http://222.249.165.94:10100";
+//    public static final String BASE_URL = "http://222.249.165.94:10100";
 
     //正式
-//    public static final String BASE_URL = "http://182.92.3.109:10100";
+    //http://182.92.3.109:10100 testranch 12345678 这是109访问地址跟用户名密码
+    public static final String BASE_URL = "http://182.92.3.109:10100";
 
     public static final int ranchID = 1;
 

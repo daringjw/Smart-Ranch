@@ -39,14 +39,23 @@
             android:layout_marginLeft="10dp"
             android:src="@mipmap/niu"
             android:id="@+id/ivNiu"
-
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvYangNo"
+        android:layout_gravity="center"
+        android:text="109只"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
     <LinearLayout
+        android:visibility="gone"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"

@@ -60,7 +60,7 @@ public class RenlingFragment1 extends Fragment {
     private int checkedItem = 0;
     private String scanMessage;
 
-    int index = 1;
+    int index = 2;
 
     private List<RenLing.LivestockListBean> mLivestockList;
 
@@ -130,7 +130,6 @@ public class RenlingFragment1 extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 
-                index = 0;
 
                 OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
                         .tag(this)
@@ -164,16 +163,17 @@ public class RenlingFragment1 extends Fragment {
                                             RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
 
                                             Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
-                                            intent.putExtra("getImgUrl",livestockListBean.getImgUrl());
-                                            intent.putExtra("getLivestockName",livestockListBean.getLivestockName());
-                                            intent.putExtra("getCharacteristics",livestockListBean.getCharacteristics());
-                                            intent.putExtra("getCellphone",livestockListBean.getCellphone());
-                                            intent.putExtra("getCreateTime",livestockListBean.getCreateTime());
-                                            intent.putExtra("getPrice",livestockListBean.getPrice());
-                                            intent.putExtra("getIsClaimed",livestockListBean.getIsClaimed());
-                                            intent.putExtra("getLifeTime",livestockListBean.getLifeTime());
-                                            intent.putExtra("getBirthTime",livestockListBean.getBirthTime());
-                                            intent.putExtra("getClaimTime",livestockListBean.getClaimTime());
+                                            intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
+                                            intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
+                                            intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                            intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
+                                            intent.putExtra("getCellphone", livestockListBean.getCellphone());
+                                            intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
+                                            intent.putExtra("getPrice", livestockListBean.getPrice());
+                                            intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
+                                            intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
+                                            intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
+                                            intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
 
                                             startActivity(intent);
 
@@ -198,38 +198,46 @@ public class RenlingFragment1 extends Fragment {
 
         refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+            public void onLoadMore(@NonNull final RefreshLayout refreshLayout) {
 
                 OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
                         .tag(this)
                         .params("token", mLoginSuccess.getToken())
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
-//                .params("isClaimed",)
                         .params("current", index)
                         .params("pagesize", 10)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
 
-                                index++;
 
                                 String s = response.body().toString();
                                 Log.d(TAG1, s);
                                 if (s.contains("livestockId")) {
+
+                                    index++;
+
                                     Gson gson1 = new Gson();
                                     RenLing renLing = gson1.fromJson(s, RenLing.class);
                                     List<RenLing.LivestockListBean> mylist =
                                             renLing.getLivestockList();
-                                    for (int i = 0; i < mylist.size(); i++) {
 
-                                        mLivestockList.add(mylist.get(i));
+                                    if (mylist.size() == 0) {
+                                        ToastUtils.showShort("没有更多数据了");
+
+                                    } else {
+                                        for (int i = 0; i < mylist.size(); i++) {
+                                            mLivestockList.add(mylist.get(i));
+                                        }
+                                        MoveToPosition(mLayoutManager, 10 * (index - 1));
 
                                     }
 
                                     //创建并设置Adapter
                                     mAdapter = new MyAdapter(mLivestockList);
                                     mRecyclerView.setAdapter(mAdapter);
+
 
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override
@@ -239,24 +247,27 @@ public class RenlingFragment1 extends Fragment {
                                             RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
 
                                             Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
-                                            intent.putExtra("getImgUrl",livestockListBean.getImgUrl());
-                                            intent.putExtra("getLivestockName",livestockListBean.getLivestockName());
-                                            intent.putExtra("getCharacteristics",livestockListBean.getCharacteristics());
-                                            intent.putExtra("getCellphone",livestockListBean.getCellphone());
-                                            intent.putExtra("getCreateTime",livestockListBean.getCreateTime());
-                                            intent.putExtra("getPrice",livestockListBean.getPrice());
-                                            intent.putExtra("getIsClaimed",livestockListBean.getIsClaimed());
-                                            intent.putExtra("getLifeTime",livestockListBean.getLifeTime());
-                                            intent.putExtra("getBirthTime",livestockListBean.getBirthTime());
-                                            intent.putExtra("getClaimTime",livestockListBean.getClaimTime());
-
+                                            intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
+                                            intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
+                                            intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
+                                            intent.putExtra("getCellphone", livestockListBean.getCellphone());
+                                            intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
+                                            intent.putExtra("getPrice", livestockListBean.getPrice());
+                                            intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
+                                            intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
+                                            intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
+                                            intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
                                             startActivity(intent);
+
 
                                         }
                                     });
 
 
                                 } else {
+
+
+                                    ToastUtils.showShort("没有更多数据了");
 
 
                                 }
@@ -266,10 +277,11 @@ public class RenlingFragment1 extends Fragment {
                         });
 
 
-                refreshLayout.finishRefresh(2000);//传入false表示刷新失败
+                refreshLayout.finishLoadMore();
 
 
             }
+
         });
 
 
@@ -325,16 +337,16 @@ public class RenlingFragment1 extends Fragment {
                                     RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
 
                                     Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
-                                    intent.putExtra("getImgUrl",livestockListBean.getImgUrl());
-                                    intent.putExtra("getLivestockName",livestockListBean.getLivestockName());
-                                    intent.putExtra("getCharacteristics",livestockListBean.getCharacteristics());
-                                    intent.putExtra("getCellphone",livestockListBean.getCellphone());
-                                    intent.putExtra("getCreateTime",livestockListBean.getCreateTime());
-                                    intent.putExtra("getPrice",livestockListBean.getPrice());
-                                    intent.putExtra("getIsClaimed",livestockListBean.getIsClaimed());
-                                    intent.putExtra("getLifeTime",livestockListBean.getLifeTime());
-                                    intent.putExtra("getBirthTime",livestockListBean.getBirthTime());
-                                    intent.putExtra("getClaimTime",livestockListBean.getClaimTime());
+                                    intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
+                                    intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
+                                    intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
+                                    intent.putExtra("getCellphone", livestockListBean.getCellphone());
+                                    intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
+                                    intent.putExtra("getPrice", livestockListBean.getPrice());
+                                    intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
+                                    intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
+                                    intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
+                                    intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
 
                                     startActivity(intent);
 

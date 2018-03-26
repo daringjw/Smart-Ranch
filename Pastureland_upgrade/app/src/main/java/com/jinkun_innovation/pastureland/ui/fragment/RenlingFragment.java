@@ -417,6 +417,7 @@ public class RenlingFragment extends Fragment {
                                         for (int i = 0; i < livestockList1.size(); i++) {
                                             mLivestockList.add(livestockList1.get(i));
                                         }
+
                                         //创建并设置Adapter
                                         mAdapter = new MyAdapter(mLivestockList);
                                         MoveToPosition(mLayoutManager, 15 * count);

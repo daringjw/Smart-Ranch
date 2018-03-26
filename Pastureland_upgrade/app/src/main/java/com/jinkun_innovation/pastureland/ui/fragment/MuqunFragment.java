@@ -4,16 +4,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.MuqunSum;
+import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.YangListActivity;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +41,11 @@ public class MuqunFragment extends Fragment {
     ImageView mIvNiu;
     @BindView(R.id.ivMa)
     ImageView mIvMa;
+    @BindView(R.id.tvYangNo)
+    TextView tvYangNo;
+
     Unbinder unbinder;
+
 
     String mLogin_success;
     LoginSuccess mLoginSuccess;
@@ -55,7 +66,7 @@ public class MuqunFragment extends Fragment {
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(getActivity(), "username", null);
 
-       /* OkGo.<String>get(Constants.QUERYTYPEANDSUM)
+        OkGo.<String>get(Constants.QUERYTYPEANDSUM)
                 .tag(this)
                 .params("token", mLoginSuccess.getToken())
                 .params("username", mUsername)
@@ -65,11 +76,21 @@ public class MuqunFragment extends Fragment {
                     public void onSuccess(Response<String> response) {
 
                         String s = response.body().toString();
-                        Log.d(TAG1,s);
+                        Log.d(TAG1, s);
+                        if (s.contains("牧场无牲畜")) {
+                            tvYangNo.setText(0 + "头");
+
+                        } else {
+                            Gson gson1 = new Gson();
+                            MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
+                            MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
+                            int typeMap_$1 = typeMap.get_$1();
+                            tvYangNo.setText(typeMap_$1 + "头");
+                        }
 
 
                     }
-                });*/
+                });
 
         return view;
 

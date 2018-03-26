@@ -204,4 +204,5 @@ public class QueryByYang {
             this.bindStatus = bindStatus;
         }
     }
+
 }

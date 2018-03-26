@@ -169,7 +169,7 @@ public class LoginActivity1 extends AppCompatActivity {
 
                                             } else {
                                                 Toast.makeText(getApplicationContext(),
-                                                        "账号或者密码错误",
+                                                        "登录异常",
                                                         Toast.LENGTH_SHORT).show();
                                                 mPDialog.cancel();
 

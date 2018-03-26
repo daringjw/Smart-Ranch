@@ -1,5 +1,6 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.QueryByYang;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -43,7 +45,7 @@ public class YangListActivity extends AppCompatActivity {
 
     private List<QueryByYang.LivestockVarietyListBean> mLivestockVarietyList;
 
-    int index = 1;
+    int index = 2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +69,6 @@ public class YangListActivity extends AppCompatActivity {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
 
-                index = 1;
 
                 //通过牲畜类型查询所有牲畜
                 OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
@@ -96,8 +97,25 @@ public class YangListActivity extends AppCompatActivity {
                                     mAdapter = new MyAdapter(mLivestockVarietyList);
                                     mRecyclerView.setAdapter(mAdapter);
 
-                                } else {
+                                    mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, int position) {
 
+                                            Intent intent = new Intent(getApplicationContext(), YangDetailActivity.class);
+                                            intent.putExtra("getVariety", mLivestockVarietyList.get(position).getVariety());
+
+                                            intent.putExtra("getImgUrl", mLivestockVarietyList.get(position).getImgUrl());
+                                            intent.putExtra("getDeviceNo", mLivestockVarietyList.get(position).getDeviceNo());
+                                            intent.putExtra("getWeight", mLivestockVarietyList.get(position).getWeight());
+                                            intent.putExtra("getBindStatus", mLivestockVarietyList.get(position).getBindStatus());
+                                            intent.putExtra("getIsClaimed", mLivestockVarietyList.get(position).getIsClaimed());
+                                            intent.putExtra("getUpdateTime", mLivestockVarietyList.get(position).getUpdateTime());
+                                            startActivity(intent);
+
+                                        }
+                                    });
+
+                                } else {
 
 
                                 }
@@ -107,7 +125,7 @@ public class YangListActivity extends AppCompatActivity {
                         });
 
 
-                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+                refreshlayout.finishRefresh(2000);//传入false表示刷新失败
 
             }
         });
@@ -138,18 +156,50 @@ public class YangListActivity extends AppCompatActivity {
                                     //有数据
                                     Gson gson1 = new Gson();
                                     QueryByYang queryByYang = gson1.fromJson(s, QueryByYang.class);
-                                    List<QueryByYang.LivestockVarietyListBean> l1 =
+                                    List<QueryByYang.LivestockVarietyListBean> mylist =
                                             queryByYang.getLivestockVarietyList();
-                                    for (int i = 0; i < l1.size(); i++) {
-                                        mLivestockVarietyList.add(l1.get(i));
+
+
+                                    if (mylist.size() == 0) {
+
+                                        ToastUtils.showShort("没有更多数据了");
+
+                                    } else {
+                                        for (int i = 0; i < mylist.size(); i++) {
+                                            mLivestockVarietyList.add(mylist.get(i));
+                                        }
+                                        MoveToPosition(mLayoutManager, 10 * (index - 1));
+
+
                                     }
+
 
                                     //创建并设置Adapter
                                     mAdapter = new MyAdapter(mLivestockVarietyList);
                                     mRecyclerView.setAdapter(mAdapter);
 
+                                    mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, int position) {
+
+                                            Intent intent = new Intent(getApplicationContext(), YangDetailActivity.class);
+                                            intent.putExtra("getVariety", mLivestockVarietyList.get(position).getVariety());
+
+                                            intent.putExtra("getImgUrl", mLivestockVarietyList.get(position).getImgUrl());
+                                            intent.putExtra("getDeviceNo", mLivestockVarietyList.get(position).getDeviceNo());
+                                            intent.putExtra("getWeight", mLivestockVarietyList.get(position).getWeight());
+                                            intent.putExtra("getBindStatus", mLivestockVarietyList.get(position).getBindStatus());
+                                            intent.putExtra("getIsClaimed", mLivestockVarietyList.get(position).getIsClaimed());
+                                            intent.putExtra("getUpdateTime", mLivestockVarietyList.get(position).getUpdateTime());
+                                            startActivity(intent);
+
+                                        }
+                                    });
+
+
                                 } else {
 
+                                    ToastUtils.showShort("没有更多数据了");
 
 
                                 }
@@ -158,7 +208,7 @@ public class YangListActivity extends AppCompatActivity {
                             }
                         });
 
-                refreshLayout.finishLoadMore(2000/*,false*/);//传入false表示加载失败
+                refreshLayout.finishLoadMore();//传入false表示加载失败
 
             }
         });
@@ -186,6 +236,17 @@ public class YangListActivity extends AppCompatActivity {
     String mLogin_success;
     LoginSuccess mLoginSuccess;
     String mUsername;
+
+    /**
+     * RecyclerView 移动到当前位置，
+     *
+     * @param manager 设置RecyclerView对应的manager
+     * @param n       要跳转的位置
+     */
+    public static void MoveToPosition(LinearLayoutManager manager, int n) {
+        manager.scrollToPositionWithOffset(n, 0);
+        manager.setStackFromEnd(true);
+    }
 
 
     private void initData() {
@@ -223,8 +284,24 @@ public class YangListActivity extends AppCompatActivity {
                             mAdapter = new MyAdapter(mLivestockVarietyList);
                             mRecyclerView.setAdapter(mAdapter);
 
-                        } else {
+                            mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                @Override
+                                public void onItemClick(View view, int position) {
 
+                                    Intent intent = new Intent(getApplicationContext(), YangDetailActivity.class);
+                                    intent.putExtra("getVariety", mLivestockVarietyList.get(position).getVariety());
+                                    intent.putExtra("getImgUrl", mLivestockVarietyList.get(position).getImgUrl());
+                                    intent.putExtra("getDeviceNo", mLivestockVarietyList.get(position).getDeviceNo());
+                                    intent.putExtra("getWeight", mLivestockVarietyList.get(position).getWeight());
+                                    intent.putExtra("getBindStatus", mLivestockVarietyList.get(position).getBindStatus());
+                                    intent.putExtra("getIsClaimed", mLivestockVarietyList.get(position).getIsClaimed());
+                                    intent.putExtra("getUpdateTime", mLivestockVarietyList.get(position).getUpdateTime());
+                                    startActivity(intent);
+
+                                }
+                            });
+
+                        } else {
 
 
                         }
@@ -249,7 +326,7 @@ public class YangListActivity extends AppCompatActivity {
     private MyAdapter mAdapter;
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view, String[] data);
+        void onItemClick(View view, int data);
 
 
     }
@@ -264,6 +341,14 @@ public class YangListActivity extends AppCompatActivity {
 
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
+
+        private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+
+        public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+            this.mOnItemClickListener = listener;
+
+        }
 
         public List<QueryByYang.LivestockVarietyListBean> datas = null;
 
@@ -294,7 +379,7 @@ public class YangListActivity extends AppCompatActivity {
 
 //            viewHolder.mTextView.setText(datas[position]);
             //将数据保存在itemView的Tag中，以便点击时进行获取
-//            viewHolder.itemView.setTag(datas[position]);
+            viewHolder.itemView.setTag(position);
 
             String imgUrl = datas.get(position).getImgUrl();
             imgUrl = Constants.BASE_URL + imgUrl;
@@ -308,7 +393,7 @@ public class YangListActivity extends AppCompatActivity {
                 viewHolder.tvYangName.setText("品种：山羊");
             }
             viewHolder.tvDeviceNo.setText("设备号：" + datas.get(position).getDeviceNo());
-            viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getCreateTime());
+            viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getUpdateTime());
             viewHolder.tvLocation.setText("体重：" + datas.get(position).getWeight() + " KG");
 
         }
@@ -317,7 +402,7 @@ public class YangListActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (mOnItemClickListener != null) {
                 //注意这里使用getTag方法获取数据
-//                mOnItemClickListener.onItemClick(v,(String[])v.getTag());
+                mOnItemClickListener.onItemClick(v, (int) v.getTag());
 
             }
         }
