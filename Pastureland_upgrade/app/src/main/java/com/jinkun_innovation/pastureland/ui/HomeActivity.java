@@ -55,10 +55,10 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
 
-        mTabLayout.getTabAt(0).setIcon(R.drawable.button_location_selector);
-        mTabLayout.getTabAt(1).setIcon(R.drawable.button_location_selector);
-        mTabLayout.getTabAt(2).setIcon(R.drawable.button_location_selector);
-        mTabLayout.getTabAt(3).setIcon(R.drawable.button_location_selector);
+        mTabLayout.getTabAt(0).setIcon(R.drawable.manage_selector);
+        mTabLayout.getTabAt(1).setIcon(R.drawable.muqun_selector);
+        mTabLayout.getTabAt(2).setIcon(R.drawable.claim_selector);
+        mTabLayout.getTabAt(3).setIcon(R.drawable.my_selector);
 
 //        tabLayout.getTabAt(0).getCustomView().setSelected(true);
 

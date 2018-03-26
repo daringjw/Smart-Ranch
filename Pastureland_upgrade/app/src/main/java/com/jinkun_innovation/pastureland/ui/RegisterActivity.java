@@ -99,13 +99,6 @@ public class RegisterActivity extends Activity {
                             mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
                             mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
 
-                            final SweetAlertDialog pDialog = new SweetAlertDialog(
-                                    RegisterActivity.this,
-                                    SweetAlertDialog.PROGRESS_TYPE);
-                            pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                            pDialog.setTitleText("上传图片...");
-                            pDialog.setCancelable(false);
-                            pDialog.show();
 
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
@@ -125,7 +118,6 @@ public class RegisterActivity extends Activity {
                                             int j = mImgUrl.indexOf("j");
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
-                                            pDialog.cancel();
 
 
                                         }
@@ -451,7 +443,7 @@ public class RegisterActivity extends Activity {
                 } else {
 
                     mPDialog.cancel();
-                    Toast.makeText(getApplicationContext(),"请先拍照",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
 
                 }
 

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
-import com.jinkun_innovation.pastureland.bean.AdminInfo;
+import com.jinkun_innovation.pastureland.bean.AdminInfo1;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
@@ -90,10 +90,13 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                         String s = response.body().toString();
                         Log.d(TAG1, s);
-                        Gson gson1 = new Gson();
-                        AdminInfo adminInfo = gson1.fromJson(s, AdminInfo.class);
 
-                        mTvAdminName.setText("姓名：" + adminInfo.getAdminInfo().getPeopleName());
+
+
+                        Gson gson1 = new Gson();
+                        AdminInfo1 adminInfo = gson1.fromJson(s, AdminInfo1.class);
+
+                        mTvAdminName.setText("姓名：" + adminInfo.getAdminInfo().getUsername());
                         String sex = adminInfo.getAdminInfo().getSex();
                         if (sex.equals("1")) {
 
@@ -104,7 +107,7 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                         }
 
-                        mTvPhone.setText("电话号码：" + adminInfo.getAdminInfo().getCellphone());
+                        mTvPhone.setText("电话号码：" + adminInfo.getAdminInfo().getUsername());
 
 
                     }

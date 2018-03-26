@@ -6,13 +6,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:background="#127c39">
 
         <ImageView
             android:id="@+id/ivBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:src="@mipmap/back"/>
 
         <TextView
@@ -65,7 +67,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"
-        android:text="退出"/>
+        android:background="@mipmap/logout_bg"
+        android:text="退出登录"
+        android:textColor="#fff"/>
 
 
 </LinearLayout>

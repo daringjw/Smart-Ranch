@@ -29,6 +29,7 @@ import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
 import com.jinkun_innovation.pastureland.ui.RenlingDetailActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.jinkun_innovation.pastureland.utils.StrLengthUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -86,9 +87,15 @@ public class RenlingFragment1 extends Fragment {
                     String isbn = data.getStringExtra("CaptureIsbn");
                     if (!TextUtils.isEmpty(isbn)) {
                         ToastUtils.showShort("设备号==" + isbn);
-                        Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
-                        intent.putExtra("isbn", isbn);
-                        startActivity(intent);
+
+                        if (StrLengthUtil.length(isbn) != 16) {
+                            ToastUtils.showShort("设备号必须为16位");
+                        } else {
+                            Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                            intent.putExtra("isbn", isbn);
+                            startActivity(intent);
+                        }
+
 
                     }
 

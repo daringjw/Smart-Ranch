@@ -32,8 +32,8 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvYang"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:scaleType="fitXY"
+        android:layout_height="260dp"
+        fresco:actualImageScaleType="fitXY"
         fresco:placeholderImage="@mipmap/detail_yang"/>
 
     <LinearLayout

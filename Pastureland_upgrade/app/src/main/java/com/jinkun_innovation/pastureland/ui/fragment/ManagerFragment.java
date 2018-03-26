@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,15 +29,15 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.GrassActivity;
-import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
 import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
-import com.jinkun_innovation.pastureland.ui.VideoContainerActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.jinkun_innovation.pastureland.utils.StrLengthUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
@@ -63,18 +63,20 @@ public class ManagerFragment extends Fragment {
 
     private static final String TAG1 = ManagerFragment.class.getSimpleName();
 
-    @BindView(R.id.btnJieGao)
-    Button mBtnJieGao;
-    @BindView(R.id.btnHaircuts)
-    Button mBtnHaircuts;
-    @BindView(R.id.btnPhoto)
-    Button mBtnPhoto;
-    @BindView(R.id.btnMechanicalTools)
-    Button mBtnMechanicalTools;
-    @BindView(R.id.btnGrass)
-    Button mBtnGrass;
-    @BindView(R.id.btnLianJiangPastureland)
-    Button mBtnLianJiangPastureland;
+    @BindView(R.id.llRegister)
+    LinearLayout llRegister;
+    @BindView(R.id.llJianMao)
+    LinearLayout llJianMao;
+    @BindView(R.id.llLifePhoto)
+    LinearLayout llLifePhoto;
+    @BindView(R.id.llTools)
+    LinearLayout llTools;
+    @BindView(R.id.llGrass)
+    LinearLayout llGrass;
+    @BindView(R.id.llMyMuChang)
+    LinearLayout llMyMuChang;
+
+
     Unbinder unbinder;
 
     private static final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 3;//权限请求
@@ -107,29 +109,6 @@ public class ManagerFragment extends Fragment {
         View view = View.inflate(getActivity(), R.layout.fragment_manager, null);
 
         unbinder = ButterKnife.bind(this, view);
-
-        Button btnVideo = view.findViewById(R.id.btnVideo);
-        btnVideo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent mIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-                mIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0.5);//画质0.5
-                mIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 70000);//70s
-                startActivityForResult(mIntent, CAMERA_ACTIVITY);//CAMERA_ACTIVITY = 1
-
-            }
-        });
-
-        Button btnVideoContainer = view.findViewById(R.id.btnVideoContainer);
-        btnVideoContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                startActivity(new Intent(getActivity(), VideoContainerActivity.class));
-
-            }
-        });
 
 
         mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
@@ -169,42 +148,6 @@ public class ManagerFragment extends Fragment {
 
         mSliderShow.setPresetTransformer(SliderLayout.Transformer.RotateUp);
 
-/*
-
-        //获取牧场牲畜类型和每种类型牲畜的数量
-        OkGo.<String>post(Constants.QUERYTYPEANDSUM)
-                .tag(this)
-                .params("token", mLoginSuccess.getToken())
-                .params("username", mUsername)
-                .params("ranchID", mLoginSuccess.getRanchID())
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        String s = response.body().toString();
-
-                    }
-                });
-
-        //通过牲畜类型查询所有牲畜
-        OkGo.<String>get(Constants.QUERYLIVESTOCKVARIETYLIST)
-                .tag(this)
-                .params("token", mLoginSuccess.getToken())
-                .params("username", mUsername)
-                .params("ranchID", mLoginSuccess.getRanchID())
-                .params("livestockType", 1)
-                .params("current", 0)
-                .params("pagesize", 10)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        String s = response.body().toString();
-
-                    }
-                });
-*/
-
 
         return view;
 
@@ -217,40 +160,40 @@ public class ManagerFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btnJieGao, R.id.btnHaircuts, R.id.btnPhoto,
-            R.id.btnMechanicalTools, R.id.btnGrass, R.id.btnLianJiangPastureland})
+    @OnClick({R.id.llRegister, R.id.llJianMao, R.id.llLifePhoto,
+            R.id.llTools, R.id.llGrass, R.id.llMyMuChang})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btnJieGao:
+            case R.id.llRegister:
                 checkedItem = 2;
 
                 startScanActivity();
 
                 break;
-            case R.id.btnHaircuts:
+            case R.id.llJianMao:
                 checkedItem = 3;
                 startScanActivity();
                 break;
-            case R.id.btnPhoto:
+            case R.id.llLifePhoto:
 
                 checkedItem = 0;
                 openCamera();
 
                 break;
-            case R.id.btnMechanicalTools:
+            case R.id.llTools:
 
                 startActivity(new Intent(getActivity(), ToolsActivity.class));
 
 
                 break;
-            case R.id.btnGrass:
+            case R.id.llGrass:
 
                 startActivity(new Intent(getActivity(), GrassActivity.class));
 
                 break;
-            case R.id.btnLianJiangPastureland:
+            case R.id.llMyMuChang:
 
-                startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
+//                startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
                 break;
 
         }
@@ -268,91 +211,72 @@ public class ManagerFragment extends Fragment {
                         LogUtils.e(isbn);
                         scanMessage = isbn;
                         Toast.makeText(getActivity(), "解析到的内容为" + isbn, Toast.LENGTH_LONG).show();
-                        Log.d(TAG1, mLoginSuccess.getToken());
-                        Log.d(TAG1, mUsername);
-                        Log.d(TAG1, isbn);
-                        Log.d(TAG1, mLoginSuccess.getRanchID() + "");
 
-                        switch (checkedItem) {
+                        if (StrLengthUtil.length(isbn) != 16) {
 
-                            case 2:
-                                //接羔
-                                //判断设备是否被绑定
-                                OkGo.<String>post(Constants.ISDEVICEBINDED)
-                                        .tag(this)
-                                        .params("token", mLoginSuccess.getToken())
-                                        .params("username", mUsername) //用户手机号
-                                        .params("deviceNO", isbn)
-                                        .params("ranchID", mLoginSuccess.getRanchID())
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onSuccess(Response<String> response) {
+                            ToastUtils.showShort("设备号必须为16位");
+                            return;
+                        } else {
+                            switch (checkedItem) {
 
-                                                String result = response.body().toString();
-                                                Log.d(TAG1, result);
-                                                if (result.contains("true")) {
+                                case 2:
+                                    //接羔
+                                    //判断设备是否被绑定
+                                    OkGo.<String>post(Constants.ISDEVICEBINDED)
+                                            .tag(this)
+                                            .params("token", mLoginSuccess.getToken())
+                                            .params("username", mUsername) //用户手机号
+                                            .params("deviceNO", isbn)
+                                            .params("ranchID", mLoginSuccess.getRanchID())
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(Response<String> response) {
 
-                                                    //已绑定
-                                                    Toast.makeText(getActivity(), "该设备已登记",
-                                                            Toast.LENGTH_SHORT)
-                                                            .show();
+                                                    String result = response.body().toString();
+                                                    Log.d(TAG1, result);
+                                                    if (result.contains("true")) {
+
+                                                        //已绑定
+                                                        Toast.makeText(getActivity(), "该设备已登记",
+                                                                Toast.LENGTH_SHORT)
+                                                                .show();
 
 
-                                                } else {
-                                                    //未绑定
+                                                    } else {
+                                                        //未绑定
 //                                                    openCamera();
-                                                    Intent intent = new Intent(getActivity()
-                                                            , RegisterActivity.class);
+                                                        Intent intent = new Intent(getActivity()
+                                                                , RegisterActivity.class);
 
-                                                    intent.putExtra(getString(R.string.scan_Message),
-                                                            scanMessage);
+                                                        intent.putExtra(getString(R.string.scan_Message),
+                                                                scanMessage);
 
-                                                    startActivity(intent);
+                                                        startActivity(intent);
+
+
+                                                    }
 
 
                                                 }
+                                            });
+
+                                    break;
+
+                                case 3:
+                                    //剪毛
+                                    openCamera();
 
 
-                                            }
-                                        });
+                                    break;
 
-                                break;
-
-                            case 3:
-                                //剪毛
-                                openCamera();
+                                case 0:
+                                    //拍照
 
 
-                                break;
+                                    break;
 
-                            case 0:
-                                //拍照
-
-
-                                break;
-
+                            }
                         }
-
-
-
-
-
-                        /*OkGo.<String>post(Constants.SELECT_LIVE_STOCK)
-                                .params("token", mLoginSuccess.getToken())
-                                .params("username", mLoginSuccess.getName())
-                                .params("deviceNO", isbn)
-                                .params("ranchID", mLoginSuccess.getRanchID())
-                                .tag(this)
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-
-                                        String result = response.body().toString();
-                                        Log.d(TAG1,result);
-
-
-                                    }
-                                });*/
 
 
                     }

@@ -21,7 +21,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:text="设备 12345678 于 2018年2月3日 发出了低电告警，请尽快去确认，及时充电"/>
+        android:text="设备 12345678 于 2018年2月3日 发出了低电报警，请尽快去确认，及时充电"/>
 
     <View
         android:layout_width="match_parent"
