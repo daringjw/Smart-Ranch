@@ -11,6 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/tvDeviceNo"
+            android:layout_width="match_parent"
+            android:text="设备号："
+            android:layout_height="match_parent"/>
+
         <ImageView
             android:id="@+id/img_upload"
             android:layout_width="0dp"

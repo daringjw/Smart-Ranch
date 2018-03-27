@@ -129,17 +129,17 @@ public class ManagerFragment extends Fragment {
         textSliderView
                 .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
-                .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg");
+                .image("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=8cc5e60fb91bb0519b29bb6b5e13b0c1/f9198618367adab46f5ff16e81d4b31c8701e414.jpg");
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
                 .description("网络图片")
-                .image("http://pic1.sc.chinaz.com/files/pic/pic9/201803/bpic5936.jpg");
+                .image("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=910bc359a7345982d187edd1649d5bd8/b3b7d0a20cf431adcd3914144136acaf2edd9837.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(getActivity());
         textSliderView2
                 .description("金坤技术")
-                .image("http://pics.sc.chinaz.com/files/pic/pic9/201802/zzpic10394.jpg");
+                .image("http://pic2.ooopic.com/12/49/46/19bOOOPICb3_1024.jpg");
 
 
         mSliderShow.addSlider(textSliderView);
@@ -200,6 +200,11 @@ public class ManagerFragment extends Fragment {
     }
 
 
+    //  a为原字符串，b为要插入的字符串，t为插入位置
+    public String Stringinsert(String a, String b, int t) {
+        return a.substring(0, t) + b + a.substring(t, a.length());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,77 +214,27 @@ public class ManagerFragment extends Fragment {
                     String isbn = data.getStringExtra("CaptureIsbn");
                     if (!TextUtils.isEmpty(isbn)) {
                         LogUtils.e(isbn);
-                        scanMessage = isbn;
+
                         Toast.makeText(getActivity(), "解析到的内容为" + isbn, Toast.LENGTH_LONG).show();
 
-                        if (StrLengthUtil.length(isbn) != 16) {
+                        if (StrLengthUtil.length(isbn) == 16) {
+                            scanMessage = isbn;
+                            register(isbn);
+                        } else if (StrLengthUtil.length(isbn) == 15) {
+                            String str = Stringinsert(isbn, "1", 7);
+                            Log.d(TAG1, "15位isbn=" + str);
+                            Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
+                            scanMessage = str;
+                            register(str);
 
-                            ToastUtils.showShort("设备号必须为16位");
-                            return;
                         } else {
-                            switch (checkedItem) {
-
-                                case 2:
-                                    //接羔
-                                    //判断设备是否被绑定
-                                    OkGo.<String>post(Constants.ISDEVICEBINDED)
-                                            .tag(this)
-                                            .params("token", mLoginSuccess.getToken())
-                                            .params("username", mUsername) //用户手机号
-                                            .params("deviceNO", isbn)
-                                            .params("ranchID", mLoginSuccess.getRanchID())
-                                            .execute(new StringCallback() {
-                                                @Override
-                                                public void onSuccess(Response<String> response) {
-
-                                                    String result = response.body().toString();
-                                                    Log.d(TAG1, result);
-                                                    if (result.contains("true")) {
-
-                                                        //已绑定
-                                                        Toast.makeText(getActivity(), "该设备已登记",
-                                                                Toast.LENGTH_SHORT)
-                                                                .show();
-
-
-                                                    } else {
-                                                        //未绑定
-//                                                    openCamera();
-                                                        Intent intent = new Intent(getActivity()
-                                                                , RegisterActivity.class);
-
-                                                        intent.putExtra(getString(R.string.scan_Message),
-                                                                scanMessage);
-
-                                                        startActivity(intent);
-
-
-                                                    }
-
-
-                                                }
-                                            });
-
-                                    break;
-
-                                case 3:
-                                    //剪毛
-                                    openCamera();
-
-
-                                    break;
-
-                                case 0:
-                                    //拍照
-
-
-                                    break;
-
-                            }
+                            ToastUtils.showShort("设备号必须是15位或者16位");
                         }
 
 
                     }
+
+
                     break;
 
                 case CAMERA_ACTIVITY:
@@ -337,6 +292,67 @@ public class ManagerFragment extends Fragment {
 
 
             }
+        }
+    }
+
+    private void register(String isbn) {
+        switch (checkedItem) {
+
+            case 2:
+                //接羔
+                //判断设备是否被绑定
+                OkGo.<String>post(Constants.ISDEVICEBINDED)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername) //用户手机号
+                        .params("deviceNO", isbn)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String result = response.body().toString();
+                                Log.d(TAG1, result);
+                                if (result.contains("true")) {
+
+                                    //已绑定
+                                    Toast.makeText(getActivity(), "该设备已登记",
+                                            Toast.LENGTH_SHORT)
+                                            .show();
+
+                                } else {
+                                    //未绑定
+//                                                    openCamera();
+                                    Intent intent = new Intent(getActivity()
+                                            , RegisterActivity.class);
+
+                                    intent.putExtra(getString(R.string.scan_Message),
+                                            scanMessage);
+
+                                    startActivity(intent);
+
+
+                                }
+
+
+                            }
+                        });
+
+                break;
+
+            case 3:
+                //剪毛
+                openCamera();
+
+
+                break;
+
+            case 0:
+                //拍照
+
+
+                break;
+
         }
     }
 

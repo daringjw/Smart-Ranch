@@ -76,6 +76,11 @@ public class RenlingFragment1 extends Fragment {
         startActivityForResult(intent, SCAN_REQUEST_CODE);
     }
 
+    //  a为原字符串，b为要插入的字符串，t为插入位置
+    public String Stringinsert(String a, String b, int t) {
+        return a.substring(0, t) + b + a.substring(t, a.length());
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -85,18 +90,34 @@ public class RenlingFragment1 extends Fragment {
                 case SCAN_REQUEST_CODE:
 
                     String isbn = data.getStringExtra("CaptureIsbn");
-                    if (!TextUtils.isEmpty(isbn)) {
-                        ToastUtils.showShort("设备号==" + isbn);
 
-                        if (StrLengthUtil.length(isbn) != 16) {
-                            ToastUtils.showShort("设备号必须为16位");
-                        } else {
+                    if (!TextUtils.isEmpty(isbn)) {
+                        if (StrLengthUtil.length(isbn) == 16) {
+
+
                             Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
                             intent.putExtra("isbn", isbn);
                             startActivity(intent);
+
+
+                        } else if (StrLengthUtil.length(isbn) == 15) {
+
+
+
+
+                            String str = Stringinsert(isbn, "1", 7);
+                            Log.d(TAG1, "15位isbn=" + str);
+                            Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
+                            Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                            intent.putExtra("isbn", str);
+                            startActivity(intent);
+
+
+                        } else {
+
+                            ToastUtils.showShort("设备号必须是15位或者16位");
+
                         }
-
-
                     }
 
 
@@ -161,6 +182,9 @@ public class RenlingFragment1 extends Fragment {
                                     //创建并设置Adapter
                                     mAdapter = new MyAdapter(mLivestockList);
                                     mRecyclerView.setAdapter(mAdapter);
+
+                                    MoveToPosition(mLayoutManager, 0);
+
 
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override
@@ -462,7 +486,15 @@ public class RenlingFragment1 extends Fragment {
             viewHolder.tvId.setText("设备号：" + datas.get(position).getDeviceNo());
             viewHolder.tvAnimalAge.setText("出生日期：" + datas.get(position).getBirthTime());
             viewHolder.tvMuChang.setText("特点：" + datas.get(position).getCharacteristics());
-            viewHolder.tvClaimTime.setText("认领时间：" + datas.get(position).getClaimTime());
+
+            String claimTime = datas.get(position).getClaimTime();
+            if (TextUtils.isEmpty(claimTime)) {
+                viewHolder.tvClaimTime.setVisibility(View.INVISIBLE);
+            } else {
+                viewHolder.tvClaimTime.setVisibility(View.VISIBLE);
+                viewHolder.tvClaimTime.setText("认领时间：" + claimTime);
+            }
+
             String isClaimed = datas.get(position).getIsClaimed();
             if (isClaimed.equals("0")) {
 
@@ -475,9 +507,23 @@ public class RenlingFragment1 extends Fragment {
                         datas.get(position).getPrice()
                         + "     已认领");
 
+                viewHolder.tvPriceAndClaim.setTextColor(Color.GREEN);
+
+
+
             }
 
-            viewHolder.tvPhone.setText("手机号：" + datas.get(position).getCellphone());
+            String cellphone = datas.get(position).getCellphone();
+            if (TextUtils.isEmpty(cellphone)){
+
+                viewHolder.tvPhone.setVisibility(View.INVISIBLE);
+
+            }else {
+
+                viewHolder.tvPhone.setText("手机号：" + cellphone);
+                viewHolder.tvPhone.setVisibility(View.VISIBLE);
+
+            }
 
 
         }

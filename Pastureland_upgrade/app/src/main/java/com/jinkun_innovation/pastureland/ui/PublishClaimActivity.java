@@ -37,10 +37,20 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import okhttp3.Call;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
+
+import static okhttp3.MultipartBody.ALTERNATIVE;
 
 /**
  * Created by Guan on 2018/3/16.
@@ -98,6 +108,10 @@ public class PublishClaimActivity extends AppCompatActivity {
                             Gson gson = new Gson();
                             mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
                             mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
+
+                            Log.d(TAG1, "token=" + mLoginSuccess.getToken());
+                            Log.d(TAG1, "username=" + mUsername);
+                            Log.d(TAG1, "uploadFile=" + file.getAbsolutePath());
 
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
@@ -333,8 +347,6 @@ public class PublishClaimActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-                //// TODO: 2018/3/22
-
                 if (!TextUtils.isEmpty(mImgUrl)) {
                     if (!TextUtils.isEmpty(mDeviceNo)) {
 
@@ -355,11 +367,11 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 SweetAlertDialog.PROGRESS_TYPE);
                         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                         pDialog.setTitleText("正在发布...");
-                        pDialog.setCancelable(false);
+                        pDialog.setCancelable(true);
                         pDialog.show();
 
                         Log.d(TAG1, "mImgUrl1==" + mImgUrl);
-
+//
                         OkGo.<String>post(Constants.RELEASE)
                                 .tag(this)
                                 .params("token", mLoginSuccess.getToken())
@@ -378,14 +390,43 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         Log.d(TAG1, "mImgUrl2==" + mImgUrl);
 
                                         String s = response.body().toString();
-                                        if (s.contains("success")) {
+                                        if (s.contains("发布牲畜到认领表成功")) {
 
                                             pDialog.cancel();
                                             //发布认领成功
-                                            Toast.makeText(getApplicationContext(), "发布认领成功",
+                                            Toast.makeText(getApplicationContext(), "发布牲畜到认领表成功",
                                                     Toast.LENGTH_SHORT).show();
 
                                             finish();
+
+
+                                        } else if (s.contains("已经发布过了")) {
+
+                                            pDialog.cancel();
+                                            //重新发布
+                                            OkGo.<String>post(Constants.IS_CLAIMED)
+                                                    .tag(this)
+                                                    .params("token", mLoginSuccess.getToken())
+                                                    .params("username", mUsername)
+                                                    .params("deviceNO", mIsbn)
+                                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                                    .params("livestockType", type3)
+                                                    .params("variety", variety3)
+                                                    .params("weight", weight3)
+                                                    .params("age", age3)
+                                                    .params("imgUrl", mImgUrl)
+                                                    .execute(new StringCallback() {
+                                                        @Override
+                                                        public void onSuccess(Response<String> response) {
+
+                                                            String s1 = response.body().toString();
+                                                            Log.d(TAG1, "s1=" + s1);
+                                                            ToastUtils.showShort("重新发布成功");
+                                                            pDialog.cancel();
+                                                            finish();
+
+                                                        }
+                                                    });
 
 
                                         } else {
@@ -420,5 +461,43 @@ public class PublishClaimActivity extends AppCompatActivity {
         });
 
 
+    }
+
+
+    private void multeUpload(String url, File file) {
+
+        RequestBody multipartBody = new MultipartBody.Builder()
+                .setType(ALTERNATIVE)//一样的效果
+                .addFormDataPart("token", mLoginSuccess.getToken())
+                .addFormDataPart("username", mUsername)
+                .addFormDataPart("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file))
+                .build();
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url(url)
+//                .cacheControl(new CacheControl.Builder().noCache().noStore().build())
+                .addHeader("User-Agent", "android")
+                .header("Content-Type", "text/html; charset=utf-8;")
+                .header("Cache-Control", "public, max-age=" + 0)
+                .post(multipartBody)//传参数、文件或者混合，改一下就行请求体就行
+                .build();
+
+        client.newBuilder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS);
+        client.newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                LogUtils.d("onFailure>>" + e.toString());
+            }
+
+            @Override
+            public void onResponse(Call call, okhttp3.Response response) throws IOException {
+
+                LogUtils.i("xxx", "请求返回结果1>>>" + response.body().toString() + ">>>" + response.toString());
+                if (response.isSuccessful()) {
+
+                    LogUtils.i("xxx", "请求返回结果2>>>" + response.body().string());
+
+                }
+            }
+        });
     }
 }

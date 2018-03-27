@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -99,10 +100,14 @@ public class RegisterActivity extends Activity {
                             mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
                             mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
 
+                            Log.d(TAG1, mLoginSuccess.getToken());
+                            Log.d(TAG1, mUsername);
+                            Log.d(TAG1, file.getAbsolutePath());
+
 
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
-                                    .isMultipart(true)
+//                                    .isMultipart(true)
                                     .params("token", mLoginSuccess.getToken())
                                     .params("username", mUsername)
                                     .params("uploadFile", file)
@@ -118,6 +123,15 @@ public class RegisterActivity extends Activity {
                                             int j = mImgUrl.indexOf("j");
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
+
+
+                                        }
+
+                                        @Override
+                                        public void onError(Response<String> response) {
+                                            super.onError(response);
+
+                                            ToastUtils.showShort("图片上传失败");
 
 
                                         }
@@ -248,6 +262,8 @@ public class RegisterActivity extends Activity {
 //        mImgUrl = intent.getStringExtra("imgUrl");
         mDeviceNO = intent.getStringExtra("scanMessage");
 
+        TextView tvDeviceNo = (TextView) findViewById(R.id.tvDeviceNo);
+        tvDeviceNo.setText(mDeviceNO);
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -418,12 +434,9 @@ public class RegisterActivity extends Activity {
                                     if (result.contains("error")) {
                                         //失败
                                         Toast.makeText(getApplicationContext(),
-                                                "此设备已被登记",
+                                                "上传图片失败，登记失败，请重试",
                                                 Toast.LENGTH_SHORT)
                                                 .show();
-
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                        finish();
 
                                     } else {
                                         //成功
@@ -446,21 +459,6 @@ public class RegisterActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
 
                 }
-
-
-
-
-                /*new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        pDialog.cancel();
-                        Toast.makeText(getApplicationContext(),"登记成功",Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-                        finish();
-
-                    }
-                },1000);*/
 
 
             }
