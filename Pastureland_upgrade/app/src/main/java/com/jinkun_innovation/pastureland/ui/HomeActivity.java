@@ -24,12 +24,9 @@ import com.jinkun_innovation.pastureland.utilcode.AppManager;
 
 public class HomeActivity extends AppCompatActivity {
 
+    public ViewPager viewPager;
     public TabLayout mTabLayout;
 
-    public TabLayout getTablayout() {
-
-        return mTabLayout;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,7 +38,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //Fragment+ViewPager+FragmentViewPager组合的使用
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),
                 this);
         viewPager.setAdapter(adapter);

@@ -248,6 +248,7 @@ public class PublishClaimActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                setResult(RESULT_OK);
                 finish();
 
             }
@@ -397,6 +398,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                             Toast.makeText(getApplicationContext(), "发布牲畜到认领表成功",
                                                     Toast.LENGTH_SHORT).show();
 
+                                            setResult(RESULT_OK);
                                             finish();
 
 
@@ -423,6 +425,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                             Log.d(TAG1, "s1=" + s1);
                                                             ToastUtils.showShort("重新发布成功");
                                                             pDialog.cancel();
+                                                            setResult(RESULT_OK);
                                                             finish();
 
                                                         }

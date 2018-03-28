@@ -97,6 +97,9 @@ public class YangListActivity extends AppCompatActivity {
                                     mAdapter = new MyAdapter(mLivestockVarietyList);
                                     mRecyclerView.setAdapter(mAdapter);
 
+                                    MoveToPosition(mLayoutManager, 0);
+
+
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override
                                         public void onItemClick(View view, int position) {

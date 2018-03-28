@@ -24,7 +24,7 @@
         android:id="@+id/rlGeRenXinxi"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="#127c39"
+        android:background="@mipmap/my_msg_bg"
         >
 
         <ImageView
@@ -60,59 +60,104 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="horizontal">
 
-
-        <ImageView
-            android:id="@+id/ivMuchang"
+        <LinearLayout
+            android:id="@+id/llPastureLand"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:src="@mipmap/muchang"/>
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivMuqun"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_weight="1"
-            android:src="@mipmap/muqun"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/patureland"/>
 
-        <ImageView
-            android:id="@+id/ivRenling"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="牧场"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llMuqun"
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
-            android:src="@mipmap/renling"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/muqun"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="牧群"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llClaim"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/claim"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="认领"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDeviceMsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/device_msg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="设备"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
-
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:src="@mipmap/ui"/>
-
-    <ImageView
-        android:id="@+id/ivShebeiXiaoXi"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="30dp"
-        android:src="@mipmap/shebeixiaoxi"
-        android:visibility="invisible"/>
 
 
     <Button
         android:id="@+id/btnVersion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
         android:text="版本检测"/>
 
 
