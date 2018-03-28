@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -72,7 +73,11 @@ public class RenlingDetailActivity extends Activity {
         mTvCharacter.setText("特点：" + getCharacteristics);
 
         String getCellphone = intent.getStringExtra("getCellphone");
-        mTvPhone.setText("认领人手机：" + getCellphone);
+        if (TextUtils.isEmpty(getCellphone)) {
+            mTvPhone.setText("认领人手机：无");
+        } else {
+            mTvPhone.setText("认领人手机：" + getCellphone);
+        }
 
         String getCreateTime = intent.getStringExtra("getCreateTime");
         tvBirthDay.setText("生日：" + getCreateTime);
@@ -106,4 +111,6 @@ public class RenlingDetailActivity extends Activity {
         finish();
 
     }
+
+
 }

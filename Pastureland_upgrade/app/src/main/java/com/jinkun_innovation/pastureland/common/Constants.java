@@ -16,6 +16,9 @@ public class Constants {
     //http://182.92.3.109:10100 testranch 12345678 这是109访问地址跟用户名密码
     public static final String BASE_URL = "http://182.92.3.109:10100";
 
+
+//    public static final String BASE_URL  ="http://116.95.255.211:10120";
+
     public static final int ranchID = 1;
 
     public static final String token = "ce5cc971-5904-4454-b639-cb8d48215963";
