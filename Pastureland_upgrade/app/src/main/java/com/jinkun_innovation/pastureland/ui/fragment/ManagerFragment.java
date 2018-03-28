@@ -133,7 +133,7 @@ public class ManagerFragment extends Fragment {
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
-                .description("网络图片")
+                .description("科学管理")
                 .image("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=910bc359a7345982d187edd1649d5bd8/b3b7d0a20cf431adcd3914144136acaf2edd9837.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(getActivity());

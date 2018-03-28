@@ -24,7 +24,6 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
-import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -61,13 +60,12 @@ public class RegisterActivity extends Activity {
     private String mAge1;
 
 
-    private SweetAlertDialog mPDialog;
-
-
     private File photoFile;
     private Uri imageUri;//原图保存地址
     private static final int REQUEST_CAPTURE = 2;  //拍照
     private ImageView mIvTakePhoto;
+
+    SweetAlertDialog mDialog;
 
 
     private void cropImage(final String imgUrl) {
@@ -86,6 +84,14 @@ public class RegisterActivity extends Activity {
                             // TODO 压缩开始前调用，可以在方法内启动 loading UI
                             LogUtils.e("onStart");
 //                            mPbLoading.setVisibility(View.VISIBLE);
+                            mDialog = new SweetAlertDialog(RegisterActivity.this,
+                                    SweetAlertDialog.PROGRESS_TYPE);
+                            mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            mDialog.setTitleText("图片正在上传...");
+                            mDialog.setCancelable(false);
+                            mDialog.show();
+
+
                         }
 
                         @Override
@@ -107,7 +113,7 @@ public class RegisterActivity extends Activity {
 
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
-//                                    .isMultipart(true)
+                                    .isMultipart(true)
                                     .params("token", mLoginSuccess.getToken())
                                     .params("username", mUsername)
                                     .params("uploadFile", file)
@@ -131,12 +137,13 @@ public class RegisterActivity extends Activity {
                                         public void onError(Response<String> response) {
                                             super.onError(response);
 
-                                            ToastUtils.showShort("图片上传失败");
+                                            ToastUtils.showShort("图片上传失败,请重新拍摄");
 
 
                                         }
                                     });
 
+                            mDialog.cancel();
 
 //                            Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
@@ -147,11 +154,15 @@ public class RegisterActivity extends Activity {
                         public void onError(Throwable e) {
                             // TODO 当压缩过程出现问题时调用
                             LogUtils.e(e.getMessage());
+
+                            mDialog.cancel();
                             ToastUtils.showShort("压缩出现问题，请重新拍摄");
-                            AppManager.getAppManager().finishActivity();
+
+
 //                            mPbLoading.setVisibility(View.GONE);
                         }
                     }).launch();
+
         }
 
 
@@ -385,19 +396,21 @@ public class RegisterActivity extends Activity {
             @Override
             public void onClick(View view) {
 
-                mPDialog = new SweetAlertDialog(RegisterActivity.this,
-                        SweetAlertDialog.PROGRESS_TYPE);
-                mPDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                mPDialog.setTitleText("上传中...");
-                mPDialog.setCancelable(true);
-                mPDialog.show();
 
                 Log.d(TAG1, mType1);
                 Log.d(TAG1, mVariety1);
                 Log.d(TAG1, mWeight1);
                 Log.d(TAG1, mAge1);
 
-                String type2 = mType1.substring(0, 1);
+                int type = 1;
+                if (mType1.equals("羊")) {
+                    type = 1;
+
+                } else if (mType1.equals("")) {
+
+                }
+
+             /*   String type2 = mType1.substring(0, 1);
                 int type3 = Integer.parseInt(type2);
                 String variety2 = mVariety1.substring(0, 3);
                 int variety3 = Integer.parseInt(variety2);
@@ -408,7 +421,7 @@ public class RegisterActivity extends Activity {
                 Log.d(TAG1, type3 + "");
                 Log.d(TAG1, "" + variety3);
                 Log.d(TAG1, weight3 + "");
-                Log.d(TAG1, "" + age3);
+                Log.d(TAG1, "" + age3);*/
 
                 if (photoFile != null) {
                     OkGo.<String>post(Constants.SAVELIVESTOCK)
@@ -417,17 +430,16 @@ public class RegisterActivity extends Activity {
                             .params("username", mUsername)
                             .params("deviceNO", mDeviceNO)
                             .params("ranchID", mLoginSuccess.getRanchID())
-                            .params("livestockType", type3)
-                            .params("variety", variety3)
-                            .params("weight", weight3)
-                            .params("age", age3)
+                            .params("livestockType", 1)
+                            .params("variety", 100)
+                            .params("weight", 20)
+                            .params("age", 2)
                             .params("imgUrl", mImgUrl)
 
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
 
-                                    mPDialog.cancel();
 
                                     String result = response.body().toString();
                                     Log.d(TAG1, result);
@@ -455,7 +467,7 @@ public class RegisterActivity extends Activity {
                             });
                 } else {
 
-                    mPDialog.cancel();
+
                     Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
 
                 }

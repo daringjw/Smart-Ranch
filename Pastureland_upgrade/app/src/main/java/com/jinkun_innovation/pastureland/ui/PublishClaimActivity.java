@@ -2,7 +2,6 @@ package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,7 +25,6 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
-import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -40,7 +38,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -134,6 +131,14 @@ public class PublishClaimActivity extends AppCompatActivity {
 
 
                                         }
+
+                                        @Override
+                                        public void onError(Response<String> response) {
+                                            super.onError(response);
+
+                                            ToastUtils.showShort("图片上传失败，请重新拍照");
+
+                                        }
                                     });
 
 
@@ -144,10 +149,12 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(Throwable e) {
+
                             // TODO 当压缩过程出现问题时调用
                             LogUtils.e(e.getMessage());
                             ToastUtils.showShort("压缩出现问题，请重新拍摄");
-                            AppManager.getAppManager().finishActivity();
+
+//                            AppManager.getAppManager().finishActivity();
 //                            mPbLoading.setVisibility(View.GONE);
                         }
                     }).launch();
@@ -351,25 +358,15 @@ public class PublishClaimActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(mImgUrl)) {
                     if (!TextUtils.isEmpty(mDeviceNo)) {
 
-                        String type2 = mType1.substring(0, 1);
+                        /*String type2 = mType1.substring(0, 1);
                         final int type3 = Integer.parseInt(type2);
                         String variety2 = mVariety1.substring(0, 3);
                         final int variety3 = Integer.parseInt(variety2);
                         String weight2 = mWeight1.substring(0, 2);
                         final int weight3 = Integer.parseInt(weight2);
                         String age2 = mAge1.substring(0, 1);
-                        final int age3 = Integer.parseInt(age2);
-                        Log.d(TAG1, type3 + "");
-                        Log.d(TAG1, "" + variety3);
-                        Log.d(TAG1, weight3 + "");
-                        Log.d(TAG1, "" + age3);
+                        final int age3 = Integer.parseInt(age2);*/
 
-                        final SweetAlertDialog pDialog = new SweetAlertDialog(PublishClaimActivity.this,
-                                SweetAlertDialog.PROGRESS_TYPE);
-                        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        pDialog.setTitleText("正在发布...");
-                        pDialog.setCancelable(true);
-                        pDialog.show();
 
                         Log.d(TAG1, "mImgUrl1==" + mImgUrl);
 //
@@ -379,10 +376,10 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 .params("username", mUsername)
                                 .params("deviceNO", mIsbn)
                                 .params("ranchID", mLoginSuccess.getRanchID())
-                                .params("livestockType", type3)
-                                .params("variety", variety3)
-                                .params("weight", weight3)
-                                .params("age", age3)
+                                .params("livestockType", 1)
+                                .params("variety", 100)
+                                .params("weight", 20)
+                                .params("age", 20)
                                 .params("imgUrl", mImgUrl)
                                 .execute(new StringCallback() {
                                     @Override
@@ -393,7 +390,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         String s = response.body().toString();
                                         if (s.contains("发布牲畜到认领表成功")) {
 
-                                            pDialog.cancel();
+
                                             //发布认领成功
                                             Toast.makeText(getApplicationContext(), "发布牲畜到认领表成功",
                                                     Toast.LENGTH_SHORT).show();
@@ -404,7 +401,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                                         } else if (s.contains("已经发布过了")) {
 
-                                            pDialog.cancel();
+
                                             //重新发布
                                             OkGo.<String>post(Constants.IS_CLAIMED)
                                                     .tag(this)
@@ -412,10 +409,10 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                     .params("username", mUsername)
                                                     .params("deviceNO", mIsbn)
                                                     .params("ranchID", mLoginSuccess.getRanchID())
-                                                    .params("livestockType", type3)
-                                                    .params("variety", variety3)
-                                                    .params("weight", weight3)
-                                                    .params("age", age3)
+                                                    .params("livestockType", 1)
+                                                    .params("variety", 100)
+                                                    .params("weight", 20)
+                                                    .params("age", 20)
                                                     .params("imgUrl", mImgUrl)
                                                     .execute(new StringCallback() {
                                                         @Override
@@ -424,7 +421,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                             String s1 = response.body().toString();
                                                             Log.d(TAG1, "s1=" + s1);
                                                             ToastUtils.showShort("重新发布成功");
-                                                            pDialog.cancel();
+
                                                             setResult(RESULT_OK);
                                                             finish();
 
@@ -434,7 +431,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                                         } else {
 
-                                            pDialog.cancel();
+
                                             //发布认领失败
                                             Toast.makeText(getApplicationContext(), "发布认领失败",
                                                     Toast.LENGTH_SHORT).show();

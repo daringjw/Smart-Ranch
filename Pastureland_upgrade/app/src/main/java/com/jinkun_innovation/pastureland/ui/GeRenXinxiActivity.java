@@ -19,6 +19,7 @@ import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -91,23 +92,22 @@ public class GeRenXinxiActivity extends AppCompatActivity {
                         String s = response.body().toString();
                         Log.d(TAG1, s);
 
+                        if (s.contains("获取个人信息异常")) {
 
-
-                        Gson gson1 = new Gson();
-                        AdminInfo1 adminInfo = gson1.fromJson(s, AdminInfo1.class);
-
-                        mTvAdminName.setText("姓名：" + adminInfo.getAdminInfo().getUsername());
-                        String sex = adminInfo.getAdminInfo().getSex();
-                        if (sex.equals("1")) {
-
-                            mTvSex.setText("性别：男");
+                            ToastUtils.showShort("获取个人信息异常");
 
                         } else {
-                            mTvSex.setText("性别：女");
-
+                            Gson gson1 = new Gson();
+                            AdminInfo1 adminInfo = gson1.fromJson(s, AdminInfo1.class);
+                            String sex = adminInfo.getAdminInfo().getSex();
+                            if (sex.equals("1")) {
+                                mTvSex.setText("性别：男");
+                            } else {
+                                mTvSex.setText("性别：女");
+                            }
+                            mTvAdminName.setText("姓名：" + adminInfo.getAdminInfo().getUsername());
+                            mTvPhone.setText("电话号码：" + adminInfo.getAdminInfo().getUsername());
                         }
-
-                        mTvPhone.setText("电话号码：" + adminInfo.getAdminInfo().getUsername());
 
 
                     }
@@ -136,6 +136,18 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                     }
                 }, 2000);
+
+
+            }
+        });
+
+
+        ImageView ivTouxiang = (ImageView) findViewById(R.id.ivTouxiang);
+        ivTouxiang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //点击头像
 
 
             }

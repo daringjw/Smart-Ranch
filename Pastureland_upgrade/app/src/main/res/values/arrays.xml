@@ -2,20 +2,20 @@
 <resources>
 
     <string-array name="type">
-        <item>1羊</item>
-        <item>2牛</item>
-        <item>3马</item>
-        <item>4猪</item>
-        <item>5鸡</item>
-        <item>6鹿</item>
+        <item>羊</item>
+        <item>牛</item>
+        <item>马</item>
+        <item>猪</item>
+        <item>鸡</item>
+        <item>鹿</item>
     </string-array>
 
     <string-array name="variety">
-        <item>100 乌珠木泣黑羊</item>
-        <item>101 山羊</item>
-        <item>201 西门塔尔牛</item>
-        <item>301 蒙古马</item>
-        <item>401 草原猪</item>
+        <item>乌珠穆沁黑头羊</item>
+        <item>山羊</item>
+        <item>西门塔尔牛</item>
+        <item>蒙古马</item>
+        <item>草原黑毛猪</item>
 
     </string-array>
 

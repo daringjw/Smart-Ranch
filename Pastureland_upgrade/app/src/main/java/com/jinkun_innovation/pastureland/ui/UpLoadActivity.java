@@ -18,7 +18,6 @@ import com.jinkun_innovation.pastureland.base.BaseActivity;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
-import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
@@ -125,7 +124,9 @@ public class UpLoadActivity extends BaseActivity {
                         public void onStart() {
                             // TODO 压缩开始前调用，可以在方法内启动 loading UI
                             LogUtils.e("onStart");
+
                             mPbLoading.setVisibility(View.VISIBLE);
+
                         }
 
                         @Override
@@ -159,6 +160,13 @@ public class UpLoadActivity extends BaseActivity {
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
 
+                                        }
+
+                                        @Override
+                                        public void onError(Response<String> response) {
+                                            super.onError(response);
+
+                                            ToastUtils.showShort("图片上传失败，请重新拍照");
 
                                         }
                                     });
@@ -167,6 +175,8 @@ public class UpLoadActivity extends BaseActivity {
                             Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
                             mPbLoading.setVisibility(View.GONE);
+
+
                         }
 
                         @Override
@@ -174,7 +184,7 @@ public class UpLoadActivity extends BaseActivity {
                             // TODO 当压缩过程出现问题时调用
                             LogUtils.e(e.getMessage());
                             ToastUtils.showShort("压缩出现问题，请重新拍摄");
-                            AppManager.getAppManager().finishActivity();
+
                             mPbLoading.setVisibility(View.GONE);
                         }
                     }).launch();
