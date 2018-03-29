@@ -49,9 +49,7 @@ import java.util.List;
 
 public class RenlingFragment1 extends Fragment {
 
-
     private static final String TAG1 = RenlingFragment1.class.getSimpleName();
-
 
     String mLogin_success;
     LoginSuccess mLoginSuccess;
@@ -74,6 +72,7 @@ public class RenlingFragment1 extends Fragment {
         intent.putExtra("albumUnable", 1);
         intent.putExtra("cancleUnable", 1);
         startActivityForResult(intent, SCAN_REQUEST_CODE);
+
     }
 
     //  a为原字符串，b为要插入的字符串，t为插入位置
@@ -82,7 +81,7 @@ public class RenlingFragment1 extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
@@ -94,14 +93,37 @@ public class RenlingFragment1 extends Fragment {
                     if (!TextUtils.isEmpty(isbn)) {
                         if (StrLengthUtil.length(isbn) == 16) {
 
+                            //设备是否绑定
+                            OkGo.<String>get(Constants.ISDEVICEBINDED)
+                                    .tag(this)
+                                    .params("token", mLoginSuccess.getToken())
+                                    .params("username", mLoginSuccess.getName())
+                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                    .params("deviceNO", isbn)
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+
+                                            String s = response.body().toString();
+                                            if (s.contains("true")) {
+                                                //已登记
+
+
+                                            } else {
+                                                //未登记
+
+
+                                            }
+
+
+                                        }
+                                    });
 
                             Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
                             intent.putExtra("isbn", isbn);
                             startActivityForResult(intent, 1001);
 
-
                         } else if (StrLengthUtil.length(isbn) == 15) {
-
 
                             String str = Stringinsert(isbn, "1", 7);
                             Log.d(TAG1, "15位isbn=" + str);
@@ -110,12 +132,12 @@ public class RenlingFragment1 extends Fragment {
                             intent.putExtra("isbn", str);
                             startActivityForResult(intent, 1001);
 
-
                         } else {
 
                             ToastUtils.showShort("设备号必须是15位或者16位");
 
                         }
+
                     }
 
                 case 1001:
@@ -128,7 +150,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
                             .params("current", 0)
-                            .params("pagesize", 10)
+                            .params("pagesize", 5)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -204,7 +226,6 @@ public class RenlingFragment1 extends Fragment {
             @Override
             public void onClick(View view) {
 
-
                 //扫描
                 checkedItem = 2;
 
@@ -231,7 +252,7 @@ public class RenlingFragment1 extends Fragment {
                         .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
                         .params("current", 0)
-                        .params("pagesize", 10)
+                        .params("pagesize", 5)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
@@ -240,6 +261,8 @@ public class RenlingFragment1 extends Fragment {
                                 String s = response.body().toString();
                                 Log.d(TAG1, s);
                                 if (s.contains("livestockId")) {
+
+                                    index = 1;
                                     Gson gson1 = new Gson();
                                     RenLing renLing = gson1.fromJson(s, RenLing.class);
                                     mLivestockList = renLing.getLivestockList();
@@ -302,11 +325,10 @@ public class RenlingFragment1 extends Fragment {
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
                         .params("current", index)
-                        .params("pagesize", 10)
+                        .params("pagesize", 5)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
-
 
                                 String s = response.body().toString();
                                 Log.d(TAG1, s);
@@ -319,14 +341,12 @@ public class RenlingFragment1 extends Fragment {
                                     List<RenLing.LivestockListBean> mylist =
                                             renLing.getLivestockList();
 
-                                    if (mylist.size() == 0) {
-                                        ToastUtils.showShort("没有更多数据了");
-
-                                    } else {
+                                    if (mylist.size() != 0) {
                                         for (int i = 0; i < mylist.size(); i++) {
                                             mLivestockList.add(mylist.get(i));
                                         }
-                                        MoveToPosition(mLayoutManager, 10 * (index - 1));
+                                        MoveToPosition(mLayoutManager, 5 * (index - 1));
+
 
                                     }
 
@@ -362,9 +382,7 @@ public class RenlingFragment1 extends Fragment {
 
                                 } else {
 
-
                                     ToastUtils.showShort("没有更多数据了");
-
 
                                 }
 
@@ -385,8 +403,7 @@ public class RenlingFragment1 extends Fragment {
         //设置 Header 为 Material样式
         refreshLayout.setRefreshHeader(funGameHitBlockHeader);
         //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity())
-                .setSpinnerStyle(SpinnerStyle.Scale));
+        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
 
         mRecyclerView = view.findViewById(R.id.my_recycler_view);
         //创建默认的线性LayoutManager
@@ -407,7 +424,7 @@ public class RenlingFragment1 extends Fragment {
                 .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
                 .params("current", 0)
-                .params("pagesize", 10)
+                .params("pagesize", 5)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -419,7 +436,6 @@ public class RenlingFragment1 extends Fragment {
                             Gson gson1 = new Gson();
                             RenLing renLing = gson1.fromJson(s, RenLing.class);
                             mLivestockList = renLing.getLivestockList();
-
 
                             //创建并设置Adapter
                             mAdapter = new MyAdapter(mLivestockList);
@@ -443,18 +459,14 @@ public class RenlingFragment1 extends Fragment {
                                     intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
                                     intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
                                     intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
-
                                     startActivity(intent);
-
 
                                 }
                             });
 
                         } else {
 
-
                         }
-
 
                     }
                 });
@@ -490,6 +502,7 @@ public class RenlingFragment1 extends Fragment {
      * @param manager 设置RecyclerView对应的manager
      * @param n       要跳转的位置
      */
+
     public static void MoveToPosition(LinearLayoutManager manager, int n) {
         manager.scrollToPositionWithOffset(n, 0);
         manager.setStackFromEnd(true);
@@ -543,13 +556,12 @@ public class RenlingFragment1 extends Fragment {
 
 
             String livestockName = datas.get(position).getLivestockName();
-            if (livestockName.equals("100")) {
-                viewHolder.tvAnimalName.setText("乌珠穆泣黑头羊");
-            } else {
-                viewHolder.tvAnimalName.setText(livestockName);
-            }
+            Log.d(TAG1, "livestockName=" + livestockName);
+            viewHolder.tvAnimalName.setText(livestockName);
+
+
             viewHolder.tvId.setText("设备号：" + datas.get(position).getDeviceNo());
-            viewHolder.tvAnimalAge.setText("出生日期：" + datas.get(position).getBirthTime());
+            viewHolder.tvAnimalAge.setText("发布日期：" + datas.get(position).getBirthTime());
             viewHolder.tvMuChang.setText("特点：" + datas.get(position).getCharacteristics());
 
             String claimTime = datas.get(position).getClaimTime();

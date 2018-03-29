@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -251,33 +252,47 @@ public class UpLoadActivity extends BaseActivity {
                 break;
             case 0:
                 //拍照
-                OkGo.<String>post(Constants.RANCHIMGVIDEO)
-                        .tag(this)
-                        .params("token",mLoginSuccess.getToken())
-                        .params("username",mUsername)
-                        .params("ranchID",mLoginSuccess.getRanchID())
-                        .params("fileType",1)
-                        .params("imgUrl",mImgUrl)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
+                Log.d(TAG1,"mImgUrl=="+mImgUrl);
+                if (!TextUtils.isEmpty(mImgUrl)){
+                    OkGo.<String>post(Constants.RANCHIMGVIDEO)
+                            .tag(this)
+                            .params("token",mLoginSuccess.getToken())
+                            .params("username",mUsername)
+                            .params("ranchID",mLoginSuccess.getRanchID())
+                            .params("fileType",1)
+                            .params("imgUrl",mImgUrl)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
 
-                                String s = response.body().toString();
-                                pDialog.cancel();
+                                    String s = response.body().toString();
+                                    pDialog.cancel();
+                                    Log.d(TAG1,s);
 
-                                if (s.contains("success")){
-                                    Toast.makeText(getApplicationContext(),"上传成功",Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(),HomeActivity.class));
-                                    finish();
+                                    if (s.contains("success")){
+                                        Toast.makeText(getApplicationContext(),"上传成功",Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                                        finish();
 
-                                }else {
+                                    }else {
 
-                                    Toast.makeText(getApplicationContext(),"上传失败",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(),"上传失败",Toast.LENGTH_SHORT).show();
+
+                                    }
 
                                 }
+                            });
+                }else {
 
-                            }
-                        });
+                    pDialog.cancel();
+                    new SweetAlertDialog(UpLoadActivity.this,
+                            SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("抱歉...")
+                            .setContentText("网络不稳定,上传图片失败,请返回重新拍摄")
+                            .show();
+
+                }
+
 
 
                 break;

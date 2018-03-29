@@ -9,14 +9,20 @@ public class Constants {
     //朱之用
 //    public static final String BASE_URL = "http://192.168.50.215:8080";
 
-    //测试
-//    public static final String BASE_URL = "http://222.249.165.94:10100";
+    public  static final String IP = "222.249.165.94";
+    public  static final  String PORT = ":10100";
 
-    //正式
+
+    //测试服务器
+    public static final String BASE_URL = "http://" + IP + PORT;
+
+
+
+    //内部正式服务器
     //http://182.92.3.109:10100 testranch 12345678 这是109访问地址跟用户名密码
-    public static final String BASE_URL = "http://182.92.3.109:10100";
+//    public static final String BASE_URL = "http://182.92.3.109:10100";
 
-
+    //客户服务器
 //    public static final String BASE_URL  ="http://116.95.255.211:10120";
 
     public static final int ranchID = 1;

@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
+import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
 import com.jinkun_innovation.pastureland.utils.PhoneFormatCheckUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -54,7 +55,6 @@ public class LoginActivity1 extends AppCompatActivity {
     @BindView(R.id.btnLogin)
     ImageView mBtnLogin;
 
-
     private SweetAlertDialog mPDialog;
 
     @Override
@@ -67,6 +67,9 @@ public class LoginActivity1 extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkRuntimePermissions();
         }
+
+        TextView tvVersion = (TextView) findViewById(R.id.tvVersion);
+        tvVersion.setText("版本号：" + AppUtils.getAppVersionCode() + "，IP="+Constants.IP);
 
 
     }

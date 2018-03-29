@@ -59,6 +59,11 @@ public class RegisterActivity extends Activity {
     private String mWeight1;
     private String mAge1;
 
+    int type;
+    int variety;
+    int weight;
+    int age;
+
 
     private File photoFile;
     private Uri imageUri;//原图保存地址
@@ -84,12 +89,7 @@ public class RegisterActivity extends Activity {
                             // TODO 压缩开始前调用，可以在方法内启动 loading UI
                             LogUtils.e("onStart");
 //                            mPbLoading.setVisibility(View.VISIBLE);
-                            mDialog = new SweetAlertDialog(RegisterActivity.this,
-                                    SweetAlertDialog.PROGRESS_TYPE);
-                            mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                            mDialog.setTitleText("图片正在上传...");
-                            mDialog.setCancelable(false);
-                            mDialog.show();
+
 
 
                         }
@@ -111,6 +111,13 @@ public class RegisterActivity extends Activity {
                             Log.d(TAG1, file.getAbsolutePath());
 
 
+                            mDialog = new SweetAlertDialog(RegisterActivity.this,
+                                    SweetAlertDialog.PROGRESS_TYPE);
+                            mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                            mDialog.setTitleText("图片正在上传...");
+                            mDialog.setCancelable(false);
+                            mDialog.show();
+
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
                                     .isMultipart(true)
@@ -121,6 +128,7 @@ public class RegisterActivity extends Activity {
                                         @Override
                                         public void onSuccess(Response<String> response) {
 
+
                                             String s = response.body().toString();
                                             Log.d(TAG1, s);
                                             Gson gson = new Gson();
@@ -130,6 +138,8 @@ public class RegisterActivity extends Activity {
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
 
+                                            mDialog.cancel();
+
 
                                         }
 
@@ -137,13 +147,19 @@ public class RegisterActivity extends Activity {
                                         public void onError(Response<String> response) {
                                             super.onError(response);
 
-                                            ToastUtils.showShort("图片上传失败,请重新拍摄");
+                                            mDialog.cancel();
+
+                                            new SweetAlertDialog(RegisterActivity.this,
+                                                    SweetAlertDialog.ERROR_TYPE)
+                                                    .setTitleText("抱歉...")
+                                                    .setContentText("网络不稳定,上传图片失败,请重新拍摄")
+                                                    .show();
 
 
                                         }
                                     });
 
-                            mDialog.cancel();
+
 
 //                            Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
@@ -402,26 +418,68 @@ public class RegisterActivity extends Activity {
                 Log.d(TAG1, mWeight1);
                 Log.d(TAG1, mAge1);
 
-                int type = 1;
-                if (mType1.equals("羊")) {
-                    type = 1;
-
-                } else if (mType1.equals("")) {
-
+                if (mAge1.contains("2")) {
+                    age = 2;
+                } else if (mAge1.contains("5")) {
+                    age = 5;
+                } else if (mAge1.contains("8")) {
+                    age = 8;
                 }
 
-             /*   String type2 = mType1.substring(0, 1);
-                int type3 = Integer.parseInt(type2);
-                String variety2 = mVariety1.substring(0, 3);
-                int variety3 = Integer.parseInt(variety2);
-                String weight2 = mWeight1.substring(0, 2);
-                int weight3 = Integer.parseInt(weight2);
-                String age2 = mAge1.substring(0, 1);
-                int age3 = Integer.parseInt(age2);
-                Log.d(TAG1, type3 + "");
-                Log.d(TAG1, "" + variety3);
-                Log.d(TAG1, weight3 + "");
-                Log.d(TAG1, "" + age3);*/
+                if (mWeight1.contains("100")) {
+                    weight = 100;
+                } else if (mWeight1.contains("200")) {
+
+                    weight = 200;
+                } else if (mWeight1.contains("300")) {
+
+                    weight = 300;
+                } else if (mWeight1.contains("400")) {
+
+                    weight = 400;
+                } else if (mWeight1.contains("500")) {
+
+                    weight = 500;
+                }
+
+
+                if (mVariety1.equals("乌珠穆沁黑头羊")) {
+
+                    variety = 100;
+                } else if (mVariety1.equals("山羊")) {
+
+                    variety = 101;
+                } else if (mVariety1.equals("西门塔尔牛")) {
+
+                    variety = 201;
+                } else if (mVariety1.equals("蒙古马")) {
+
+                    variety = 301;
+                } else if (mVariety1.equals("草原黑毛猪")) {
+
+                    variety = 401;
+                }
+
+
+                if (mType1.equals("羊")) {
+
+                    type = 1;
+                } else if (mType1.equals("牛")) {
+
+                    type = 2;
+                } else if (mType1.equals("马")) {
+
+                    type = 3;
+                } else if (mType1.equals("猪")) {
+
+                    type = 4;
+                } else if (mType1.equals("鸡")) {
+
+                    type = 5;
+                } else if (mType1.equals("鹿")) {
+
+                    type = 6;
+                }
 
                 if (photoFile != null) {
                     OkGo.<String>post(Constants.SAVELIVESTOCK)
@@ -430,10 +488,10 @@ public class RegisterActivity extends Activity {
                             .params("username", mUsername)
                             .params("deviceNO", mDeviceNO)
                             .params("ranchID", mLoginSuccess.getRanchID())
-                            .params("livestockType", 1)
-                            .params("variety", 100)
-                            .params("weight", 20)
-                            .params("age", 2)
+                            .params("livestockType", type)
+                            .params("variety", variety)
+                            .params("weight", weight)
+                            .params("age", age)
                             .params("imgUrl", mImgUrl)
 
                             .execute(new StringCallback() {

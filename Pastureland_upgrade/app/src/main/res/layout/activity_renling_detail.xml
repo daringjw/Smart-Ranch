@@ -33,7 +33,7 @@
         android:id="@+id/sdvYang"
         android:layout_width="match_parent"
         android:layout_height="260dp"
-        fresco:actualImageScaleType="fitXY"
+        fresco:actualImageScaleType="centerInside"
         fresco:placeholderImage="@mipmap/detail_yang"/>
 
     <LinearLayout

@@ -52,6 +52,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -316,8 +317,8 @@ public class ManagerFragment extends Fragment {
                                 if (result.contains("true")) {
 
                                     //已绑定
-                                    Toast.makeText(getActivity(), "该设备已登记",
-                                            Toast.LENGTH_SHORT)
+                                    new SweetAlertDialog(getActivity())
+                                            .setTitleText("已经登记过该设备!")
                                             .show();
 
                                 } else {
