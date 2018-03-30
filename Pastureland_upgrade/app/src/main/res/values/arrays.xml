@@ -38,5 +38,34 @@
 
     </string-array>
 
+    <string-array name="tool_type">
+        <item>割草机</item>
+        <item>播种机</item>
+    </string-array>
+
+    <string-array name="tool_sum">
+        <item>1台</item>
+        <item>2台</item>
+        <item>3台</item>
+        <item>4台</item>
+        <item>5台</item>
+    </string-array>
+
+
+    <string-array name="grass_type">
+        <item>干草</item>
+        <item>秸秆</item>
+    </string-array>
+
+    <string-array name="grass_weight">
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+        <item>200</item>
+        <item>250</item>
+        <item>300</item>
+
+    </string-array>
+
 
 </resources>

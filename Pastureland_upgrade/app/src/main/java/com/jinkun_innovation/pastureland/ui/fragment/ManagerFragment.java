@@ -29,6 +29,7 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.GrassActivity;
+import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
 import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
@@ -134,13 +135,13 @@ public class ManagerFragment extends Fragment {
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
-                .description("科学管理")
-                .image("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=910bc359a7345982d187edd1649d5bd8/b3b7d0a20cf431adcd3914144136acaf2edd9837.jpg");
+                .description("科技点亮牧场")
+                .image("https://goss2.vcg.com/creative/vcg/800/version23/VCG41544531487.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(getActivity());
         textSliderView2
                 .description("金坤技术")
-                .image("http://pic2.ooopic.com/12/49/46/19bOOOPICb3_1024.jpg");
+                .image("https://goss1.vcg.com/creative/vcg/800/version23/VCG41544521221.jpg");
 
 
         mSliderShow.addSlider(textSliderView);
@@ -148,6 +149,16 @@ public class ManagerFragment extends Fragment {
         mSliderShow.addSlider(textSliderView2);
 
         mSliderShow.setPresetTransformer(SliderLayout.Transformer.RotateUp);
+
+        LinearLayout llMyMuChang = (LinearLayout) view.findViewById(R.id.llMyMuChang);
+        llMyMuChang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
+
+            }
+        });
 
 
         return view;

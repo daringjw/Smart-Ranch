@@ -554,8 +554,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                             sweetAlertDialog.cancel();
 
-                                                            //重新发布
-                                                            OkGo.<String>post(Constants.IS_CLAIMED)
+
+                                                            OkGo.<String>post(Constants.RELEASE)
                                                                     .tag(this)
                                                                     .params("token", mLoginSuccess.getToken())
                                                                     .params("username", mUsername)

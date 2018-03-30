@@ -72,18 +72,18 @@ public class LianJiangPasturelandActivity extends AppCompatActivity {
         textSliderView
                 .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
-                .image("http://p2.so.qhimgs1.com/t0130237d0b387f9c1e.jpg")
+                .image("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1522338598325&di=d759c65f3c5f75db49522c9d3afdd701&imgtype=0&src=http%3A%2F%2Fpic2.ooopic.com%2F12%2F48%2F45%2F77bOOOPICe3.jpg")
         ;
 
         TextSliderView textSliderView1 = new TextSliderView(this);
         textSliderView1
                 .description("金坤科创")
-                .image("http://pic1.sc.chinaz.com/files/pic/pic9/201803/bpic5936.jpg");
+                .image("https://goss1.vcg.com/creative/vcg/800/version23/VCG41544521221.jpg");
 
         TextSliderView textSliderView2 = new TextSliderView(this);
         textSliderView2
-                .description("科技改变世界")
-                .image("http://pics.sc.chinaz.com/files/pic/pic9/201802/zzpic10394.jpg");
+                .description("科技点亮牧场")
+                .image("https://goss3.vcg.com/creative/vcg/800/version23/VCG41544521229.jpg");
 
 
         mSliderShow.addSlider(textSliderView);

@@ -13,9 +13,12 @@ public class Constants {
     public  static final  String PORT = ":10100";
 
 
+//    public static final String IP = "192.168.50.215";
+//    public static final String PORT = ":8080";
+
+
     //测试服务器
     public static final String BASE_URL = "http://" + IP + PORT;
-
 
 
     //内部正式服务器

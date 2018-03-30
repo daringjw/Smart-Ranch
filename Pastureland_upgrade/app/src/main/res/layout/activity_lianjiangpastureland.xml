@@ -5,6 +5,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
+        android:background="#127c39"
         android:layout_width="match_parent"
         android:layout_height="50dp">
 
@@ -20,9 +21,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="连江牧场"/>
+            android:textColor="#fff"
+            android:text="我的牧场"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tvEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

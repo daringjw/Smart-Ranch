@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.ToolBean;
+import com.jinkun_innovation.pastureland.ui.dialog.AddGrassDialog;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -20,11 +24,17 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Guan on 2018/3/19.
  */
 
-public class ToolsActivity extends Activity{
+public class ToolsActivity extends Activity {
+
+    private static final String TAG1 = ToolsActivity.class.getSimpleName();
+    private List<ToolBean> mToolBeanList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +42,10 @@ public class ToolsActivity extends Activity{
 
 
         setContentView(R.layout.activity_tools);
+
+        if (mToolBeanList==null){
+            mToolBeanList = new ArrayList<ToolBean>();
+        }
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +90,42 @@ public class ToolsActivity extends Activity{
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 //创建并设置Adapter
-        mAdapter = new MyAdapter(getDummyDatas());
-        mRecyclerView.setAdapter(mAdapter);
 
+        if (mToolBeanList!=null){
+            mAdapter = new MyAdapter(mToolBeanList);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+
+
+
+        ImageView ivAdd = (ImageView) findViewById(R.id.ivAdd);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                AddGrassDialog dialog = new AddGrassDialog(ToolsActivity.this, new AddGrassDialog.PriorityListener() {
+                    @Override
+                    public void refreshPriorityUI(ToolBean toolBean) {
+
+//                        ToastUtils.showShort(string);
+                        Log.d(TAG1, "tool_type=" + toolBean.tool_type);
+                        Log.d(TAG1, "tool_sum=" + toolBean.tool_sum);
+
+                        toolBean.time = TimeUtils.getNowString();
+                        mToolBeanList.add(toolBean);
+                        mAdapter.notifyDataSetChanged();
+
+
+
+                    }
+                });
+
+                dialog.show();
+
+
+            }
+        });
 
 
     }
@@ -97,12 +144,13 @@ public class ToolsActivity extends Activity{
     private MyAdapter mAdapter;
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , String[] data);
+        void onItemClick(View view, String[] data);
 
 
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.mOnItemClickListener = listener;
 
@@ -110,10 +158,11 @@ public class ToolsActivity extends Activity{
     }
 
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
-        public String[] datas = null;
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
 
-        public MyAdapter(String[] datas) {
+        public List<ToolBean> datas = null;
+
+        public MyAdapter(List<ToolBean> datas) {
             this.datas = datas;
         }
 
@@ -138,6 +187,11 @@ public class ToolsActivity extends Activity{
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
+            viewHolder.tvToolType.setText(datas.get(position).tool_type);
+            viewHolder.tvTime.setText("日期：" + datas.get(position).time);
+            viewHolder.tvNum.setText(datas.get(position).tool_sum);
+
+
         }
 
         @Override
@@ -152,24 +206,29 @@ public class ToolsActivity extends Activity{
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 3;
+            return datas.size();
         }
 
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView mTextView;
+
+            public TextView tvToolType, tvTime, tvNum;
 
             public ViewHolder(View view) {
                 super(view);
 //                mTextView = view.findViewById(R.id.tvClaim);
+
+                tvToolType = (TextView) view.findViewById(R.id.tvToolType);
+                tvTime = (TextView) view.findViewById(R.id.tvTime);
+                tvNum = (TextView) view.findViewById(R.id.tvNum);
+
 
             }
 
         }
 
     }
-
 
 
 }
