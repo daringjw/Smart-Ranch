@@ -56,6 +56,7 @@ public class LoginActivity1 extends AppCompatActivity {
     ImageView mBtnLogin;
 
     private SweetAlertDialog mPDialog;
+    private String mUsername;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +70,13 @@ public class LoginActivity1 extends AppCompatActivity {
         }
 
         TextView tvVersion = (TextView) findViewById(R.id.tvVersion);
-        tvVersion.setText("版本号：" + AppUtils.getAppVersionCode() + "，IP="+Constants.IP);
+        tvVersion.setText("版本号：" + AppUtils.getAppVersionCode() + "，IP=" + Constants.IP);
+
+
+        mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
+        if (!TextUtils.isEmpty(mUsername)) {
+            mTieAccount.setText(mUsername);
+        }
 
 
     }
@@ -160,6 +167,8 @@ public class LoginActivity1 extends AppCompatActivity {
                                                         Toast.LENGTH_SHORT).show();
                                                 mPDialog.cancel();
                                             } else if (result.contains("token")) {
+
+
                                                 //登陆成功
                                                 PrefUtils.setString(getApplicationContext(), "login_success", result);
                                                 PrefUtils.setString(getApplicationContext(), "username", account);

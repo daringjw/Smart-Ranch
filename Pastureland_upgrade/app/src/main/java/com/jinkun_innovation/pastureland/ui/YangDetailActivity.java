@@ -76,7 +76,7 @@ public class YangDetailActivity extends Activity {
         String getDeviceNo = intent.getStringExtra("getDeviceNo");
         mTvDevcieNO.setText("设备号：" + getDeviceNo);
         String getWeight = intent.getStringExtra("getWeight");
-        mTvWeight.setText("体重：" + getWeight + "kg");
+        mTvWeight.setText("价格：" + getWeight + " 元");
         String getBindStatus = intent.getStringExtra("getBindStatus");
         if (getBindStatus.equals("1")) {
             mTvBindStatus.setText("绑定状态：已绑定");

@@ -601,7 +601,7 @@ public class RenlingFragment extends Fragment {
 
                 viewHolder.tvPriceAndClaim.setText("价格：" +
                         datas.get(position).getPrice()
-                        + "     已认领");
+                        + "元     已认领");
 
             }
 

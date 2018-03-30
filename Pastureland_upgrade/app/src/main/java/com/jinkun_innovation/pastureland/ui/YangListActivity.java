@@ -397,7 +397,7 @@ public class YangListActivity extends AppCompatActivity {
             }
             viewHolder.tvDeviceNo.setText("设备号：" + datas.get(position).getDeviceNo());
             viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getUpdateTime());
-            viewHolder.tvLocation.setText("体重：" + datas.get(position).getWeight() + " KG");
+            viewHolder.tvLocation.setText("价格：" + datas.get(position).getWeight() + " 元");
 
         }
 
