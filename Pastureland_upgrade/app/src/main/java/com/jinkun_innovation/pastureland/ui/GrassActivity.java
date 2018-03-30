@@ -61,7 +61,7 @@ public class GrassActivity extends Activity {
 
                         grassBean.grass_time = TimeUtils.getNowString();
 
-                        mGrassBeanList.add(grassBean);
+                        mGrassBeanList.add(0, grassBean);
 
                         //数据存储
                         GrassManager.getInstance().setGrassBeanList(mGrassBeanList);

@@ -325,7 +325,7 @@ public class RenlingFragment1 extends Fragment {
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
                         .params("current", index)
-                        .params("pagesize", 5)
+                        .params("pagesize", 3)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
@@ -345,7 +345,7 @@ public class RenlingFragment1 extends Fragment {
                                         for (int i = 0; i < mylist.size(); i++) {
                                             mLivestockList.add(mylist.get(i));
                                         }
-                                        MoveToPosition(mLayoutManager, 5 * (index - 1));
+                                        MoveToPosition(mLayoutManager, 3 * (index - 1));
 
 
                                     }

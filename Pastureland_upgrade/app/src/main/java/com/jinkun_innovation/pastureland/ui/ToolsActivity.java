@@ -113,7 +113,7 @@ public class ToolsActivity extends Activity {
 
                         toolBean.time = TimeUtils.getNowString();
 
-                        mToolBeanList.add(toolBean);
+                        mToolBeanList.add(0, toolBean);
 
                         //数据存储
                         ToolsManager.getInstance().setToolBeanList(mToolBeanList);
@@ -190,6 +190,13 @@ public class ToolsActivity extends Activity {
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
+            String tool_type = datas.get(position).tool_type;
+            if (tool_type.equals("割草机")) {
+                viewHolder.ivIcon.setImageResource(R.mipmap.gecaoji2);
+            } else {
+                viewHolder.ivIcon.setImageResource(R.mipmap.bozhongji1);
+            }
+
             viewHolder.tvToolType.setText(datas.get(position).tool_type);
             viewHolder.tvTime.setText("日期：" + datas.get(position).time);
             viewHolder.tvNum.setText(datas.get(position).tool_sum);
@@ -217,10 +224,14 @@ public class ToolsActivity extends Activity {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             public TextView tvToolType, tvTime, tvNum;
+            public ImageView ivIcon;
 
             public ViewHolder(View view) {
                 super(view);
 //                mTextView = view.findViewById(R.id.tvClaim);
+
+                ivIcon = view.findViewById(R.id.ivIcon);
+
 
                 tvToolType = (TextView) view.findViewById(R.id.tvToolType);
                 tvTime = (TextView) view.findViewById(R.id.tvTime);

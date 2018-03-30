@@ -52,7 +52,7 @@ public class AddToolDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.dialog_add_grass);
+        setContentView(R.layout.dialog_add_tool);
 
 
         Button btnCancel = (Button) findViewById(R.id.btnCancel);
@@ -74,7 +74,6 @@ public class AddToolDialog extends Dialog {
 
                 cancel();
 //                listener.refreshPriorityUI("数据来自：上");
-
 
                 switch (tool_type) {
 
