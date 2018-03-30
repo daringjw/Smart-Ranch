@@ -23,6 +23,7 @@ android {
 
     defaultConfig {
 
+        multiDexEnabled true
         applicationId "com.jinkun_innovation.pastureland"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -38,6 +39,7 @@ android {
         }
 
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -62,6 +64,9 @@ android {
 
     }
 }
+
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -113,6 +118,11 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-1'//没有使用特殊Header，可以不加这行
 
     compile 'com.facebook.fresco:fresco:0.12.0'
+
+
+
+
+
 
 
 

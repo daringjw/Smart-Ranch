@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ToolBean;
+import com.jinkun_innovation.pastureland.manager.ToolsManager;
 import com.jinkun_innovation.pastureland.ui.dialog.AddGrassDialog;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
@@ -24,7 +25,6 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,6 +36,7 @@ public class ToolsActivity extends Activity {
     private static final String TAG1 = ToolsActivity.class.getSimpleName();
     private List<ToolBean> mToolBeanList;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,9 +44,8 @@ public class ToolsActivity extends Activity {
 
         setContentView(R.layout.activity_tools);
 
-        if (mToolBeanList==null){
-            mToolBeanList = new ArrayList<ToolBean>();
-        }
+        mToolBeanList = ToolsManager.getInstance().getToolBeanList();
+
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -91,11 +91,10 @@ public class ToolsActivity extends Activity {
         mRecyclerView.setHasFixedSize(true);
 //创建并设置Adapter
 
-        if (mToolBeanList!=null){
+        if (mToolBeanList != null) {
             mAdapter = new MyAdapter(mToolBeanList);
             mRecyclerView.setAdapter(mAdapter);
         }
-
 
 
         ImageView ivAdd = (ImageView) findViewById(R.id.ivAdd);
@@ -113,9 +112,13 @@ public class ToolsActivity extends Activity {
                         Log.d(TAG1, "tool_sum=" + toolBean.tool_sum);
 
                         toolBean.time = TimeUtils.getNowString();
-                        mToolBeanList.add(toolBean);
-                        mAdapter.notifyDataSetChanged();
 
+                        mToolBeanList.add(toolBean);
+
+                        //数据存储
+                        ToolsManager.getInstance().setToolBeanList(mToolBeanList);
+
+                        mAdapter.notifyDataSetChanged();
 
 
                     }
