@@ -2,11 +2,14 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
     android:layout_height="150dp"
+    android:background="@mipmap/item_bg"
     android:orientation="horizontal">
 
 
     <ImageView
+        android:id="@+id/ivIcon"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="@mipmap/gancao"/>
@@ -19,12 +22,14 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvGancao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="干草"
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/tvWhatGancao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -32,6 +37,7 @@
 
 
         <TextView
+            android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -39,18 +45,17 @@
 
 
         <TextView
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_marginRight="20dp"
-            android:layout_gravity="right"
+            android:id="@+id/tvWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="10dp"
-            android:text="350kg"/>
+            android:text="350kg"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>

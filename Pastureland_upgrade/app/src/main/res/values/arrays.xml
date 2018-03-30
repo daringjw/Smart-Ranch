@@ -58,13 +58,11 @@
     </string-array>
 
     <string-array name="grass_weight">
-        <item>50</item>
-        <item>100</item>
-        <item>150</item>
-        <item>200</item>
-        <item>250</item>
-        <item>300</item>
-
+        <item>50千克</item>
+        <item>100千克</item>
+        <item>150千克</item>
+        <item>200千克</item>
+        <item>250千克</item>
     </string-array>
 
 

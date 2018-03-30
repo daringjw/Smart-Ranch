@@ -10,18 +10,17 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.jinkun_innovation.pastureland.R;
-import com.jinkun_innovation.pastureland.bean.GrassBean;
+import com.jinkun_innovation.pastureland.bean.ToolBean;
 
 /**
  * Created by Guan on 2018/3/29.
  */
 
-public class AddGrassDialog extends Dialog {
+public class AddToolDialog extends Dialog {
 
 
     Context mContext;
-
-    private GrassBean mGrassBean;
+    private ToolBean mToolBean;
 
     /**
      * 自定义Dialog监听器
@@ -30,14 +29,14 @@ public class AddGrassDialog extends Dialog {
         /**
          * 回调函数，用于在Dialog的监听事件触发后刷新Activity的UI显示
          */
-        public void refreshPriorityUI(GrassBean grassBean);
+        public void refreshPriorityUI(ToolBean toolBean);
 
 
     }
 
     private PriorityListener listener;
 
-    public AddGrassDialog(@NonNull Context context, PriorityListener listener) {
+    public AddToolDialog(@NonNull Context context, PriorityListener listener) {
 
         super(context);
 
@@ -66,7 +65,7 @@ public class AddGrassDialog extends Dialog {
             }
         });
 
-        mGrassBean = new GrassBean();
+        mToolBean = new ToolBean();
 
         Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -76,41 +75,51 @@ public class AddGrassDialog extends Dialog {
                 cancel();
 //                listener.refreshPriorityUI("数据来自：上");
 
+
                 switch (tool_type) {
 
                     case 0:
-                        //甘草
-                        mGrassBean.grass_type = "干草";
+                        //割草机
+                        mToolBean.tool_type = "割草机";
                         switch (tool_num) {
 
                             case 0:
                                 // 1 台
-                                mGrassBean.grass_weight = "50千克";
+                                mToolBean.tool_sum = "1台";
+                                listener.refreshPriorityUI(mToolBean);
 
 
                                 break;
                             case 1:
                                 // 2 台
-                                mGrassBean.grass_weight = "100千克";
+                                mToolBean.tool_sum = "2台";
+                                listener.refreshPriorityUI(mToolBean);
 
                                 break;
                             case 2:
                                 // 3 台
-                                mGrassBean.grass_weight = "150千克";
+                                mToolBean.tool_sum = "3台";
+
+                                listener.refreshPriorityUI(mToolBean);
 
 
                                 break;
                             case 3:
                                 // 4台
-                                mGrassBean.grass_weight = "200千克";
+                                mToolBean.tool_sum = "4台";
+
+                                listener.refreshPriorityUI(mToolBean);
 
 
                                 break;
                             case 4:
                                 // 5 台
-                                mGrassBean.grass_weight = "250千克";
+                                mToolBean.tool_sum = "5台";
+
+                                listener.refreshPriorityUI(mToolBean);
 
                                 break;
+
 
                         }
 
@@ -118,47 +127,53 @@ public class AddGrassDialog extends Dialog {
                         break;
 
                     case 1:
-                        //秸秆
-                        mGrassBean.grass_type = "秸秆";
-
+                        //播种机
+                        mToolBean.tool_type = "播种机";
                         switch (tool_num) {
 
                             case 0:
                                 // 1 台
-                                mGrassBean.grass_weight = "50千克";
+                                mToolBean.tool_sum = "1台";
+                                listener.refreshPriorityUI(mToolBean);
 
 
                                 break;
                             case 1:
                                 // 2 台
-                                mGrassBean.grass_weight = "100千克";
+                                mToolBean.tool_sum = "2台";
+                                listener.refreshPriorityUI(mToolBean);
 
                                 break;
                             case 2:
                                 // 3 台
-                                mGrassBean.grass_weight = "150千克";
+                                mToolBean.tool_sum = "3台";
+
+                                listener.refreshPriorityUI(mToolBean);
 
 
                                 break;
                             case 3:
                                 // 4台
-                                mGrassBean.grass_weight = "200千克";
+                                mToolBean.tool_sum = "4台";
+
+                                listener.refreshPriorityUI(mToolBean);
+
 
                                 break;
-
                             case 4:
                                 // 5 台
-                                mGrassBean.grass_weight = "250千克";
+                                mToolBean.tool_sum = "5台";
+
+                                listener.refreshPriorityUI(mToolBean);
 
                                 break;
 
                         }
 
+
                         break;
 
                 }
-
-                listener.refreshPriorityUI(mGrassBean);
 
 
             }

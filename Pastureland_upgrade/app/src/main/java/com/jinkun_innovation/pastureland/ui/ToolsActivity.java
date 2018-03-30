@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ToolBean;
 import com.jinkun_innovation.pastureland.manager.ToolsManager;
-import com.jinkun_innovation.pastureland.ui.dialog.AddGrassDialog;
+import com.jinkun_innovation.pastureland.ui.dialog.AddToolDialog;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -103,7 +103,7 @@ public class ToolsActivity extends Activity {
             public void onClick(View view) {
 
 
-                AddGrassDialog dialog = new AddGrassDialog(ToolsActivity.this, new AddGrassDialog.PriorityListener() {
+                AddToolDialog dialog = new AddToolDialog(ToolsActivity.this, new AddToolDialog.PriorityListener() {
                     @Override
                     public void refreshPriorityUI(ToolBean toolBean) {
 

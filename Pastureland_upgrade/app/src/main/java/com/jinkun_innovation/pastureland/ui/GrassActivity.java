@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.GrassBean;
+import com.jinkun_innovation.pastureland.manager.GrassManager;
+import com.jinkun_innovation.pastureland.ui.dialog.AddGrassDialog;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
@@ -20,17 +25,59 @@ import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.List;
+
 /**
  * Created by Guan on 2018/3/19.
  */
 
-public class GrassActivity extends Activity{
+public class GrassActivity extends Activity {
+
+
+    private static final String TAG1 = GrassActivity.class.getSimpleName();
+    private List<GrassBean> mGrassBeanList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_grass);
+
+        mGrassBeanList = GrassManager.getInstance().getGrassBeanList();
+
+
+        ImageView ivAdd = (ImageView) findViewById(R.id.ivAdd);
+        ivAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AddGrassDialog dialog = new AddGrassDialog(GrassActivity.this, new AddGrassDialog.PriorityListener() {
+                    @Override
+                    public void refreshPriorityUI(GrassBean grassBean) {
+
+//                        ToastUtils.showShort(string);
+                        Log.d(TAG1, "grass_type=" + grassBean.grass_type);
+                        Log.d(TAG1, "grass_weight=" + grassBean.grass_weight);
+
+                        grassBean.grass_time = TimeUtils.getNowString();
+
+                        mGrassBeanList.add(grassBean);
+
+                        //数据存储
+                        GrassManager.getInstance().setGrassBeanList(mGrassBeanList);
+
+                        mAdapter.notifyDataSetChanged();
+
+
+                    }
+                });
+
+                dialog.show();
+
+
+            }
+        });
+
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +122,7 @@ public class GrassActivity extends Activity{
 //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
 //创建并设置Adapter
-        mAdapter = new MyAdapter(getDummyDatas());
+        mAdapter = new MyAdapter(mGrassBeanList);
         mRecyclerView.setAdapter(mAdapter);
 
     }
@@ -94,12 +141,13 @@ public class GrassActivity extends Activity{
     private MyAdapter mAdapter;
 
     public static interface OnRecyclerViewItemClickListener {
-        void onItemClick(View view , String[] data);
+        void onItemClick(View view, String[] data);
 
 
     }
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
     public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         this.mOnItemClickListener = listener;
 
@@ -107,16 +155,18 @@ public class GrassActivity extends Activity{
     }
 
 
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener{
-        public String[] datas = null;
+    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
 
-        public MyAdapter(String[] datas) {
+        public List<GrassBean> datas = null;
+
+        public MyAdapter(List<GrassBean> datas) {
             this.datas = datas;
         }
 
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_grass, viewGroup, false);
             ViewHolder vh = new ViewHolder(view);
 
@@ -135,6 +185,20 @@ public class GrassActivity extends Activity{
             //将数据保存在itemView的Tag中，以便点击时进行获取
 //            viewHolder.itemView.setTag(datas[position]);
 
+            String grass_type = datas.get(position).grass_type;
+            if (grass_type.equals("干草")) {
+                viewHolder.ivIcon.setImageResource(R.mipmap.gancao);
+                viewHolder.tvWhatGancao.setText("晒干的牧场青草");
+            } else {
+                viewHolder.ivIcon.setImageResource(R.mipmap.jiegan);
+                viewHolder.tvWhatGancao.setText("玉米秸秆粉碎料");
+            }
+
+            viewHolder.tvGancao.setText(grass_type);
+            viewHolder.tvTime.setText(datas.get(position).grass_time);
+            viewHolder.tvWeight.setText(datas.get(position).grass_weight);
+
+
         }
 
         @Override
@@ -149,24 +213,32 @@ public class GrassActivity extends Activity{
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 3;
+            return datas.size();
         }
 
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
         public class ViewHolder extends RecyclerView.ViewHolder {
-            public TextView mTextView;
+
+            public ImageView ivIcon;
+            public TextView tvGancao, tvWhatGancao, tvTime, tvWeight;
 
             public ViewHolder(View view) {
                 super(view);
+
 //                mTextView = view.findViewById(R.id.tvClaim);
+                ivIcon = view.findViewById(R.id.ivIcon);
+                tvGancao = view.findViewById(R.id.tvGancao);
+                tvWhatGancao = view.findViewById(R.id.tvWhatGancao);
+                tvTime = view.findViewById(R.id.tvTime);
+                tvWeight = view.findViewById(R.id.tvWeight);
+
 
             }
 
         }
 
     }
-
 
 
 }
