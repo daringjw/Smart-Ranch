@@ -38,10 +38,12 @@ import static com.jinkun_innovation.pastureland.utilcode.AppManager.getAppManage
 public class GeRenXinxiActivity extends AppCompatActivity {
 
     private static final String TAG1 = GeRenXinxiActivity.class.getSimpleName();
+
+
     @BindView(R.id.ivBack)
     ImageView mIvBack;
-    @BindView(R.id.ivTouxiang)
-    ImageView mIvTouxiang;
+    @BindView(R.id.iv_personal_icon)
+    ImageView iv_personal_icon;
     @BindView(R.id.tvAdminName)
     TextView mTvAdminName;
     @BindView(R.id.tvSex)
@@ -136,18 +138,6 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                     }
                 }, 2000);
-
-
-            }
-        });
-
-
-        ImageView ivTouxiang = (ImageView) findViewById(R.id.ivTouxiang);
-        ivTouxiang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //点击头像
 
 
             }

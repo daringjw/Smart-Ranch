@@ -15,4 +15,7 @@
         name="beta_external_files_path"
         path="Android/data/"/>
 
+    <external-path path="Android/data/com.lt.uploadpicdemo/" name="files_root" />
+    <external-path path="." name="external_storage_root" />
+
 </paths>

@@ -17,6 +17,7 @@ import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.MuqunSum;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.YangListActivity;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -80,14 +81,18 @@ public class MuqunFragment extends Fragment {
                         if (s.contains("牧场无牲畜")) {
                             tvYangNo.setText(0 + "头");
 
-                        } else {
+                        } else if (s.contains("获取牲畜类型和数量成功")) {
+
                             Gson gson1 = new Gson();
                             MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
                             MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
-                            if (typeMap !=null){
-                                int typeMap_$1 = typeMap.get_$1();
-                                tvYangNo.setText(typeMap_$1 + "头");
-                            }
+                            int typeMap_$1 = typeMap.get_$1();
+                            tvYangNo.setText(typeMap_$1 + "头");
+
+
+                        } else {
+
+                            ToastUtils.showShort("获取牲畜类型和数量失败，请检查网络");
 
                         }
 

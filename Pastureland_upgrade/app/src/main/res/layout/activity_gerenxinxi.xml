@@ -28,13 +28,21 @@
     </RelativeLayout>
 
 
-    <ImageView
-        android:id="@+id/ivTouxiang"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:src="@mipmap/touxiang"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#51CA65"
+        android:padding="30dp" >
+
+        <ImageView
+            android:id="@+id/iv_personal_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+
+            android:src="@mipmap/default_personal_image" />
+
+    </RelativeLayout>
 
 
     <TextView
