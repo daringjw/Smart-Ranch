@@ -98,7 +98,6 @@ public class MaListActivity extends AppCompatActivity {
                                     mAdapter = new MyAdapter(mLivestockVarietyList);
                                     mRecyclerView.setAdapter(mAdapter);
 
-                                    MoveToPosition(mLayoutManager, 0);
 
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override

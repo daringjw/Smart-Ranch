@@ -258,6 +258,7 @@ public class PublishClaimActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mIsbn = intent.getStringExtra("isbn");
 
+
         TextView etDeviceNo = (TextView) findViewById(R.id.etDeviceNo);
         etDeviceNo.setText(mIsbn);
         mDeviceNo = etDeviceNo.getText().toString();
@@ -266,6 +267,51 @@ public class PublishClaimActivity extends AppCompatActivity {
         Gson gson = new Gson();
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
+
+
+        //设备是否绑定， 没绑定弹出dialog提示，点击确定和取消 finish
+        OkGo.<String>get(Constants.ISDEVICEBINDED)
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .params("deviceNO", mIsbn)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        if (s.contains("false")) {
+                            //未绑定
+                            ToastUtils.showShort("未登记牲畜不能发布认领");
+                            finish();
+
+                        } else if (s.contains("true")) {
+
+                            //登记牲畜，查询发布情况
+                            OkGo.<String>get(Constants.SELECT_LIVE_STOCK)
+                                    .tag(this)
+                                    .params("token", mLoginSuccess.getToken())
+                                    .params("username", mUsername)
+                                    .params("deviceNO", mIsbn)
+                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+
+                                            String s1 = response.body().toString();
+                                            Log.d(TAG1,s1);
+
+
+                                        }
+                                    });
+
+
+                        }
+
+                    }
+                });
 
         mIvTakePhoto = (ImageView) findViewById(R.id.ivTakePhoto);
         mIvTakePhoto.setOnClickListener(new View.OnClickListener() {
@@ -534,7 +580,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                     .show();
 
 
-                                        } else if (s.contains("牲畜信息为空或者没有这个品种,发布不成功")){
+                                        } else if (s.contains("牲畜信息为空或者没有这个品种,发布不成功")) {
 
 
                                             new SweetAlertDialog(PublishClaimActivity.this, SweetAlertDialog.WARNING_TYPE)

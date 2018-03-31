@@ -271,7 +271,6 @@ public class RenlingFragment1 extends Fragment {
                                     mAdapter = new MyAdapter(mLivestockList);
                                     mRecyclerView.setAdapter(mAdapter);
 
-                                    MoveToPosition(mLayoutManager, 0);
 
 
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
