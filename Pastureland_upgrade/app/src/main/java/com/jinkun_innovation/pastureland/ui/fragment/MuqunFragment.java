@@ -17,7 +17,9 @@ import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.MuqunSum;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.YangListActivity;
-import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
+import com.jinkun_innovation.pastureland.ui.activity.MaListActivity;
+import com.jinkun_innovation.pastureland.ui.activity.NiuListActivity;
+import com.jinkun_innovation.pastureland.ui.activity.PigListActivity;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -42,15 +44,21 @@ public class MuqunFragment extends Fragment {
     ImageView mIvNiu;
     @BindView(R.id.ivMa)
     ImageView mIvMa;
+    @BindView(R.id.ivPig)
+    ImageView mIvPig;
+
     @BindView(R.id.tvYangNo)
     TextView tvYangNo;
 
     Unbinder unbinder;
 
-
     String mLogin_success;
     LoginSuccess mLoginSuccess;
     String mUsername;
+
+    private TextView mTvNiuNo;
+    private TextView mTvMaNo;
+    private TextView mTvDeerNo;
 
     @Nullable
     @Override
@@ -61,6 +69,11 @@ public class MuqunFragment extends Fragment {
 
         View view = View.inflate(getActivity(), R.layout.fragment_muqun, null);
         unbinder = ButterKnife.bind(this, view);
+
+        mTvNiuNo = view.findViewById(R.id.tvNiuNo);
+        mTvMaNo = view.findViewById(R.id.tvMaNo);
+        mTvDeerNo = view.findViewById(R.id.tvDeerNo);
+
 
         mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
         Gson gson = new Gson();
@@ -88,11 +101,14 @@ public class MuqunFragment extends Fragment {
                             MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
                             int typeMap_$1 = typeMap.get_$1();
                             tvYangNo.setText(typeMap_$1 + "头");
+                            mTvNiuNo.setText(typeMap.get_$2() + "头");
+                            mTvMaNo.setText(typeMap.get_$3() + "头");
+                            mTvDeerNo.setText(typeMap.get_$4() + "头");
 
 
                         } else {
 
-                            ToastUtils.showShort("获取牲畜类型和数量失败，请检查网络");
+
 
                         }
 
@@ -112,23 +128,36 @@ public class MuqunFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ivYang, R.id.ivNiu, R.id.ivMa})
+    @OnClick({R.id.ivYang, R.id.ivNiu, R.id.ivMa ,R.id.ivPig})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivYang:
 
                 startActivity(new Intent(getActivity(), YangListActivity.class));
 
-
                 break;
+
             case R.id.ivNiu:
 
+                startActivity(new Intent(getActivity(), NiuListActivity.class));
 
                 break;
+
             case R.id.ivMa:
 
+                startActivity(new Intent(getActivity(), MaListActivity.class));
 
                 break;
+
+            case R.id.ivPig:
+
+                startActivity(new Intent(getActivity(), PigListActivity.class));
+
+                break;
+
+
+
+
         }
     }
 

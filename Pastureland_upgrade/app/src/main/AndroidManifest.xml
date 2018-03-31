@@ -112,6 +112,22 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.activity.NiuListActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.MaListActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.PigListActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
             android:name=".ui.ToolsActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
@@ -173,8 +189,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"/>
         </provider>
-
-
 
 
     </application>

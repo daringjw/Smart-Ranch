@@ -66,10 +66,14 @@ public class YangDetailActivity extends Activity {
         Log.d(TAG1,"getVariety="+getVariety);
         if (getVariety.equals("100")){
             mTvVariety.setText("品种：乌珠木漆黑羊");
-        }else {
-
+        }else if(getVariety.equals("101")){
             mTvVariety.setText("品种：山羊");
-
+        }else if(getVariety.equals("201")){
+            mTvVariety.setText("品种：西门塔尔牛");
+        }else if (getVariety.equals("301")){
+            mTvVariety.setText("品种：蒙古马");
+        }else if (getVariety.equals("401")){
+            mTvVariety.setText("品种：草原黑毛猪");
         }
 
 
