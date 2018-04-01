@@ -111,6 +111,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnDetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="详细介绍的内容"/>

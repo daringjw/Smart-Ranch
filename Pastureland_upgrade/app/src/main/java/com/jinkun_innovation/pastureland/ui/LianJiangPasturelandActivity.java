@@ -21,6 +21,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.activity.MuchangDetailActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ImageUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -113,6 +114,16 @@ public class LianJiangPasturelandActivity extends AppCompatActivity {
             }
         });
 
+
+        Button btnDetail = (Button) findViewById(R.id.btnDetail);
+        btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(getApplicationContext(), MuchangDetailActivity.class));
+
+            }
+        });
 
 
     }

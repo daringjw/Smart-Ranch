@@ -116,6 +116,8 @@ public class YangDetailActivity extends Activity {
                             }
 
                             String introduce = lives.getIntroduce();
+                            PrefUtils.setString(getApplicationContext(),"introduce",introduce);
+
                             tvDetail.setText(introduce);
 
 

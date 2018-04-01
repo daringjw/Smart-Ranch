@@ -157,6 +157,11 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.activity.MuchangDetailActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name=".ui.YangDetailActivity"
