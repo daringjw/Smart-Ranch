@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.SelectLivestock;
+import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
@@ -37,6 +39,7 @@ import com.lzy.okgo.model.Response;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -83,6 +86,7 @@ public class PublishClaimActivity extends AppCompatActivity {
     private ImageView mIvTakePhoto;
     private String mImgUrl;
     private String mIsbn;
+    private int mLivestockType;
 
 
     private void cropImage(final String imgUrl) {
@@ -264,7 +268,7 @@ public class PublishClaimActivity extends AppCompatActivity {
         mDeviceNo = etDeviceNo.getText().toString();
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
-        Gson gson = new Gson();
+        final Gson gson = new Gson();
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
 
@@ -301,7 +305,19 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         public void onSuccess(Response<String> response) {
 
                                             String s1 = response.body().toString();
-                                            Log.d(TAG1,s1);
+                                            Log.d(TAG1, s1);
+                                            Gson gson1 = new Gson();
+                                            SelectLivestock selectLivestock = gson1.fromJson(s1, SelectLivestock.class);
+                                            if (s1.contains("此牲畜已经发布过")) {
+
+                                                mLivestockType = selectLivestock.getLivestockType();
+
+
+                                            } else {
+
+                                                //此牲畜登记了，没有发布
+
+                                            }
 
 
                                         }
@@ -345,7 +361,41 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                 String[] type = getResources().getStringArray(R.array.type);
 //                Log.d(TAG1, "种类" + type[pos]);
+//                mType1 = type[mLivestockType - 1];
                 mType1 = type[pos];
+
+
+                //根据type1 访问接口
+                OkGo.<String>get(Constants.SELECTVARIETY)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("livestockType", pos + 1)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String s = response.body().toString();
+                                Gson gson1 = new Gson();
+                                SelectVariety selectVariety = gson1.fromJson(s, SelectVariety.class);
+                                String msg = selectVariety.getMsg();
+                                if (msg.contains("获取品种成功")){
+
+                                    List<Integer> variety = selectVariety.getVariety();
+                                    for (int i=0;i<variety.size();i++){
+
+                                        Log.d(TAG1,variety.get(i)+"");
+                                    }
+                                    
+                                    //// TODO: 2018/4/1
+
+
+                                }
+
+
+                            }
+                        });
+
 
             }
 
@@ -365,6 +415,8 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                 String[] variety = getResources().getStringArray(R.array.variety);
 //                Log.d(TAG1, "品种：" + variety[pos]);
+
+
                 mVariety1 = variety[pos];
 
 

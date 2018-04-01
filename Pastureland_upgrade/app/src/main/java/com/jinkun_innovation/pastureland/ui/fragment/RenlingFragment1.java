@@ -272,7 +272,6 @@ public class RenlingFragment1 extends Fragment {
                                     mRecyclerView.setAdapter(mAdapter);
 
 
-
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override
                                         public void onItemClick(View view, int position) {
@@ -558,7 +557,7 @@ public class RenlingFragment1 extends Fragment {
 
             String livestockName = datas.get(position).getLivestockName();
             Log.d(TAG1, "livestockName=" + livestockName);
-            viewHolder.tvAnimalName.setText(livestockName);
+            viewHolder.tvAnimalName.setText("品种名称："+livestockName);
 
 
             viewHolder.tvId.setText("设备号：" + datas.get(position).getDeviceNo());
@@ -585,7 +584,8 @@ public class RenlingFragment1 extends Fragment {
                         datas.get(position).getPrice()
                         + "元     已认领");
 
-                viewHolder.tvPriceAndClaim.setTextColor(Color.GREEN);
+
+                viewHolder.tvPriceAndClaim.setTextColor(Color.parseColor("#127c39"));
 
 
             }
@@ -647,7 +647,6 @@ public class RenlingFragment1 extends Fragment {
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
 
                 tvPriceAndClaim = view.findViewById(R.id.tvPriceAndClaim);
-                tvClaimer = view.findViewById(R.id.tvClaimer);
                 tvPhone = view.findViewById(R.id.tvPhone);
 
 

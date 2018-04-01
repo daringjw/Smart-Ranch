@@ -654,7 +654,6 @@ public class RenlingFragment extends Fragment {
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
 
                 tvPriceAndClaim = view.findViewById(R.id.tvPriceAndClaim);
-                tvClaimer = view.findViewById(R.id.tvClaimer);
                 tvPhone = view.findViewById(R.id.tvPhone);
 
 
