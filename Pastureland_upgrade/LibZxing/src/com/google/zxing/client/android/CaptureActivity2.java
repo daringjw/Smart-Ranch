@@ -49,6 +49,8 @@ import com.google.zxing.util.ProjectorUtil;
 import java.util.Hashtable;
 import java.util.Vector;
 
+import static com.google.zxing.client.android.R.id.etISBN;
+
 public class CaptureActivity2 extends CaptureActivity implements OnEditorActionListener {
 
     public static final String USE_DEFUALT_ISBN_ACTIVITY = "use_defualt_isbn_activity";
@@ -96,7 +98,7 @@ public class CaptureActivity2 extends CaptureActivity implements OnEditorActionL
         viewCaptureISBN = findViewById(R.id.captureIsbn);
         titleBar = findViewById(R.id.llTitleBar);
         viewManualInputISBN = findViewById(R.id.manualInputIsbn);
-        etIsbn = findViewById(R.id.etISBN);
+        etIsbn = findViewById(etISBN);
         tvClose = findViewById(R.id.tvClose);
         btnSearch = findViewById(R.id.btnSearch);
         ivClose = findViewById(R.id.ivClose);
@@ -162,6 +164,7 @@ public class CaptureActivity2 extends CaptureActivity implements OnEditorActionL
         btnSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 inputIsbnViewOut(true);
             }
         });

@@ -10,8 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.LiveStock;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,19 +36,12 @@ public class YangDetailActivity extends Activity {
     ImageView mIvBack;
     @BindView(R.id.sdvYang)
     SimpleDraweeView mSdvYang;
-    @BindView(R.id.tvVariety)
-    TextView mTvVariety;
-    @BindView(R.id.tvDevcieNO)
-    TextView mTvDevcieNO;
-    @BindView(R.id.tvWeight)
-    TextView mTvWeight;
-    @BindView(R.id.tvBindStatus)
-    TextView mTvBindStatus;
-    @BindView(R.id.tvCreateTime)
-    TextView mTvCreateTime;
-    @BindView(R.id.tvState)
-    TextView mTvState;
 
+    String mLogin_success;
+    LoginSuccess mLoginSuccess;
+    String mUsername;
+
+    TextView tvVariety, tvDevcieNO, tvDetail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,52 +50,84 @@ public class YangDetailActivity extends Activity {
         setContentView(R.layout.activity_yang_detail);
         ButterKnife.bind(this);
 
-//        intent.putExtra("getImgUrl", mLivestockVarietyList.get(position).getImgUrl());
-//        intent.putExtra("getDeviceNo", mLivestockVarietyList.get(position).getDeviceNo());
-//        intent.putExtra("getWeight", mLivestockVarietyList.get(position).getWeight());
-//        intent.putExtra("getBindStatus", mLivestockVarietyList.get(position).getBindStatus());
-//        intent.putExtra("getIsClaimed", mLivestockVarietyList.get(position).getIsClaimed());
-//        intent.putExtra("getUpdateTime", mLivestockVarietyList.get(position).getUpdateTime());
+        tvVariety = (TextView) findViewById(R.id.tvVariety);
+        tvDevcieNO = (TextView) findViewById(R.id.tvDeviceNo);
+        tvDetail = (TextView) findViewById(R.id.tvDetail);
 
         Intent intent = getIntent();
-        String getImgUrl = intent.getStringExtra("getImgUrl");
-        getImgUrl = Constants.BASE_URL + getImgUrl;
-        Uri uri = Uri.parse(getImgUrl);
-        mSdvYang.setImageURI(uri);
-
-        String getVariety = intent.getStringExtra("getVariety");
-        Log.d(TAG1,"getVariety="+getVariety);
-        if (getVariety.equals("100")){
-            mTvVariety.setText("品种：乌珠木漆黑羊");
-        }else if(getVariety.equals("101")){
-            mTvVariety.setText("品种：山羊");
-        }else if(getVariety.equals("201")){
-            mTvVariety.setText("品种：西门塔尔牛");
-        }else if (getVariety.equals("301")){
-            mTvVariety.setText("品种：蒙古马");
-        }else if (getVariety.equals("401")){
-            mTvVariety.setText("品种：草原黑毛猪");
-        }
-
-
         String getDeviceNo = intent.getStringExtra("getDeviceNo");
-        mTvDevcieNO.setText("设备号：" + getDeviceNo);
-        String getWeight = intent.getStringExtra("getWeight");
-        mTvWeight.setText("价格：" + getWeight + " 元");
-        String getBindStatus = intent.getStringExtra("getBindStatus");
-        if (getBindStatus.equals("1")) {
-            mTvBindStatus.setText("绑定状态：已绑定");
-        } else {
-            mTvBindStatus.setText("绑定状态：未绑定");
-        }
-        String getIsClaimed = intent.getStringExtra("getIsClaimed");
-        if (getIsClaimed.equals("0")) {
-            mTvState.setText("认领状态：未认领");
-        } else {
-            mTvState.setText("认领状态：已认领");
-        }
-        String getUpdateTime = intent.getStringExtra("getUpdateTime");
-        mTvCreateTime.setText("登记时间：" + getUpdateTime);
+
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
+
+        OkGo.<String>get(Constants.LIVESTOCK)
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .params("deviceNO", getDeviceNo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        Gson gson1 = new Gson();
+                        LiveStock liveStock = gson1.fromJson(s, LiveStock.class);
+                        String msg = liveStock.getMsg();
+                        if (msg.equals("获取牲畜详情成功")) {
+
+                            LiveStock.LivestockBean lives = liveStock.getLivestock();
+
+                            String imgUrl = lives.getImgUrl();
+                            imgUrl=Constants.BASE_URL+imgUrl;
+                            Uri uri=Uri.parse(imgUrl);
+                            mSdvYang.setImageURI(uri);
+
+
+                            String variety = lives.getVariety();
+                            if (variety.equals("100")) {
+
+                                //乌珠木漆黑头羊
+                                tvVariety.setText("品种名称：乌珠木漆黑头羊");
+
+
+                            } else if (variety.equals("101")) {
+
+                                //山羊
+                                tvVariety.setText("品种名称：山羊");
+
+                            } else if (variety.equals("201")) {
+
+                                //西门塔尔牛
+                                tvVariety.setText("品种名称：西门塔尔牛");
+
+                            } else if (variety.equals("301")) {
+                                //蒙古马
+                                tvVariety.setText("品种名称：蒙古马");
+
+
+                            } else if (variety.equals("401")) {
+                                //草原黑毛猪
+                                tvVariety.setText("品种名称：草原黑毛猪");
+
+                            }
+
+                            String introduce = lives.getIntroduce();
+                            tvDetail.setText(introduce);
+
+
+                        } else {
+
+                            ToastUtils.showShort("获取牲畜详情失败，请检查网络");
+                        }
+
+
+                    }
+                });
+
 
 
     }

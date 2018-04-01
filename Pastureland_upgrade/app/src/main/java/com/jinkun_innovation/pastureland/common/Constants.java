@@ -9,8 +9,8 @@ public class Constants {
     //朱之用
 //    public static final String BASE_URL = "http://192.168.50.215:8080";
 
-    public  static final String IP = "222.249.165.94";
-    public  static final  String PORT = ":10100";
+    public static final String IP = "222.249.165.94";
+    public static final String PORT = ":10100";
 
 
 //    public static final String IP = "192.168.50.215";

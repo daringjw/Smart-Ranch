@@ -5,13 +5,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.LiveStock;
+import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
+import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,31 +31,19 @@ import butterknife.OnClick;
 
 public class RenlingDetailActivity extends Activity {
 
+    private static final String TAG1 = RenlingDetailActivity.class.getSimpleName();
+
     @BindView(R.id.ivBack)
     ImageView mIvBack;
     @BindView(R.id.sdvYang)
     SimpleDraweeView mSdvYang;
-    @BindView(R.id.tvVariety)
-    TextView mTvVariety;
-    @BindView(R.id.tvDevcieNO)
-    TextView mTvDevcieNO;
-    @BindView(R.id.tvCharacter)
-    TextView mTvCharacter;
-    @BindView(R.id.tvPhone)
-    TextView mTvPhone;
-    @BindView(R.id.tvPublishTime)
-    TextView mTvPublishTime;
-    @BindView(R.id.tvPrice)
-    TextView mTvPrice;
-    @BindView(R.id.tvState)
-    TextView mTvState;
-    @BindView(R.id.tvLifeTime)
-    TextView tvLifeTime;
-    @BindView(R.id.tvBirthDay)
-    TextView tvBirthDay;
-    @BindView(R.id.tvClaimTime)
-    TextView tvClaimTime;
 
+
+    String mLogin_success;
+    LoginSuccess mLoginSuccess;
+    String mUsername;
+
+    TextView tvVariety, tvDevcieNO, tvDetail;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,50 +52,83 @@ public class RenlingDetailActivity extends Activity {
         setContentView(R.layout.activity_renling_detail);
         ButterKnife.bind(this);
 
+
+        tvVariety = (TextView) findViewById(R.id.tvVariety);
+        tvDevcieNO = (TextView) findViewById(R.id.tvDeviceNo);
+        tvDetail = (TextView) findViewById(R.id.tvDetail);
+
         Intent intent = getIntent();
+        String getDeviceNo = intent.getStringExtra("getDeviceNo");
 
-        String getImgUrl = intent.getStringExtra("getImgUrl");
-        getImgUrl = Constants.BASE_URL + getImgUrl;
-        Uri uri = Uri.parse(getImgUrl);
-        mSdvYang.setImageURI(uri);
+        mLogin_success = PrefUtils.getString(this, "login_success", null);
+        Gson gson = new Gson();
+        mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
+        mUsername = PrefUtils.getString(this, "username", null);
 
-        String getLivestockName = intent.getStringExtra("getLivestockName");
-        mTvVariety.setText("品种：" + getLivestockName);
+        OkGo.<String>get(Constants.LIVESTOCK)
+                .tag(this)
+                .params("token", mLoginSuccess.getToken())
+                .params("username", mUsername)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .params("deviceNO", getDeviceNo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
 
-      /*  String getDeviceNo = intent.getStringExtra("getDeviceNo");
-        mTvDevcieNO.setText("设备号："+getDeviceNo);*/
+                        String s = response.body().toString();
+                        Log.d(TAG1, s);
+                        Gson gson1 = new Gson();
+                        LiveStock liveStock = gson1.fromJson(s, LiveStock.class);
+                        String msg = liveStock.getMsg();
+                        if (msg.equals("获取牲畜详情成功")) {
 
-        String getCharacteristics = intent.getStringExtra("getCharacteristics");
-        mTvCharacter.setText("特点：" + getCharacteristics);
+                            LiveStock.LivestockBean lives = liveStock.getLivestock();
 
-        String getCellphone = intent.getStringExtra("getCellphone");
-        if (TextUtils.isEmpty(getCellphone)) {
-            mTvPhone.setText("认领人手机：无");
-        } else {
-            mTvPhone.setText("认领人手机：" + getCellphone);
-        }
+                            String imgUrl = lives.getImgUrl();
+                            imgUrl=Constants.BASE_URL+imgUrl;
+                            Uri uri=Uri.parse(imgUrl);
+                            mSdvYang.setImageURI(uri);
 
-        String getCreateTime = intent.getStringExtra("getCreateTime");
-        tvBirthDay.setText("生日：" + getCreateTime);
+                            String variety = lives.getVariety();
+                            if (variety.equals("100")) {
 
-        String getPrice = intent.getStringExtra("getPrice");
-        mTvPrice.setText("价格：￥" + getPrice);
+                                //乌珠木漆黑头羊
+                                tvVariety.setText("品种名称：乌珠木漆黑头羊");
 
-        String getIsClaimed = intent.getStringExtra("getIsClaimed");
-        if (getIsClaimed.equals("0")) {
-            mTvState.setText("认领状态：未认领");
-        } else {
-            mTvState.setText("认领状态：已认领");
-        }
 
-        String getLifeTime = intent.getStringExtra("getLifeTime");
-        tvLifeTime.setText("一般寿命：" + getLifeTime + "个月");
+                            } else if (variety.equals("101")) {
 
-        String getBirthTime = intent.getStringExtra("getBirthTime");
-        mTvPublishTime.setText("发布时间：" + getBirthTime);
+                                //山羊
+                                tvVariety.setText("品种名称：山羊");
 
-//        String getClaimTime = intent.getStringExtra("getClaimTime");
-//        tvClaimTime.setText("认领时间：" + getClaimTime);
+                            } else if (variety.equals("201")) {
+
+                                //西门塔尔牛
+                                tvVariety.setText("品种名称：西门塔尔牛");
+
+                            } else if (variety.equals("301")) {
+                                //蒙古马
+                                tvVariety.setText("品种名称：蒙古马");
+
+
+                            } else if (variety.equals("401")) {
+                                //草原黑毛猪
+                                tvVariety.setText("品种名称：草原黑毛猪");
+
+                            }
+
+                            String introduce = lives.getIntroduce();
+                            tvDetail.setText(introduce);
+
+
+                        } else {
+
+                            ToastUtils.showShort("获取牲畜详情失败，请检查网络");
+                        }
+
+
+                    }
+                });
 
 
     }

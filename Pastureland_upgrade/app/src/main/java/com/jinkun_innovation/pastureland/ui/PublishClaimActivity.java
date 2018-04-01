@@ -284,8 +284,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                         Log.d(TAG1, s);
                         if (s.contains("false")) {
                             //未绑定
-                            ToastUtils.showShort("未登记牲畜不能发布认领");
-                            finish();
+                            ToastUtils.showShort("未登记牲畜");
+
 
                         } else if (s.contains("true")) {
 

@@ -362,6 +362,7 @@ public class RenlingFragment1 extends Fragment {
                                             RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
 
                                             Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                            intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
                                             intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
                                             intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
                                             intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
@@ -448,6 +449,7 @@ public class RenlingFragment1 extends Fragment {
                                     RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
 
                                     Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                    intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
                                     intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
                                     intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
                                     intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
