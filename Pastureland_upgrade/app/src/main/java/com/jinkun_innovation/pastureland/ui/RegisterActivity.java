@@ -61,12 +61,10 @@ public class RegisterActivity extends Activity {
 
 
     private String mType1;
-    private String mVariety1;
     private String mWeight1;
     private String mAge1;
 
     int type;
-    int variety;
     int weight;
     int age;
 
@@ -542,11 +540,6 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
 
 
-                Log.d(TAG1, mType1);
-                Log.d(TAG1, mVariety1);
-                Log.d(TAG1, mWeight1);
-                Log.d(TAG1, mAge1);
-
                 if (mAge1.contains("2")) {
                     age = 2;
                 } else if (mAge1.contains("5")) {
@@ -569,24 +562,6 @@ public class RegisterActivity extends Activity {
                 } else if (mWeight1.contains("500")) {
 
                     weight = 500;
-                }
-
-
-                if (mVariety1.equals("乌珠穆沁黑头羊")) {
-
-                    variety = 100;
-                } else if (mVariety1.equals("山羊")) {
-
-                    variety = 101;
-                } else if (mVariety1.equals("西门塔尔牛")) {
-
-                    variety = 201;
-                } else if (mVariety1.equals("蒙古马")) {
-
-                    variety = 301;
-                } else if (mVariety1.equals("草原黑毛猪")) {
-
-                    variety = 401;
                 }
 
 

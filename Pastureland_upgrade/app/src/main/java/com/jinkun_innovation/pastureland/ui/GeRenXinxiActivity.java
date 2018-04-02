@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.BuildConfig;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.AdminInfo;
+import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity;
@@ -192,7 +193,6 @@ public class GeRenXinxiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ToastUtils.showShort("nima");
                 //上传头像
                 type = 1;
                 uploadHeadImage();
@@ -353,6 +353,50 @@ public class GeRenXinxiActivity extends AppCompatActivity {
                     }
                     //此处后面可以将bitMap转为二进制上传后台网络
                     //......
+                    File file = new File(cropImagePath);
+
+                    OkGo.<String>post(Constants.HEADIMGURL)
+                            .tag(this)
+                            .isMultipart(true)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("uploadFile", file)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    String s = response.body().toString();
+                                    if (s.contains("上传文件成功")) {
+
+                                        Gson gson = new Gson();
+                                        ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
+                                        String imgUrl = imgUrlBean.getImgUrl();
+                                        Log.d(TAG1, "imgUrl=" + imgUrl);
+
+                                        //更新个人信息
+                                        OkGo.<String>post(Constants.UPDADMIN)
+                                                .tag(this)
+
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onSuccess(Response<String> response) {
+
+
+                                                    }
+                                                });
+
+
+
+                                    } else {
+
+                                        ToastUtils.showShort("fail to upload");
+                                    }
+
+
+                                }
+                            });
+
+
                 }
 
                 break;

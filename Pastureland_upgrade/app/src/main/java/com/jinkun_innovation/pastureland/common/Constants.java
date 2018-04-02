@@ -1,5 +1,6 @@
 package com.jinkun_innovation.pastureland.common;
 
+
 /**
  * Created by Guan on 2018/3/13.
  */
@@ -9,15 +10,15 @@ public class Constants {
     //朱之用
 //    public static final String BASE_URL = "http://192.168.50.215:8080";
 
-    public static final String IP = "222.249.165.94";
-    public static final String PORT = ":10100";
+//    public static final String IP = "222.249.165.94";
+//    public static final String PORT = ":10100";
 
 
 //    public static final String IP = "192.168.50.215";
 //    public static final String PORT = ":8080";
 
-//    public static final String IP = "182.92.3.109";
-//    public static final String PORT = ":10100";
+    public static final String IP = "182.92.3.109";
+    public static final String PORT = ":10100";
 
 
     //测试服务器
