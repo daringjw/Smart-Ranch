@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -117,8 +118,15 @@ public class YangDetailActivity extends Activity {
 
                             String introduce = lives.getIntroduce();
                             PrefUtils.setString(getApplicationContext(),"introduce",introduce);
-
                             tvDetail.setText(introduce);
+
+                            //homeImgUrl
+                            String homeImgUrl = lives.homeImgUrl;
+                            if (!TextUtils.isEmpty(homeImgUrl)){
+                                homeImgUrl =Constants.BASE_URL+homeImgUrl;
+                                Uri uri1=Uri.parse(homeImgUrl);
+                                mSdvYang.setImageURI(uri1);
+                            }
 
 
                         } else {

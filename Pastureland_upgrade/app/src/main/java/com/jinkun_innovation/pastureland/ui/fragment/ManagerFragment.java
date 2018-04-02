@@ -354,7 +354,38 @@ public class ManagerFragment extends Fragment {
 
             case 3:
                 //剪毛
-                openCamera();
+                //判断设备是否被绑定
+                OkGo.<String>post(Constants.ISDEVICEBINDED)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername) //用户手机号
+                        .params("deviceNO", isbn)
+                        .params("ranchID", mLoginSuccess.getRanchID())
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String result = response.body().toString();
+                                Log.d(TAG1, result);
+                                if (result.contains("true")) {
+
+                                    //已绑定
+                                    openCamera();
+
+                                } else {
+                                    //未绑定
+                                    new SweetAlertDialog(getActivity())
+                                            .setTitleText("未登记设备，不能剪毛!")
+                                            .show();
+
+                                }
+
+
+                            }
+                        });
+
+
+
 
 
                 break;

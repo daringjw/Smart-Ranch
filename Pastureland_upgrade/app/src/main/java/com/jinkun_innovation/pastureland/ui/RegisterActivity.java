@@ -1,6 +1,7 @@
 package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,8 +12,11 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -23,6 +27,7 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
@@ -34,6 +39,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.io.File;
+import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import top.zibin.luban.Luban;
@@ -89,7 +95,6 @@ public class RegisterActivity extends Activity {
                             // TODO 压缩开始前调用，可以在方法内启动 loading UI
                             LogUtils.e("onStart");
 //                            mPbLoading.setVisibility(View.VISIBLE);
-
 
 
                         }
@@ -158,7 +163,6 @@ public class RegisterActivity extends Activity {
 
                                         }
                                     });
-
 
 
 //                            Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
@@ -268,6 +272,85 @@ public class RegisterActivity extends Activity {
         }
     }
 
+    private Integer mInteger = 0;
+
+    public class MyAdapter extends BaseAdapter {
+
+        private List<Integer> mList;
+        private Context mContext;
+
+        public MyAdapter(Context context, List<Integer> pList) {
+            this.mContext = context;
+            this.mList = pList;
+        }
+
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public Integer getItem(int position) {
+            return mList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        /**
+         * 下面是重要代码
+         */
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater _LayoutInflater = LayoutInflater.from(mContext);
+            convertView = _LayoutInflater.inflate(R.layout.item_variety, null);
+
+            if (convertView != null) {
+
+                TextView tvVariety = convertView.findViewById(R.id.tvVariety);
+
+                mInteger = mList.get(position);
+
+
+                switch (mInteger) {
+
+                    case 100:
+                        tvVariety.setText("乌珠木漆黑羊");
+                        break;
+
+                    case 101:
+                        tvVariety.setText("山羊");
+                        break;
+
+                    case 201:
+                        tvVariety.setText("西门塔尔牛");
+                        break;
+
+                    case 301:
+                        tvVariety.setText("蒙古马");
+                        break;
+
+                    case 401:
+                        tvVariety.setText("草原黑毛猪");
+                        break;
+
+
+                }
+
+//                ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
+//                imageView.setImageResource(R.drawable.ic_launcher);
+//                TextView _TextView1=(TextView)convertView.findViewById(R.id.textView1);
+//                TextView _TextView2=(TextView)convertView.findViewById(R.id.textView2);
+//                _TextView1.setText(mList.get(position).getPersonName());
+//                _TextView2.setText(mList.get(position).getPersonAddress());
+            }
+            return convertView;
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -314,6 +397,51 @@ public class RegisterActivity extends Activity {
 //                Log.d(TAG1, "种类" + type[pos]);
                 mType1 = type[pos];
 
+                //根据type1 访问接口
+                OkGo.<String>get(Constants.SELECTVARIETY)
+                        .tag(this)
+                        .params("token", mLoginSuccess.getToken())
+                        .params("username", mUsername)
+                        .params("livestockType", pos + 1)
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onSuccess(Response<String> response) {
+
+                                String s = response.body().toString();
+                                Gson gson1 = new Gson();
+                                SelectVariety selectVariety = gson1.fromJson(s, SelectVariety.class);
+                                String msg = selectVariety.getMsg();
+                                if (msg.contains("获取品种成功")) {
+
+                                    List<Integer> mVariety = selectVariety.getVariety();
+
+
+                                    for (int i = 0; i < mVariety.size(); i++) {
+
+                                        Log.d(TAG1, mVariety.get(i) + "");
+
+
+                                    }
+
+
+                                    Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+
+                                    if (mVariety != null) {
+                                        //  建立Adapter绑定数据源
+                                        MyAdapter _MyAdapter = new MyAdapter
+                                                (getApplicationContext(), mVariety);
+
+                                        //绑定Adapter
+                                        spinner2.setAdapter(_MyAdapter);
+                                    }
+
+
+                                }
+
+
+                            }
+                        });
+
             }
 
             @Override
@@ -323,7 +451,8 @@ public class RegisterActivity extends Activity {
             }
 
         });
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+
+        /*Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
@@ -343,7 +472,7 @@ public class RegisterActivity extends Activity {
 
             }
 
-        });
+        });*/
 
         Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -489,7 +618,7 @@ public class RegisterActivity extends Activity {
                             .params("deviceNO", mDeviceNO)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("livestockType", type)
-                            .params("variety", variety)
+                            .params("variety", mInteger == 0 ? 100 : mInteger)
                             .params("weight", weight)
                             .params("age", age)
                             .params("imgUrl", mImgUrl)

@@ -106,6 +106,8 @@ public class MuqunFragment extends Fragment {
                             mTvDeerNo.setText(typeMap.get_$4() + "头");
 
 
+
+
                         } else {
 
 

@@ -1,6 +1,7 @@
 package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -13,8 +14,11 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -87,6 +91,8 @@ public class PublishClaimActivity extends AppCompatActivity {
     private String mImgUrl;
     private String mIsbn;
     private int mLivestockType;
+    private List<Integer> mVariety;
+    private Integer mInteger = 0;
 
 
     private void cropImage(final String imgUrl) {
@@ -253,6 +259,85 @@ public class PublishClaimActivity extends AppCompatActivity {
         }
     }
 
+
+    public class MyAdapter extends BaseAdapter {
+
+        private List<Integer> mList;
+        private Context mContext;
+
+        public MyAdapter(Context context, List<Integer> pList) {
+            this.mContext = context;
+            this.mList = pList;
+        }
+
+
+        @Override
+        public int getCount() {
+            return mList.size();
+        }
+
+        @Override
+        public Integer getItem(int position) {
+            return mList.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        /**
+         * 下面是重要代码
+         */
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater _LayoutInflater = LayoutInflater.from(mContext);
+            convertView = _LayoutInflater.inflate(R.layout.item_variety, null);
+
+            if (convertView != null) {
+
+                TextView tvVariety = convertView.findViewById(R.id.tvVariety);
+
+                mInteger = mList.get(position);
+
+
+                switch (mInteger) {
+
+                    case 100:
+                        tvVariety.setText("乌珠木漆黑羊");
+                        break;
+
+                    case 101:
+                        tvVariety.setText("山羊");
+                        break;
+
+                    case 201:
+                        tvVariety.setText("西门塔尔牛");
+                        break;
+
+                    case 301:
+                        tvVariety.setText("蒙古马");
+                        break;
+
+                    case 401:
+                        tvVariety.setText("草原黑毛猪");
+                        break;
+
+
+                }
+
+//                ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
+//                imageView.setImageResource(R.drawable.ic_launcher);
+//                TextView _TextView1=(TextView)convertView.findViewById(R.id.textView1);
+//                TextView _TextView2=(TextView)convertView.findViewById(R.id.textView2);
+//                _TextView1.setText(mList.get(position).getPersonName());
+//                _TextView2.setText(mList.get(position).getPersonAddress());
+            }
+            return convertView;
+        }
+    }
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -364,7 +449,6 @@ public class PublishClaimActivity extends AppCompatActivity {
 //                mType1 = type[mLivestockType - 1];
                 mType1 = type[pos];
 
-
                 //根据type1 访问接口
                 OkGo.<String>get(Constants.SELECTVARIETY)
                         .tag(this)
@@ -379,15 +463,29 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 Gson gson1 = new Gson();
                                 SelectVariety selectVariety = gson1.fromJson(s, SelectVariety.class);
                                 String msg = selectVariety.getMsg();
-                                if (msg.contains("获取品种成功")){
+                                if (msg.contains("获取品种成功")) {
 
-                                    List<Integer> variety = selectVariety.getVariety();
-                                    for (int i=0;i<variety.size();i++){
+                                    List<Integer> mVariety = selectVariety.getVariety();
 
-                                        Log.d(TAG1,variety.get(i)+"");
+
+                                    for (int i = 0; i < mVariety.size(); i++) {
+
+                                        Log.d(TAG1, mVariety.get(i) + "");
+
+
                                     }
-                                    
-                                    //// TODO: 2018/4/1
+
+
+                                    Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
+
+                                    if (mVariety != null) {
+                                        //  建立Adapter绑定数据源
+                                        MyAdapter _MyAdapter = new MyAdapter
+                                                (getApplicationContext(), mVariety);
+
+                                        //绑定Adapter
+                                        spinner2.setAdapter(_MyAdapter);
+                                    }
 
 
                                 }
@@ -406,8 +504,11 @@ public class PublishClaimActivity extends AppCompatActivity {
             }
 
         });
-        Spinner spinner2 = (Spinner) findViewById(R.id.spinner2);
-        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
+
+
+        /*spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int pos, long id) {
@@ -428,7 +529,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
             }
 
-        });
+        });*/
 
         Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -510,7 +611,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                         }
 
 
-                        if (mVariety1.equals("乌珠穆沁黑头羊")) {
+                        /*if (mVariety1.equals("乌珠穆沁黑头羊")) {
 
                             variety = 100;
                         } else if (mVariety1.equals("山羊")) {
@@ -525,7 +626,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                         } else if (mVariety1.equals("草原黑毛猪")) {
 
                             variety = 401;
-                        }
+                        }*/
 
 
                         if (mType1.equals("羊")) {
@@ -558,7 +659,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 .params("deviceNO", mIsbn)
                                 .params("ranchID", mLoginSuccess.getRanchID())
                                 .params("livestockType", type)
-                                .params("variety", variety)
+                                .params("variety", mInteger == 0 ? 100 : mInteger)
                                 .params("weight", weight)
                                 .params("age", age)
                                 .params("imgUrl", mImgUrl)
@@ -610,7 +711,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                                     .params("deviceNO", mIsbn)
                                                                     .params("ranchID", mLoginSuccess.getRanchID())
                                                                     .params("livestockType", type)
-                                                                    .params("variety", variety)
+                                                                    .params("variety", mInteger == 0 ? 100 : mInteger)
                                                                     .params("weight", weight)
                                                                     .params("age", age)
                                                                     .params("imgUrl", mImgUrl)
@@ -660,7 +761,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                                     .params("deviceNO", mIsbn)
                                                                     .params("ranchID", mLoginSuccess.getRanchID())
                                                                     .params("livestockType", type)
-                                                                    .params("variety", variety)
+                                                                    .params("variety", mInteger == 0 ? 100 : mInteger)
                                                                     .params("weight", weight)
                                                                     .params("age", age)
                                                                     .params("imgUrl", mImgUrl)

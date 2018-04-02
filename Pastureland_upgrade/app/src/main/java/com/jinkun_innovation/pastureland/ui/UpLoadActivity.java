@@ -142,6 +142,7 @@ public class UpLoadActivity extends BaseActivity {
                             mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
                             mUsername = PrefUtils.getString(getApplicationContext(), "username", null);
 
+
                             OkGo.<String>post(Constants.HEADIMGURL)
                                     .tag(this)
                                     .isMultipart(true)
@@ -161,13 +162,13 @@ public class UpLoadActivity extends BaseActivity {
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
 
+
                                         }
 
                                         @Override
                                         public void onError(Response<String> response) {
                                             super.onError(response);
 
-                                            ToastUtils.showShort("图片上传失败，请重新拍照");
 
                                         }
                                     });
@@ -207,82 +208,94 @@ public class UpLoadActivity extends BaseActivity {
         String imgUrl = mPhotoFile.getAbsolutePath();
 
 
-        switch (mCheckedItem){
+        switch (mCheckedItem) {
             case 2:
 
                 break;
             case 3:
                 //剪毛
-                OkGo.<String>post(Constants.SHEARING)
-                        .tag(this)
-                        .params("token", mLoginSuccess.getToken())
-                        .params("username", mUsername)
-                        .params("ranchID", mLoginSuccess.getRanchID())
-                        .params("deviceNO", mDeviceNo)
-                        .params("imgUrl", mImgUrl)
-                        .execute(new StringCallback() {
-                            @Override
-                            public void onSuccess(Response<String> response) {
+                if (!TextUtils.isEmpty(mImgUrl)) {
 
-                                String s = response.body().toString();
-                                Log.d(TAG1, s);
-                                pDialog.cancel();
+                    OkGo.<String>post(Constants.SHEARING)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("deviceNO", mDeviceNo)
+                            .params("imgUrl", mImgUrl)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
 
-                                if (s.contains("success")) {
-                                    //
-                                    Toast.makeText(getApplicationContext(),
-                                            "剪毛登记成功",
-                                            Toast.LENGTH_SHORT).show();
-                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                    finish();
+                                    String s = response.body().toString();
+                                    Log.d(TAG1, s);
+                                    pDialog.cancel();
+
+                                    if (s.contains("success")) {
+                                        //
+                                        Toast.makeText(getApplicationContext(),
+                                                "剪毛登记成功",
+                                                Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        finish();
 
 
-                                } else {
-                                    //fail
-                                    Toast.makeText(getApplicationContext(),
-                                            "没有找到此牲畜无法剪毛",
-                                            Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        //fail
+                                        Toast.makeText(getApplicationContext(),
+                                                "没有找到此牲畜无法剪毛",
+                                                Toast.LENGTH_SHORT).show();
 
+
+                                    }
 
                                 }
+                            });
 
-                            }
-                        });
+                } else {
+
+                    pDialog.cancel();
+                    new SweetAlertDialog(UpLoadActivity.this,
+                            SweetAlertDialog.ERROR_TYPE)
+                            .setTitleText("抱歉...")
+                            .setContentText("网络不稳定,上传图片失败,请返回重新拍摄")
+                            .show();
+                }
 
                 break;
             case 0:
                 //拍照
-                Log.d(TAG1,"mImgUrl=="+mImgUrl);
-                if (!TextUtils.isEmpty(mImgUrl)){
+                Log.d(TAG1, "mImgUrl==" + mImgUrl);
+                if (!TextUtils.isEmpty(mImgUrl)) {
                     OkGo.<String>post(Constants.RANCHIMGVIDEO)
                             .tag(this)
-                            .params("token",mLoginSuccess.getToken())
-                            .params("username",mUsername)
-                            .params("ranchID",mLoginSuccess.getRanchID())
-                            .params("fileType",1)
-                            .params("imgUrl",mImgUrl)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .params("fileType", 1)
+                            .params("imgUrl", mImgUrl)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
 
                                     String s = response.body().toString();
                                     pDialog.cancel();
-                                    Log.d(TAG1,s);
+                                    Log.d(TAG1, s);
 
-                                    if (s.contains("success")){
-                                        Toast.makeText(getApplicationContext(),"上传成功",Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                                    if (s.contains("success")) {
+                                        Toast.makeText(getApplicationContext(), "上传成功", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         finish();
 
-                                    }else {
+                                    } else {
 
-                                        Toast.makeText(getApplicationContext(),"上传失败",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getApplicationContext(), "上传失败", Toast.LENGTH_SHORT).show();
 
                                     }
 
                                 }
                             });
-                }else {
+                } else {
 
                     pDialog.cancel();
                     new SweetAlertDialog(UpLoadActivity.this,
@@ -294,14 +307,11 @@ public class UpLoadActivity extends BaseActivity {
                 }
 
 
-
                 break;
             case 4:
 
 
                 break;
-
-
 
 
         }
