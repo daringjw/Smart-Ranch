@@ -38,6 +38,8 @@ import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity;
+import com.jinkun_innovation.pastureland.ui.activity.ModifyNameActivity;
+import com.jinkun_innovation.pastureland.ui.activity.ModifyPhoneActivity;
 import com.jinkun_innovation.pastureland.ui.view.CircleImageView;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
@@ -93,6 +95,8 @@ public class GeRenXinxiActivity extends AppCompatActivity {
     TextView tvName, tvSex, tvPhone;
     private String mPeopleName;
     private String mSex;
+    private String mHeadImgUrl;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -140,7 +144,7 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                             ToastUtils.showShort("获取个人信息异常");
 
-                        } else if(s.contains("获取个人信息成功")){
+                        } else if (s.contains("获取个人信息成功")) {
                             Gson gson1 = new Gson();
                             AdminInfo adminInfo = gson1.fromJson(s, AdminInfo.class);
 
@@ -154,17 +158,17 @@ public class GeRenXinxiActivity extends AppCompatActivity {
                             mPeopleName = adminInfo.getAdminInfo().getPeopleName();
                             tvName.setText(mPeopleName);
 
-                            String cellphone = adminInfo.getAdminInfo().getCellphone();
-                            tvPhone.setText(cellphone);
+                            String username = adminInfo.getAdminInfo().getUsername();
+                            tvPhone.setText(username);
 
 
-                            String headImgUrl = adminInfo.getAdminInfo().headImgUrl;
-                            if (!TextUtils.isEmpty(headImgUrl)) {
-                                headImgUrl = Constants.BASE_URL + headImgUrl;
-                                Log.d(TAG1, "headImgUrl=" + headImgUrl);
+                            mHeadImgUrl = adminInfo.getAdminInfo().headImgUrl;
+                            if (!TextUtils.isEmpty(mHeadImgUrl)) {
+                                mHeadImgUrl = Constants.BASE_URL + mHeadImgUrl;
+                                Log.d(TAG1, "headImgUrl=" + mHeadImgUrl);
 
-                                PrefUtils.setString(getApplicationContext(),"touxiang",headImgUrl);
-                                OkGo.<File>get(headImgUrl)
+                                PrefUtils.setString(getApplicationContext(), "touxiang", mHeadImgUrl);
+                                OkGo.<File>get(mHeadImgUrl)
                                         .tag(this)
                                         .execute(new FileCallback() {
                                             @Override
@@ -237,8 +241,10 @@ public class GeRenXinxiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-               /* Intent intent = new Intent(getApplicationContext(), ModifyNameActivity.class);
-                startActivityForResult(intent,001);*/
+                Intent intent = new Intent(getApplicationContext(),
+                        ModifyNameActivity.class);
+
+                startActivityForResult(intent, 1001);
 
             }
         });
@@ -255,6 +261,9 @@ public class GeRenXinxiActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(getApplicationContext(), ModifyPhoneActivity.class);
+
+                startActivityForResult(intent, 1003);
 
             }
         });
@@ -385,6 +394,93 @@ public class GeRenXinxiActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         switch (requestCode) {
+
+            case 1003:
+                //修改号码
+                if (resultCode == RESULT_OK) {
+
+                    final String phone = intent.getStringExtra("phone");
+
+                    OkGo.<String>get(Constants.ADMINLIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    Gson gson = new Gson();
+                                    AdminInfo adminInfo = gson.fromJson(response.body().toString(), AdminInfo.class);
+
+                                    OkGo.<String>get(Constants.UPDADMIN)
+                                            .tag(this)
+                                            .params("token", mLoginSuccess.getToken())
+                                            .params("username", phone)
+                                            .params("peopleName", adminInfo.getAdminInfo().getPeopleName())
+                                            .params("sex", adminInfo.getAdminInfo().getSex())
+                                            .params("headImgUrl", adminInfo.getAdminInfo().headImgUrl)
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(Response<String> response) {
+
+                                                    recreate();
+
+                                                }
+                                            });
+
+                                }
+                            });
+
+
+                }
+
+
+                break;
+
+            case 1001:
+                //修改名字
+                if (resultCode == RESULT_OK) {
+
+                    final String name = intent.getStringExtra("name");
+
+                    OkGo.<String>get(Constants.ADMINLIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    Gson gson = new Gson();
+                                    AdminInfo adminInfo = gson.fromJson(response.body().toString(), AdminInfo.class);
+
+                                    OkGo.<String>get(Constants.UPDADMIN)
+                                            .tag(this)
+                                            .params("token", mLoginSuccess.getToken())
+                                            .params("username", mUsername)
+                                            .params("peopleName", name)
+                                            .params("sex", adminInfo.getAdminInfo().getSex())
+                                            .params("headImgUrl", adminInfo.getAdminInfo().headImgUrl)
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(Response<String> response) {
+
+                                                    recreate();
+
+                                                }
+                                            });
+
+
+                                }
+                            });
+
+
+                }
+
+                break;
+
             case REQUEST_CAPTURE: //调用系统相机返回
                 if (resultCode == RESULT_OK) {
                     gotoClipActivity(Uri.fromFile(tempFile));
@@ -428,24 +524,54 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                                         Gson gson = new Gson();
                                         ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
-                                        String imgUrl = imgUrlBean.getImgUrl();
+                                        final String imgUrl = imgUrlBean.getImgUrl();
                                         Log.d(TAG1, "imgUrl=" + imgUrl);
 
-                                        //更新个人信息
-                                        OkGo.<String>post(Constants.UPDADMIN)
-                                                .tag(this)
-                                                .params("token", mLoginSuccess.getToken())
-                                                .params("username", mUsername)
-                                                .params("peopleName", mPeopleName)
-                                                .params("sex", mSex)
-                                                .params("headImgUrl", imgUrl)
-                                                .execute(new StringCallback() {
-                                                    @Override
-                                                    public void onSuccess(Response<String> response) {
+
+                                        if (!TextUtils.isEmpty(imgUrl)) {
+
+                                            OkGo.<String>get(Constants.ADMINLIST)
+                                                    .tag(this)
+                                                    .params("token", mLoginSuccess.getToken())
+                                                    .params("username", mUsername)
+                                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                                    .execute(new StringCallback() {
+                                                        @Override
+                                                        public void onSuccess(Response<String> response) {
+
+                                                            Gson gson = new Gson();
+                                                            AdminInfo adminInfo = gson.fromJson(response.body().toString(), AdminInfo.class);
+
+                                                            OkGo.<String>get(Constants.UPDADMIN)
+                                                                    .tag(this)
+                                                                    .params("token", mLoginSuccess.getToken())
+                                                                    .params("username", mUsername)
+                                                                    .params("peopleName", adminInfo.getAdminInfo().getPeopleName())
+                                                                    .params("sex", adminInfo.getAdminInfo().getSex())
+                                                                    .params("headImgUrl", imgUrl)
+                                                                    .execute(new StringCallback() {
+                                                                        @Override
+                                                                        public void onSuccess(Response<String> response) {
+
+                                                                            new Handler().postDelayed(new Runnable() {
+                                                                                @Override
+                                                                                public void run() {
+                                                                                    recreate();
+                                                                                }
+                                                                            }, 1000);
+
+                                                                        }
+                                                                    });
 
 
-                                                    }
-                                                });
+                                                        }
+                                                    });
+
+
+                                        } else {
+
+                                            ToastUtils.showShort("图片上传失败");
+                                        }
 
 
                                     } else {

@@ -47,6 +47,7 @@ public class ResetPwdActivity extends Activity {
     private String mVerifyCode;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
