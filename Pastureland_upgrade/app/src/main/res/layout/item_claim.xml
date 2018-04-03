@@ -48,40 +48,46 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="品种：大山羊"/>
+                    android:text="大山羊"
+                    android:textColor="#000"/>
 
                 <TextView
                     android:id="@+id/tvId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text="设备号:1234567890"/>
 
                 <TextView
                     android:id="@+id/tvAnimalAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="出生日期：12个月"/>
+                    android:layout_marginTop="5dp"
+                    android:text="年龄：12个月"/>
 
                 <TextView
-                    android:visibility="gone"
                     android:id="@+id/tvMuChang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="特点：内蒙兴安盟连江牧场"/>
+                    android:layout_marginTop="5dp"
+                    android:text="特点：内蒙兴安盟连江牧场"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tvMuchangName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="牧场：连江牧场"
+                    />
+
 
                 <TextView
                     android:id="@+id/tvClaimTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="认领时间：2018-03-05 10：57：27"
-                    />
-
-
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="电话：13655556666"/>
+                    android:layout_marginTop="5dp"
+                    android:text="认领时间：2018-4-3"/>
 
 
             </LinearLayout>
@@ -94,16 +100,49 @@
             android:background="@mipmap/bottom_bg">
 
             <TextView
-                android:id="@+id/tvPriceAndClaim"
+                android:id="@+id/tvPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:text="价格：￥666           已认领"
                 android:textColor="#127c39"
-                android:textSize="20sp"/>
+                />
+
+            <TextView
+                android:id="@+id/tvClaimPeople"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPrice"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+
+                />
+
+            <TextView
+
+                android:id="@+id/tvState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#127c39"
+
+                />
+
+            <TextView
+
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/tvState"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                />
 
         </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

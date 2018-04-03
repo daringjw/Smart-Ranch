@@ -17,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -39,17 +41,17 @@ import com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity;
 import com.jinkun_innovation.pastureland.ui.view.CircleImageView;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
+import com.jinkun_innovation.pastureland.utilcode.util.ImageUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.FileUtil;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.io.File;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.jinkun_innovation.pastureland.utilcode.AppManager.getAppManager;
@@ -63,24 +65,11 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
     private static final String TAG1 = GeRenXinxiActivity.class.getSimpleName();
 
-
-    @BindView(R.id.ivBack)
-    ImageView mIvBack;
-
-    @BindView(R.id.tvAdminName)
-    TextView mTvAdminName;
-    @BindView(R.id.tvSex)
-    TextView mTvSex;
-    @BindView(R.id.tvPhone)
-    TextView mTvPhone;
-    @BindView(R.id.btnExit)
-    Button mBtnExit;
     private SweetAlertDialog mPDialog;
 
     String mLogin_success;
     LoginSuccess mLoginSuccess;
     String mUsername;
-
 
     //请求相机
     private static final int REQUEST_CAPTURE = 100;
@@ -101,23 +90,33 @@ public class GeRenXinxiActivity extends AppCompatActivity {
     // 1: qq, 2: weixin
     private int type;
 
+    TextView tvName, tvSex, tvPhone;
+    private String mPeopleName;
+    private String mSex;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_gerenxinxi);
-        ButterKnife.bind(this);
 
-        getAppManager().addActivity(this);
+        tvName = (TextView) findViewById(R.id.tvName);
+        tvSex = (TextView) findViewById(R.id.tvSex);
+        tvPhone = (TextView) findViewById(R.id.tvPhone);
+
 
         ImageView ivBack = (ImageView) findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 finish();
             }
         });
+
+
+        getAppManager().addActivity(this);
+
+        headImage1 = (CircleImageView) findViewById(R.id.head_image1);
 
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
@@ -141,17 +140,47 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                             ToastUtils.showShort("获取个人信息异常");
 
-                        } else {
+                        } else if(s.contains("获取个人信息成功")){
                             Gson gson1 = new Gson();
                             AdminInfo adminInfo = gson1.fromJson(s, AdminInfo.class);
-                            String sex = adminInfo.getAdminInfo().getSex();
-                            if (sex.equals("1")) {
-                                mTvSex.setText("性别：男");
+
+                            mSex = adminInfo.getAdminInfo().getSex();
+                            if (mSex.contains("1")) {
+                                tvSex.setText("男");
                             } else {
-                                mTvSex.setText("性别：女");
+                                tvSex.setText("女");
                             }
-                            mTvAdminName.setText("姓名：" + adminInfo.getAdminInfo().getPeopleName());
-                            mTvPhone.setText("电话号码：" + adminInfo.getAdminInfo().getUsername());
+
+                            mPeopleName = adminInfo.getAdminInfo().getPeopleName();
+                            tvName.setText(mPeopleName);
+
+                            String cellphone = adminInfo.getAdminInfo().getCellphone();
+                            tvPhone.setText(cellphone);
+
+
+                            String headImgUrl = adminInfo.getAdminInfo().headImgUrl;
+                            if (!TextUtils.isEmpty(headImgUrl)) {
+                                headImgUrl = Constants.BASE_URL + headImgUrl;
+                                Log.d(TAG1, "headImgUrl=" + headImgUrl);
+
+                                PrefUtils.setString(getApplicationContext(),"touxiang",headImgUrl);
+                                OkGo.<File>get(headImgUrl)
+                                        .tag(this)
+                                        .execute(new FileCallback() {
+                                            @Override
+                                            public void onSuccess(Response<File> response) {
+
+                                                File file = response.body().getAbsoluteFile();
+                                                Bitmap bitmap = ImageUtils.getBitmap(file);
+                                                headImage1.setImageBitmap(bitmap);
+
+                                            }
+                                        });
+
+
+                            }
+
+
                         }
 
 
@@ -187,8 +216,6 @@ public class GeRenXinxiActivity extends AppCompatActivity {
         });
 
 
-        headImage1 = (CircleImageView) findViewById(R.id.head_image1);
-
         headImage1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,6 +223,37 @@ public class GeRenXinxiActivity extends AppCompatActivity {
                 //上传头像
                 type = 1;
                 uploadHeadImage();
+
+
+            }
+        });
+
+
+        LinearLayout llName = (LinearLayout) findViewById(R.id.llName);
+        LinearLayout llSex = (LinearLayout) findViewById(R.id.llSex);
+        LinearLayout llPhone = (LinearLayout) findViewById(R.id.llPhone);
+
+        llName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+               /* Intent intent = new Intent(getApplicationContext(), ModifyNameActivity.class);
+                startActivityForResult(intent,001);*/
+
+            }
+        });
+
+        llSex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+            }
+        });
+
+        llPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
 
             }
@@ -376,7 +434,11 @@ public class GeRenXinxiActivity extends AppCompatActivity {
                                         //更新个人信息
                                         OkGo.<String>post(Constants.UPDADMIN)
                                                 .tag(this)
-
+                                                .params("token", mLoginSuccess.getToken())
+                                                .params("username", mUsername)
+                                                .params("peopleName", mPeopleName)
+                                                .params("sex", mSex)
+                                                .params("headImgUrl", imgUrl)
                                                 .execute(new StringCallback() {
                                                     @Override
                                                     public void onSuccess(Response<String> response) {
@@ -384,7 +446,6 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
                                                     }
                                                 });
-
 
 
                                     } else {

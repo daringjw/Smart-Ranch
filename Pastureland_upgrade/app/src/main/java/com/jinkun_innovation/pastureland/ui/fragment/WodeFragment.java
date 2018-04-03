@@ -1,6 +1,7 @@
 package com.jinkun_innovation.pastureland.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,9 +18,16 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.DeviceMsgActivity;
 import com.jinkun_innovation.pastureland.ui.GeRenXinxiActivity;
 import com.jinkun_innovation.pastureland.ui.HomeActivity;
+import com.jinkun_innovation.pastureland.ui.view.CircleImageView;
 import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.ImageUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
+import com.lzy.okgo.model.Response;
 import com.tencent.bugly.beta.Beta;
+
+import java.io.File;
 
 /**
  * Created by Guan on 2018/3/15.
@@ -100,8 +108,6 @@ public class WodeFragment extends Fragment {
         });
 
 
-
-
         /**
          * 升级
          */
@@ -120,6 +126,24 @@ public class WodeFragment extends Fragment {
                 Beta.checkUpgrade();
             }
         });
+
+
+        final CircleImageView ivIcon = view.findViewById(R.id.ivIcon);
+        String touxiang = PrefUtils.getString(getActivity(), "touxiang", null);
+        if (!TextUtils.isEmpty(touxiang)) {
+            OkGo.<File>get(touxiang)
+                    .tag(this)
+                    .execute(new FileCallback() {
+                        @Override
+                        public void onSuccess(Response<File> response) {
+
+                            File file = response.body().getAbsoluteFile();
+                            Bitmap bitmap = ImageUtils.getBitmap(file);
+                            ivIcon.setImageBitmap(bitmap);
+
+                        }
+                    });
+        }
 
 
         return view;

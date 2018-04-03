@@ -51,6 +51,9 @@ public class RenLing {
          * claimTime : 2018-03-05 10:57:27
          */
 
+        public String name;
+        public String nickname;
+
         private String characteristics;
         private String livestockId;
         private String color;

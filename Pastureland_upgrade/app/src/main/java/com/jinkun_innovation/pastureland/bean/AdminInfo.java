@@ -41,7 +41,7 @@ public class AdminInfo {
          * username : 17610893073
          * homeAddress : 深圳
          */
-
+        public String headImgUrl;
         private String adminType;
         private String peopleName;
         private String sex;

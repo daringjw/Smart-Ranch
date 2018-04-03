@@ -27,7 +27,7 @@
         android:background="@mipmap/my_msg_bg"
         >
 
-        <ImageView
+        <com.jinkun_innovation.pastureland.ui.view.CircleImageView
             android:id="@+id/ivIcon"
             android:layout_width="60dp"
             android:layout_height="60dp"

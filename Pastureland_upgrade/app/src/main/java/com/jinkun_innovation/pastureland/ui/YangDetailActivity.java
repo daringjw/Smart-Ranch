@@ -16,6 +16,8 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LiveStock;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.utilcode.constant.TimeConstants;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -42,18 +44,23 @@ public class YangDetailActivity extends Activity {
     LoginSuccess mLoginSuccess;
     String mUsername;
 
-    TextView tvVariety, tvDevcieNO, tvDetail;
+    TextView tvVariety, tvDevcieNO, tvDetail, tvAge, tvLifeTime, tvMuchangName, tvPublishTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_yang_detail);
+        setContentView(R.layout.activity_animal_detail);
         ButterKnife.bind(this);
 
         tvVariety = (TextView) findViewById(R.id.tvVariety);
         tvDevcieNO = (TextView) findViewById(R.id.tvDeviceNo);
         tvDetail = (TextView) findViewById(R.id.tvDetail);
+
+        tvAge = (TextView) findViewById(R.id.tvAge);
+        tvLifeTime = (TextView) findViewById(R.id.tvLifeTime);
+        tvMuchangName = (TextView) findViewById(R.id.tvMuchangName);
+        tvPublishTime = (TextView) findViewById(R.id.tvPublishTime);
 
         Intent intent = getIntent();
         String getDeviceNo = intent.getStringExtra("getDeviceNo");
@@ -116,17 +123,26 @@ public class YangDetailActivity extends Activity {
 
                             }
 
-                            String introduce = lives.getIntroduce();
-                            PrefUtils.setString(getApplicationContext(),"introduce",introduce);
-                            tvDetail.setText(introduce);
+                            String livestockDetails = lives.livestockDetails;
+                            PrefUtils.setString(getApplicationContext(), "introduce", livestockDetails);
+                            tvDetail.setText(livestockDetails);
 
                             //homeImgUrl
                             String homeImgUrl = lives.homeImgUrl;
-                            if (!TextUtils.isEmpty(homeImgUrl)){
-                                homeImgUrl =Constants.BASE_URL+homeImgUrl;
-                                Uri uri1=Uri.parse(homeImgUrl);
+                            if (!TextUtils.isEmpty(homeImgUrl)) {
+                                homeImgUrl = Constants.BASE_URL + homeImgUrl;
+                                Uri uri1 = Uri.parse(homeImgUrl);
                                 mSdvYang.setImageURI(uri1);
                             }
+
+                            String createTime = lives.getCreateTime();
+
+                            long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
+
+                            tvAge.setText("年龄："+timeSpanByNow + "天");
+                            tvLifeTime.setText("一般寿命："+ lives.getLifeTime()+"个月");
+                            tvMuchangName.setText("牧场："+lives.getName());
+                            tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
 
 
                         } else {

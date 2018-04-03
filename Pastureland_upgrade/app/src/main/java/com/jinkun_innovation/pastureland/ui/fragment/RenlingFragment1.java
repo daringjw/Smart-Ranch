@@ -27,6 +27,8 @@ import com.jinkun_innovation.pastureland.bean.RenLing;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
 import com.jinkun_innovation.pastureland.ui.RenlingDetailActivity;
+import com.jinkun_innovation.pastureland.utilcode.constant.TimeConstants;
+import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.jinkun_innovation.pastureland.utils.StrLengthUtil;
@@ -509,6 +511,8 @@ public class RenlingFragment1 extends Fragment {
     }
 
 
+
+
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
 
 
@@ -530,6 +534,7 @@ public class RenlingFragment1 extends Fragment {
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
             View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_claim, viewGroup, false);
             ViewHolder vh = new ViewHolder(view);
 
@@ -554,51 +559,60 @@ public class RenlingFragment1 extends Fragment {
             Uri uri = Uri.parse(imgUrl);
             viewHolder.ivGhoat.setImageURI(uri);
 
-
             String livestockName = datas.get(position).getLivestockName();
-            Log.d(TAG1, "livestockName=" + livestockName);
-            viewHolder.tvAnimalName.setText("品种名称："+livestockName);
+            viewHolder.tvAnimalName.setText(livestockName);
 
+            String deviceNo = datas.get(position).getDeviceNo();
+            viewHolder.tvId.setText("设备号:" + deviceNo);
 
-            viewHolder.tvId.setText("设备号：" + datas.get(position).getDeviceNo());
-            viewHolder.tvAnimalAge.setText("发布日期：" + datas.get(position).getBirthTime());
-            viewHolder.tvMuChang.setText("特点：" + datas.get(position).getCharacteristics());
+            String createTime = datas.get(position).getCreateTime();
+            String nowString = TimeUtils.getNowString();
+            Log.d(TAG1, "createTime=" + createTime);
+            Log.d(TAG1, "nowString=" + nowString);
+            long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
+            Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
 
-            String claimTime = datas.get(position).getClaimTime();
-            if (TextUtils.isEmpty(claimTime)) {
-                viewHolder.tvClaimTime.setVisibility(View.INVISIBLE);
+            viewHolder.tvAnimalAge.setText("年龄：" + timeSpanByNow +"天");
+
+            String name = datas.get(position).name;
+            if (TextUtils.isEmpty(name)) {
+                viewHolder.tvMuchangName.setText("牧场：无");
             } else {
-                viewHolder.tvClaimTime.setVisibility(View.VISIBLE);
-                viewHolder.tvClaimTime.setText("认领时间：" + claimTime);
+                viewHolder.tvMuchangName.setText("牧场：" + name);
             }
 
             String isClaimed = datas.get(position).getIsClaimed();
-            if (isClaimed.equals("0")) {
+            if (isClaimed.contains("1")) {
 
-                viewHolder.tvPriceAndClaim.setTextColor(Color.GRAY);
-                viewHolder.tvPriceAndClaim.setText(" 未认领");
+                //已认领
+                viewHolder.tvClaimTime.setText("认领时间：" + datas.get(position).getClaimTime());
 
-            } else if (isClaimed.equals("1")) {
+                String price = datas.get(position).getPrice();
+                int price1 = (int) Double.parseDouble(price);
 
-                viewHolder.tvPriceAndClaim.setText("价格：" +
-                        datas.get(position).getPrice()
-                        + "元     已认领");
+                viewHolder.tvPrice.setText("￥" + price1);
+                viewHolder.tvPrice.setTextColor(Color.parseColor("#127c39"));
+
+                viewHolder.tvState.setText("已认领");
+                viewHolder.tvState.setTextColor(Color.parseColor("#127c39"));
+
+                viewHolder.tvClaimPeople.setText("认领人：" + datas.get(position).nickname);
+
+                viewHolder.tvPhone.setText("电话：" + datas.get(position).getCellphone());
 
 
-                viewHolder.tvPriceAndClaim.setTextColor(Color.parseColor("#127c39"));
+            } else if (isClaimed.contains("0")) {
 
+                //未认领
+                viewHolder.tvClaimTime.setText("发布时间：" + datas.get(position).getBirthTime());
 
-            }
+                viewHolder.tvState.setText("未认领");
+                viewHolder.tvState.setTextColor(Color.GRAY);
 
-            String cellphone = datas.get(position).getCellphone();
-            if (TextUtils.isEmpty(cellphone)) {
+                viewHolder.tvPrice.setText("");
+                viewHolder.tvClaimPeople.setText("");
+                viewHolder.tvPhone.setText("");
 
-                viewHolder.tvPhone.setVisibility(View.INVISIBLE);
-
-            } else {
-
-                viewHolder.tvPhone.setText("手机号：" + cellphone);
-                viewHolder.tvPhone.setVisibility(View.VISIBLE);
 
             }
 
@@ -625,15 +639,10 @@ public class RenlingFragment1 extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             SimpleDraweeView ivGhoat;
-            TextView tvAnimalName;
-            TextView tvId;
-            TextView tvAnimalAge;
-            TextView tvMuChang;
-            TextView tvClaimTime;
 
-            TextView tvPriceAndClaim;
-            TextView tvClaimer;
-            TextView tvPhone;
+            TextView tvAnimalName, tvId, tvAnimalAge, tvMuchangName,
+                    tvClaimTime, tvPrice, tvClaimPeople, tvState,
+                    tvPhone;
 
 
             public ViewHolder(View view) {
@@ -643,10 +652,11 @@ public class RenlingFragment1 extends Fragment {
                 tvAnimalName = view.findViewById(R.id.tvAnimalName);
                 tvId = view.findViewById(R.id.tvId);
                 tvAnimalAge = view.findViewById(R.id.tvAnimalAge);
-                tvMuChang = view.findViewById(R.id.tvMuChang);
+                tvMuchangName = view.findViewById(R.id.tvMuchangName);
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
-
-                tvPriceAndClaim = view.findViewById(R.id.tvPriceAndClaim);
+                tvPrice = view.findViewById(R.id.tvPrice);
+                tvClaimPeople = view.findViewById(R.id.tvClaimPeople);
+                tvState = view.findViewById(R.id.tvState);
                 tvPhone = view.findViewById(R.id.tvPhone);
 
 

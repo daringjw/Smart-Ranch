@@ -646,7 +646,7 @@ public class RenlingFragment extends Fragment {
             public ViewHolder(View view) {
                 super(view);
 //                mTextView = view.findViewById(R.id.tvClaim);
-                ivGhoat = view.findViewById(R.id.ivGhoat);
+               /* ivGhoat = view.findViewById(R.id.ivGhoat);
                 tvAnimalName = view.findViewById(R.id.tvAnimalName);
                 tvId = view.findViewById(R.id.tvId);
                 tvAnimalAge = view.findViewById(R.id.tvAnimalAge);
@@ -654,7 +654,7 @@ public class RenlingFragment extends Fragment {
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
 
                 tvPriceAndClaim = view.findViewById(R.id.tvPriceAndClaim);
-                tvPhone = view.findViewById(R.id.tvPhone);
+                tvPhone = view.findViewById(R.id.tvPhone);*/
 
 
             }

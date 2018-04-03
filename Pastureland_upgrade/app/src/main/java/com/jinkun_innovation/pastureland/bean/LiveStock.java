@@ -83,8 +83,11 @@ public class LiveStock {
          * weight : 100.0
          */
 
+
+
         //homeImgUrl
         public String homeImgUrl;
+        public String livestockDetails;
 
         private String acreage;
         private String address;
