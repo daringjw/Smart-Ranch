@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
+import com.jinkun_innovation.pastureland.bean.RegisterBean;
 import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
@@ -605,14 +606,12 @@ public class RegisterActivity extends Activity {
 
                                     String result = response.body().toString();
                                     Log.d(TAG1, result);
-                                    if (result.contains("error")) {
-                                        //失败
-                                        Toast.makeText(getApplicationContext(),
-                                                "上传图片失败，登记失败，请重试",
-                                                Toast.LENGTH_SHORT)
-                                                .show();
 
-                                    } else {
+                                    Gson gson1 = new Gson();
+                                    RegisterBean registerBean = gson1.fromJson(result, RegisterBean.class);
+                                    String msg = registerBean.getMsg();
+
+                                    if (msg.contains("牲畜登记打疫苗成功")) {
                                         //成功
                                         Toast.makeText(getApplicationContext(),
                                                 "登记成功",
@@ -622,10 +621,16 @@ public class RegisterActivity extends Activity {
                                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                         finish();
 
-
+                                    } else {
+                                        //失败
+                                        Toast.makeText(getApplicationContext(),
+                                                msg,
+                                                Toast.LENGTH_SHORT)
+                                                .show();
                                     }
 
                                 }
+
                             });
                 } else {
 

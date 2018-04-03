@@ -99,11 +99,14 @@ public class MuqunFragment extends Fragment {
                             Gson gson1 = new Gson();
                             MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
                             MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
-                            int typeMap_$1 = typeMap.get_$1();
-                            tvYangNo.setText(typeMap_$1 + "头");
-                            mTvNiuNo.setText(typeMap.get_$2() + "头");
-                            mTvMaNo.setText(typeMap.get_$3() + "头");
-                            mTvDeerNo.setText(typeMap.get_$4() + "头");
+
+                            if (typeMap!=null){
+                                tvYangNo.setText(typeMap.get_$1() + "头");
+                                mTvNiuNo.setText(typeMap.get_$2() + "头");
+                                mTvMaNo.setText(typeMap.get_$3() + "头");
+                                mTvDeerNo.setText(typeMap.get_$4() + "头");
+                            }
+
 
 
 

@@ -98,7 +98,6 @@ public class YangListActivity extends AppCompatActivity {
                                     mRecyclerView.setAdapter(mAdapter);
 
 
-
                                     mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                                         @Override
                                         public void onItemClick(View view, int position) {
@@ -396,7 +395,8 @@ public class YangListActivity extends AppCompatActivity {
             }
             viewHolder.tvDeviceNo.setText("设备号：" + datas.get(position).getDeviceNo());
             viewHolder.tvPublishTime.setText("发布时间：" + datas.get(position).getUpdateTime());
-            viewHolder.tvLocation.setText("价格：" + datas.get(position).getWeight() + " 元");
+
+            viewHolder.tvLocation.setText("位置：" + datas.get(position).address);
 
         }
 
