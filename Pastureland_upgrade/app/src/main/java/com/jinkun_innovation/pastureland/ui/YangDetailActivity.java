@@ -90,8 +90,8 @@ public class YangDetailActivity extends Activity {
                             LiveStock.LivestockBean lives = liveStock.getLivestock();
 
                             String imgUrl = lives.getImgUrl();
-                            imgUrl=Constants.BASE_URL+imgUrl;
-                            Uri uri=Uri.parse(imgUrl);
+                            imgUrl = Constants.BASE_URL + imgUrl;
+                            Uri uri = Uri.parse(imgUrl);
                             mSdvYang.setImageURI(uri);
 
 
@@ -139,10 +139,13 @@ public class YangDetailActivity extends Activity {
 
                             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
                             int age = (int) timeSpanByNow / 30;
+                            if (age == 1) {
+                                age = 2;
+                            }
                             tvAge.setText("年龄：" + age + "个月");
 
-                            tvLifeTime.setText("一般寿命："+ lives.getLifeTime()+"个月");
-                            tvMuchangName.setText("牧场："+lives.getName());
+                            tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
+                            tvMuchangName.setText("牧场：" + lives.getName());
                             tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
 
 
@@ -154,7 +157,6 @@ public class YangDetailActivity extends Activity {
 
                     }
                 });
-
 
 
     }

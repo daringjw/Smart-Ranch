@@ -136,7 +136,7 @@ public class RenlingFragment1 extends Fragment {
 
                         } else {
 
-                            ToastUtils.showShort("设备号必须是15位或者16位");
+                            ToastUtils.showShort("设备号必须是16位数字");
 
                         }
 
@@ -569,7 +569,10 @@ public class RenlingFragment1 extends Fragment {
             Log.d(TAG1, "nowString=" + nowString);
             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
             Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
-            int age = (int) timeSpanByNow / 30;
+            int age = (int) timeSpanByNow / 30 ;
+            if (age == 1) {
+                age = 2;
+            }
             viewHolder.tvAnimalAge.setText("年龄：" + age + "个月");
 
             String name = datas.get(position).name;

@@ -137,13 +137,15 @@ public class RenlingDetailActivity extends Activity {
                             String createTime = lives.getCreateTime();
 
                             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
-                            int age = (int) timeSpanByNow / 30;
+                            int age = (int) timeSpanByNow / 30 ;
+                            if (age == 1) {
+                                age = 2;
+                            }
                             tvAge.setText("年龄：" + age + "个月");
 
-                            tvLifeTime.setText("一般寿命："+ lives.getLifeTime()+"个月");
-                            tvMuchangName.setText("牧场："+lives.getName());
+                            tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
+                            tvMuchangName.setText("牧场：" + lives.getName());
                             tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
-
 
 
                         } else {
@@ -157,8 +159,6 @@ public class RenlingDetailActivity extends Activity {
 
 
     }
-
-
 
 
     @OnClick(R.id.ivBack)

@@ -240,7 +240,7 @@ public class ManagerFragment extends Fragment {
                             register(str);
 
                         } else {
-                            ToastUtils.showShort("设备号必须是15位或者16位");
+                            ToastUtils.showShort("设备号必须是16位数字");
                         }
 
 
@@ -332,7 +332,7 @@ public class ManagerFragment extends Fragment {
                                             .setTitleText("已经登记过该设备!")
                                             .show();
 
-                                } else {
+                                } else if (result.contains("false")) {
                                     //未绑定
 //                                                    openCamera();
                                     Intent intent = new Intent(getActivity()
@@ -343,7 +343,11 @@ public class ManagerFragment extends Fragment {
 
                                     startActivity(intent);
 
+                                } else {
 
+                                    new SweetAlertDialog(getActivity())
+                                            .setTitleText("被其他牧场主登记了")
+                                            .show();
                                 }
 
 
@@ -383,9 +387,6 @@ public class ManagerFragment extends Fragment {
 
                             }
                         });
-
-
-
 
 
                 break;

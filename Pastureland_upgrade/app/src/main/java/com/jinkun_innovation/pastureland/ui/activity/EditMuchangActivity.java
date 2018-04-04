@@ -57,6 +57,7 @@ public class EditMuchangActivity extends Activity {
     private String mRanchImgUrl;
     private String mImgUrl;
     private String mRanchurl;
+    private String mName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +94,8 @@ public class EditMuchangActivity extends Activity {
 
                             mImgUrl = muqunDetail.getRanch().getImgUrl();
 
+                            mName = muqunDetail.getRanch().getName();
+
 
                         } else {
 
@@ -124,7 +127,7 @@ public class EditMuchangActivity extends Activity {
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
                         .params("imgUrl", mImgUrl)
-//                        .params("name", mTvRancher.getText().toString())
+                        .params("name", mName)
                         .params("acreage", mTvMianji.getText().toString())      //面积
                         .params("introduceAnimalCount", mTvNum.getText().toString())    //数量
                         .params("introduceRiver", mTvRiverNearby.getText().toString())   // 河流  0：无，1有
