@@ -137,8 +137,9 @@ public class RenlingDetailActivity extends Activity {
                             String createTime = lives.getCreateTime();
 
                             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
+                            int age = (int) timeSpanByNow / 30;
+                            tvAge.setText("年龄：" + age + "个月");
 
-                            tvAge.setText("年龄："+timeSpanByNow + "天");
                             tvLifeTime.setText("一般寿命："+ lives.getLifeTime()+"个月");
                             tvMuchangName.setText("牧场："+lives.getName());
                             tvPublishTime.setText("发布时间：" + lives.getUpdateTime());

@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -549,20 +550,20 @@ public class RegisterActivity extends Activity {
                     age = 8;
                 }
 
-                if (mWeight1.contains("100")) {
-                    weight = 100;
-                } else if (mWeight1.contains("200")) {
+                if (mWeight1.contains("10")) {
+                    weight = 10;
+                } else if (mWeight1.contains("20")) {
 
-                    weight = 200;
-                } else if (mWeight1.contains("300")) {
+                    weight = 20;
+                } else if (mWeight1.contains("30")) {
 
-                    weight = 300;
-                } else if (mWeight1.contains("400")) {
+                    weight = 30;
+                } else if (mWeight1.contains("40")) {
 
-                    weight = 400;
-                } else if (mWeight1.contains("500")) {
+                    weight = 40;
+                } else if (mWeight1.contains("50")) {
 
-                    weight = 500;
+                    weight = 50;
                 }
 
 
@@ -586,7 +587,7 @@ public class RegisterActivity extends Activity {
                     type = 6;
                 }
 
-                if (photoFile != null) {
+                if (!TextUtils.isEmpty(mImgUrl)) {
                     OkGo.<String>post(Constants.SAVELIVESTOCK)
                             .tag(this)
                             .params("token", mLoginSuccess.getToken())
@@ -598,7 +599,6 @@ public class RegisterActivity extends Activity {
                             .params("weight", weight)
                             .params("age", age)
                             .params("imgUrl", mImgUrl)
-
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -635,7 +635,7 @@ public class RegisterActivity extends Activity {
                 } else {
 
 
-                    Toast.makeText(getApplicationContext(), "请先拍照", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "网络不稳定，图片上传失败", Toast.LENGTH_SHORT).show();
 
                 }
 

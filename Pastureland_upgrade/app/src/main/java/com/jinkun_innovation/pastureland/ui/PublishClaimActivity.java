@@ -594,20 +594,20 @@ public class PublishClaimActivity extends AppCompatActivity {
                             age = 8;
                         }
 
-                        if (mWeight1.contains("100")) {
-                            weight = 100;
-                        } else if (mWeight1.contains("200")) {
+                        if (mWeight1.contains("10")) {
+                            weight = 10;
+                        } else if (mWeight1.contains("20")) {
 
-                            weight = 200;
-                        } else if (mWeight1.contains("300")) {
+                            weight = 20;
+                        } else if (mWeight1.contains("30")) {
 
-                            weight = 300;
-                        } else if (mWeight1.contains("400")) {
+                            weight = 30;
+                        } else if (mWeight1.contains("40")) {
 
-                            weight = 400;
-                        } else if (mWeight1.contains("500")) {
+                            weight = 40;
+                        } else if (mWeight1.contains("50")) {
 
-                            weight = 500;
+                            weight = 50;
                         }
 
 

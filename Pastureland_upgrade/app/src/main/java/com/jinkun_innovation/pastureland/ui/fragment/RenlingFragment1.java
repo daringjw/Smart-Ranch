@@ -511,8 +511,6 @@ public class RenlingFragment1 extends Fragment {
     }
 
 
-
-
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> implements View.OnClickListener {
 
 
@@ -571,8 +569,8 @@ public class RenlingFragment1 extends Fragment {
             Log.d(TAG1, "nowString=" + nowString);
             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
             Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
-
-            viewHolder.tvAnimalAge.setText("年龄：" + timeSpanByNow +"天");
+            int age = (int) timeSpanByNow / 30;
+            viewHolder.tvAnimalAge.setText("年龄：" + age + "个月");
 
             String name = datas.get(position).name;
             if (TextUtils.isEmpty(name)) {

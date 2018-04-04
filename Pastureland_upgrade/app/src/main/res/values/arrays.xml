@@ -18,11 +18,11 @@
     </string-array>
 
     <string-array name="weight">
-        <item>100元</item>
-        <item>200元</item>
-        <item>300元</item>
-        <item>400元</item>
-        <item>500元</item>
+        <item>10kg</item>
+        <item>20kg</item>
+        <item>30kg</item>
+        <item>40kg</item>
+        <item>50kg</item>
     </string-array>
 
     <string-array name="age">

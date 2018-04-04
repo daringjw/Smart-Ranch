@@ -29,10 +29,10 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.GrassActivity;
-import com.jinkun_innovation.pastureland.ui.LianJiangPasturelandActivity;
 import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
+import com.jinkun_innovation.pastureland.ui.activity.Muchang2Activity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -155,7 +155,7 @@ public class ManagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(getActivity(), LianJiangPasturelandActivity.class));
+                startActivity(new Intent(getActivity(), Muchang2Activity.class));
 
             }
         });

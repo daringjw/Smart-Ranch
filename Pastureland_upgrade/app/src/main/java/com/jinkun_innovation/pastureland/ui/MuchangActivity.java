@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.ui.activity.Muchang2Activity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -175,6 +175,17 @@
             android:screenOrientation="portrait"/>
 
         <activity
+            android:name=".ui.activity.Muchang2Activity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.EditMuchangActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+
+        <activity
             android:name="com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
