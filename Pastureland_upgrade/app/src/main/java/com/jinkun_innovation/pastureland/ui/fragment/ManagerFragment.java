@@ -26,6 +26,7 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.gson.Gson;
 import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
+import com.jinkun_innovation.pastureland.bean.IsBinded;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.GrassActivity;
@@ -307,10 +308,17 @@ public class ManagerFragment extends Fragment {
         }
     }
 
-    private void register(String isbn) {
+    private void register(final String isbn) {
         switch (checkedItem) {
 
             case 2:
+
+                /*Intent intent = new Intent(getActivity()
+                        , RegisterActivity.class);
+                intent.putExtra(getString(R.string.scan_Message),
+                        scanMessage);
+                startActivity(intent);*/
+
                 //接羔
                 //判断设备是否被绑定
                 OkGo.<String>post(Constants.ISDEVICEBINDED)
@@ -324,35 +332,71 @@ public class ManagerFragment extends Fragment {
                             public void onSuccess(Response<String> response) {
 
                                 String result = response.body().toString();
-                                Log.d(TAG1, result);
-                                if (result.contains("true")) {
-
-                                    //已绑定
-                                    new SweetAlertDialog(getActivity())
-                                            .setTitleText("已经登记过该设备!")
+                                Gson gson = new Gson();
+                                IsBinded isBinded = gson.fromJson(result, IsBinded.class);
+                                String code = isBinded.getCode();
+                                boolean msg = isBinded.isMsg();
+                                String msg1 = isBinded.getMsg1();
+                                if (!msg && code.contains("error")) {
+                                    //提示被其它牧场主绑定了，跳回主页面
+                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("被其它牧场主绑定了")
+                                            .setContentText("无法登记")
                                             .show();
 
-                                } else if (result.contains("false")) {
-                                    //未绑定
-//                                                    openCamera();
-                                    Intent intent = new Intent(getActivity()
-                                            , RegisterActivity.class);
 
-                                    intent.putExtra(getString(R.string.scan_Message),
-                                            scanMessage);
+                                } else if (code.contains("true")) {
+                                    //提示此牲畜已发布认领，不可重新发布
+                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("此牲畜已发布认领")
+                                            .setContentText("无法重新登记")
+                                            .show();
 
-                                    startActivity(intent);
+
+                                } else if (msg && code.contains("success")) {
+
+                                    //提示设备已经被登记，提示是否解绑
+                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                            .setTitleText("设备已经被登记，是否解绑?")
+                                            .setContentText("解绑重新登记")
+                                            .setConfirmText("是")
+                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    sDialog.cancel();
+                                                    Intent intent = new Intent(getActivity()
+                                                            , RegisterActivity.class);
+                                                    intent.putExtra(getString(R.string.scan_Message),
+                                                            scanMessage);
+                                                    startActivity(intent);
+
+                                                }
+                                            })
+                                            .setCancelText("否")
+                                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                @Override
+                                                public void onClick(SweetAlertDialog sDialog) {
+                                                    sDialog.cancel();
+                                                }
+                                            })
+                                            .show();
+
 
                                 } else {
 
-                                    new SweetAlertDialog(getActivity())
-                                            .setTitleText("被其他牧场主登记了")
-                                            .show();
+                                    // 未登记
+                                    Intent intent = new Intent(getActivity()
+                                            , RegisterActivity.class);
+                                    intent.putExtra(getString(R.string.scan_Message),
+                                            scanMessage);
+                                    startActivity(intent);
+
                                 }
 
 
                             }
                         });
+
 
                 break;
 

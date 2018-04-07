@@ -93,6 +93,8 @@ public class RenlingDetailActivity extends Activity {
 
                             LiveStock.LivestockBean lives = liveStock.getLivestock();
 
+                            String deviceNo = lives.getDeviceNo();
+                            tvDevcieNO.setText("设备号："+deviceNo);
 
                             String variety = lives.getVariety();
                             if (variety.equals("100")) {
@@ -120,6 +122,9 @@ public class RenlingDetailActivity extends Activity {
                                 //草原黑毛猪
                                 tvVariety.setText("品种名称：草原黑毛猪");
 
+                            } else if (variety.equals("701")) {
+                                //骆驼
+                                tvVariety.setText("品种名称：骆驼");
                             }
 
                             String livestockDetails = lives.livestockDetails;

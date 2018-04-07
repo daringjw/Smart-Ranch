@@ -184,6 +184,13 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.activity.CamelListActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+
+
 
         <activity
             android:name="com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity"

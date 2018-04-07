@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
-import com.jinkun_innovation.pastureland.bean.SelectLivestock;
 import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
@@ -158,7 +157,9 @@ public class PublishClaimActivity extends AppCompatActivity {
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
 
-                                            pDialog.cancel();
+                                            if (pDialog != null) {
+                                                pDialog.cancel();
+                                            }
 
 
                                         }
@@ -167,7 +168,9 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         public void onError(Response<String> response) {
                                             super.onError(response);
 
-                                            pDialog.cancel();
+                                            if (pDialog != null) {
+                                                pDialog.cancel();
+                                            }
 
                                             new SweetAlertDialog(PublishClaimActivity.this,
                                                     SweetAlertDialog.ERROR_TYPE)
@@ -323,6 +326,10 @@ public class PublishClaimActivity extends AppCompatActivity {
                         tvVariety.setText("草原黑毛猪");
                         break;
 
+                    case 701:
+
+                        tvVariety.setText("骆驼");
+                        break;
 
                 }
 
@@ -357,62 +364,6 @@ public class PublishClaimActivity extends AppCompatActivity {
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
 
-
-        //设备是否绑定， 没绑定弹出dialog提示，点击确定和取消 finish
-        OkGo.<String>get(Constants.ISDEVICEBINDED)
-                .tag(this)
-                .params("token", mLoginSuccess.getToken())
-                .params("username", mUsername)
-                .params("ranchID", mLoginSuccess.getRanchID())
-                .params("deviceNO", mIsbn)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        String s = response.body().toString();
-                        Log.d(TAG1, s);
-                        if (s.contains("false")) {
-                            //未绑定
-                            ToastUtils.showShort("未登记牲畜");
-
-
-                        } else if (s.contains("true")) {
-
-                            //登记牲畜，查询发布情况
-                            OkGo.<String>get(Constants.SELECT_LIVE_STOCK)
-                                    .tag(this)
-                                    .params("token", mLoginSuccess.getToken())
-                                    .params("username", mUsername)
-                                    .params("deviceNO", mIsbn)
-                                    .params("ranchID", mLoginSuccess.getRanchID())
-                                    .execute(new StringCallback() {
-                                        @Override
-                                        public void onSuccess(Response<String> response) {
-
-                                            String s1 = response.body().toString();
-                                            Log.d(TAG1, s1);
-                                            Gson gson1 = new Gson();
-                                            SelectLivestock selectLivestock = gson1.fromJson(s1, SelectLivestock.class);
-                                            if (s1.contains("此牲畜已经发布过")) {
-
-                                                mLivestockType = selectLivestock.getLivestockType();
-
-
-                                            } else {
-
-                                                //此牲畜登记了，没有发布
-
-                                            }
-
-
-                                        }
-                                    });
-
-
-                        }
-
-                    }
-                });
 
         mIvTakePhoto = (ImageView) findViewById(R.id.ivTakePhoto);
         mIvTakePhoto.setOnClickListener(new View.OnClickListener() {
@@ -454,7 +405,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                         .tag(this)
                         .params("token", mLoginSuccess.getToken())
                         .params("username", mUsername)
-                        .params("livestockType", pos + 1)
+                        .params("livestockType", pos == 4 ? 7 : pos + 1)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
@@ -585,7 +536,6 @@ public class PublishClaimActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(mImgUrl)) {
                     if (!TextUtils.isEmpty(mDeviceNo)) {
 
-
                         if (mAge1.contains("2")) {
                             age = 2;
                         } else if (mAge1.contains("5")) {
@@ -611,24 +561,6 @@ public class PublishClaimActivity extends AppCompatActivity {
                         }
 
 
-                        /*if (mVariety1.equals("乌珠穆沁黑头羊")) {
-
-                            variety = 100;
-                        } else if (mVariety1.equals("山羊")) {
-
-                            variety = 101;
-                        } else if (mVariety1.equals("西门塔尔牛")) {
-
-                            variety = 201;
-                        } else if (mVariety1.equals("蒙古马")) {
-
-                            variety = 301;
-                        } else if (mVariety1.equals("草原黑毛猪")) {
-
-                            variety = 401;
-                        }*/
-
-
                         if (mType1.equals("羊")) {
 
                             type = 1;
@@ -647,6 +579,9 @@ public class PublishClaimActivity extends AppCompatActivity {
                         } else if (mType1.equals("鹿")) {
 
                             type = 6;
+                        } else if (mType1.equals("骆驼")) {
+
+                            type = 7;
                         }
 
 
@@ -683,54 +618,53 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                                         } else if (s.contains("已经发布过了")) {
 
-
-                                            new SweetAlertDialog(PublishClaimActivity.this, SweetAlertDialog.WARNING_TYPE)
-                                                    .setTitleText("已经发布,是否重新发布?")
-                                                    .setContentText("按确定重新发布!")
-                                                    .setCancelText("否")
-                                                    .setConfirmText("确定")
-                                                    .showCancelButton(true)
-                                                    .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            OkGo.<String>post(Constants.IS_CLAIMED)
+                                                    .tag(this)
+                                                    .params("token", mLoginSuccess.getToken())
+                                                    .params("username", mUsername)
+                                                    .params("deviceNO", mIsbn)
+                                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                                    .params("livestockType", type)
+                                                    .params("variety", mInteger == 0 ? 100 : mInteger)
+                                                    .params("weight", weight)
+                                                    .params("age", age)
+                                                    .params("imgUrl", mImgUrl)
+                                                    .execute(new StringCallback() {
                                                         @Override
-                                                        public void onClick(SweetAlertDialog sDialog) {
-                                                            sDialog.cancel();
+                                                        public void onSuccess(Response<String> response) {
 
+                                                            String s1 = response.body().toString();
+                                                            Log.d(TAG1, "s1=" + s1);
+
+                                                            if (s1.contains("已被认领不可重新发布")) {
+
+                                                                new SweetAlertDialog(PublishClaimActivity.this,
+                                                                        SweetAlertDialog.WARNING_TYPE)
+                                                                        .setTitleText("已经被认领")
+                                                                        .setContentText("已被认领不可重新发布")
+                                                                        .setConfirmText("确定")
+                                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                            @Override
+                                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                                                ToastUtils.showShort("已被认领不可重新发布");
+                                                                                setResult(RESULT_OK);
+                                                                                finish();
+                                                                            }
+                                                                        })
+
+                                                                        .show();
+
+
+                                                            } else if (s1.contains("重新发布认领表成功")) {
+
+                                                                ToastUtils.showShort("重新发布成功");
+                                                                setResult(RESULT_OK);
+                                                                finish();
+
+                                                            }
 
                                                         }
-                                                    })
-                                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                                        @Override
-                                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-
-                                                            sweetAlertDialog.cancel();
-                                                            //重新发布
-                                                            OkGo.<String>post(Constants.IS_CLAIMED)
-                                                                    .tag(this)
-                                                                    .params("token", mLoginSuccess.getToken())
-                                                                    .params("username", mUsername)
-                                                                    .params("deviceNO", mIsbn)
-                                                                    .params("ranchID", mLoginSuccess.getRanchID())
-                                                                    .params("livestockType", type)
-                                                                    .params("variety", mInteger == 0 ? 100 : mInteger)
-                                                                    .params("weight", weight)
-                                                                    .params("age", age)
-                                                                    .params("imgUrl", mImgUrl)
-                                                                    .execute(new StringCallback() {
-                                                                        @Override
-                                                                        public void onSuccess(Response<String> response) {
-
-                                                                            String s1 = response.body().toString();
-                                                                            Log.d(TAG1, "s1=" + s1);
-                                                                            ToastUtils.showShort("重新发布成功");
-                                                                            setResult(RESULT_OK);
-                                                                            finish();
-
-                                                                        }
-                                                                    });
-
-                                                        }
-                                                    })
-                                                    .show();
+                                                    });
 
 
                                         } else if (s.contains("牲畜信息为空或者没有这个品种,发布不成功")) {

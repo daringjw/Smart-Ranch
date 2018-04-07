@@ -24,6 +24,7 @@ import com.google.zxing.client.android.CaptureActivity2;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.RenLing;
+import com.jinkun_innovation.pastureland.bean.SelectLivestock;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
 import com.jinkun_innovation.pastureland.ui.RenlingDetailActivity;
@@ -43,6 +44,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 /**
@@ -82,6 +85,8 @@ public class RenlingFragment1 extends Fragment {
         return a.substring(0, t) + b + a.substring(t, a.length());
     }
 
+    String isbn;
+
     @Override
     public void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -90,29 +95,65 @@ public class RenlingFragment1 extends Fragment {
             switch (requestCode) {
                 case SCAN_REQUEST_CODE:
 
-                    String isbn = data.getStringExtra("CaptureIsbn");
+                    isbn = data.getStringExtra("CaptureIsbn");
 
                     if (!TextUtils.isEmpty(isbn)) {
                         if (StrLengthUtil.length(isbn) == 16) {
 
-                            //设备是否绑定
-                            OkGo.<String>get(Constants.ISDEVICEBINDED)
+                            /*Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                            intent.putExtra("isbn", isbn);
+                            startActivityForResult(intent, 1001);*/
+
+                            OkGo.<String>get(Constants.SELECT_LIVE_STOCK)
                                     .tag(this)
                                     .params("token", mLoginSuccess.getToken())
-                                    .params("username", mLoginSuccess.getName())
-                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                    .params("username", mUsername)
                                     .params("deviceNO", isbn)
+                                    .params("ranchID", mLoginSuccess.getRanchID())
                                     .execute(new StringCallback() {
                                         @Override
                                         public void onSuccess(Response<String> response) {
 
-                                            String s = response.body().toString();
-                                            if (s.contains("true")) {
-                                                //已登记
+                                            String result = response.body().toString();
+                                            Gson gson = new Gson();
+                                            SelectLivestock selectLivestock = gson.fromJson(result, SelectLivestock.class);
+                                            String msg = selectLivestock.getMsg();
+                                            boolean code = selectLivestock.isCode();
+                                            if (code) {
+
+                                                //已经发布过,是否重新发布认领
+                                                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                                        .setTitleText("是否重新发布认领?")
+                                                        .setContentText("已经发布过,是否重新发布认领")
+                                                        .setCancelText("否")
+                                                        .setConfirmText("是")
+                                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                                                sweetAlertDialog.cancel();
+                                                                Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                                                                intent.putExtra("isbn", isbn);
+                                                                startActivityForResult(intent, 1001);
+
+                                                            }
+                                                        })
+                                                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                            @Override
+                                                            public void onClick(SweetAlertDialog sDialog) {
+                                                                sDialog.cancel();
+                                                            }
+                                                        })
+                                                        .show();
 
 
-                                            } else {
-                                                //未登记
+                                            } else if (result.contains("此牲畜未发布过")) {
+
+                                                //没有发布过
+
+                                                Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                                                intent.putExtra("isbn", isbn);
+                                                startActivityForResult(intent, 1001);
 
 
                                             }
@@ -121,18 +162,115 @@ public class RenlingFragment1 extends Fragment {
                                         }
                                     });
 
-                            Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
-                            intent.putExtra("isbn", isbn);
-                            startActivityForResult(intent, 1001);
 
                         } else if (StrLengthUtil.length(isbn) == 15) {
 
-                            String str = Stringinsert(isbn, "1", 7);
+                            /*String str = Stringinsert(isbn, "1", 7);
                             Log.d(TAG1, "15位isbn=" + str);
                             Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
                             Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
                             intent.putExtra("isbn", str);
-                            startActivityForResult(intent, 1001);
+                            startActivityForResult(intent, 1001);*/
+
+                            OkGo.<String>post(Constants.ISDEVICEBINDED)
+                                    .tag(this)
+                                    .params("token", mLoginSuccess.getToken())
+                                    .params("username", mUsername) //用户手机号
+                                    .params("deviceNO", isbn)
+                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onSuccess(Response<String> response) {
+
+                                            String result = response.body().toString();
+                                            Log.d(TAG1, result);
+                                            if (result.contains("true")) {
+
+                                                //已绑定
+                                    /*new SweetAlertDialog(getActivity())
+                                            .setTitleText("已经登记过该设备!")
+                                            .show();*/
+                                                //查询登记发布情况
+                                                OkGo.<String>get(Constants.SELECT_LIVE_STOCK)
+                                                        .tag(this)
+                                                        .params("token", mLoginSuccess.getToken())
+                                                        .params("username", mUsername)
+                                                        .params("deviceNO", isbn)
+                                                        .params("ranchID", mLoginSuccess.getRanchID())
+                                                        .execute(new StringCallback() {
+                                                            @Override
+                                                            public void onSuccess(Response<String> response) {
+
+                                                                String result = response.body().toString();
+
+                                                                if (result.contains("此牲畜已经发布过")) {
+                                                                    //已经登记，并且已经发布认领，无法重新发布
+                                                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                                                            .setTitleText("已经登记，并且已经发布认领")
+                                                                            .setContentText("已经登记，并且已经发布认领，无法重新发布认领")
+                                                                            .show();
+
+                                                                } else if (result.contains("获取牲畜登记发布情况异常")) {
+
+                                                                    //已经登记，但没有发布认领，是否重新登记
+                                                                    new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                                                            .setTitleText("已经登记，是否发布认领？")
+                                                                            .setContentText("已经登记，但没有发布认领，是否发布认领？")
+                                                                            .setConfirmText("是")
+                                                                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                                @Override
+                                                                                public void onClick(SweetAlertDialog sDialog) {
+
+                                                                                    sDialog.dismissWithAnimation();
+
+                                                                                    String str = Stringinsert(isbn, "1", 7);
+                                                                                    Log.d(TAG1, "15位isbn=" + str);
+                                                                                    Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
+                                                                                    Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                                                                                    intent.putExtra("isbn", str);
+                                                                                    startActivityForResult(intent, 1001);
+
+
+                                                                                }
+                                                                            })
+                                                                            .setCancelText("否")
+                                                                            .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                                                                @Override
+                                                                                public void onClick(SweetAlertDialog sDialog) {
+                                                                                    sDialog.cancel();
+                                                                                }
+                                                                            })
+                                                                            .show();
+
+
+                                                                }
+
+
+                                                            }
+                                                        });
+
+
+                                            } else if (result.contains("false")) {
+                                                //未绑定
+//                                                    openCamera();
+                                                String str = Stringinsert(isbn, "1", 7);
+                                                Log.d(TAG1, "15位isbn=" + str);
+                                                Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
+                                                Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
+                                                intent.putExtra("isbn", str);
+                                                startActivityForResult(intent, 1001);
+
+                                            } else {
+
+                                                new SweetAlertDialog(getActivity())
+                                                        .setTitleText("被其他牧场主登记了,无法发布认领")
+                                                        .show();
+                                            }
+
+
+                                        }
+                                    });
+
 
                         } else {
 
@@ -143,6 +281,9 @@ public class RenlingFragment1 extends Fragment {
                     }
 
                 case 1001:
+
+
+//                    getActivity().recreate();
 
                     //刷新数据
                     OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
@@ -214,6 +355,7 @@ public class RenlingFragment1 extends Fragment {
 
         }
     }
+
 
     @Nullable
     @Override
@@ -569,7 +711,7 @@ public class RenlingFragment1 extends Fragment {
             Log.d(TAG1, "nowString=" + nowString);
             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
             Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
-            int age = (int) timeSpanByNow / 30 ;
+            int age = (int) timeSpanByNow / 30;
             if (age == 1) {
                 age = 2;
             }

@@ -20,6 +20,10 @@ public class Constants {
     public static final String IP = "182.92.3.109";
     public static final String PORT = ":10100";
 
+//    public static final String IP = "116.95.255.211";
+//    public static final String PORT = ":10100";
+
+
 
     //测试服务器
     public static final String BASE_URL = "http://" + IP + PORT;

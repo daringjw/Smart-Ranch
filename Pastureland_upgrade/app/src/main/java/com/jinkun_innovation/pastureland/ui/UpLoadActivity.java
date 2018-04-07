@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -91,8 +90,8 @@ public class UpLoadActivity extends BaseActivity {
         cropImage(getIntent().getStringExtra(getString(R.string.img_Url)));
 
 
-        TextView tvDeviceNo = (TextView) findViewById(R.id.tvDeviceNo);
-        tvDeviceNo.setText(mDeviceNo);
+//        TextView tvDeviceNo = (TextView) findViewById(R.id.tvDeviceNo);
+//        tvDeviceNo.setText(mDeviceNo);
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();

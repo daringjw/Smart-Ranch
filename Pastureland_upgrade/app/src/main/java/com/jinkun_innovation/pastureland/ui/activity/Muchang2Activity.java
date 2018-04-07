@@ -90,7 +90,7 @@ public class Muchang2Activity extends Activity {
                             ranchImgUrl = Constants.BASE_URL + ranchImgUrl;
                             mSdvYang.setImageURI(Uri.parse(ranchImgUrl));
 
-                            mTvRancher.setText("牧场主：" + muqunDetail.getRanch().getRancherName());
+                            mTvRancher.setText("牧场：" + muqunDetail.getRanch().getName());
                             mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());
 
                             mTvRiverNearby.setText("附近河流：" + muqunDetail.getRanch().getIntroduceRiver());

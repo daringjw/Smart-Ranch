@@ -39,6 +39,8 @@ public class EditMuchangActivity extends Activity {
     @BindView(R.id.sdvYang)
     SimpleDraweeView mSdvYang;
 
+    @BindView(R.id.etMuChangName)
+    EditText  etMuChangName;
     @BindView(R.id.tvMianji)
     EditText mTvMianji;
     @BindView(R.id.tvRiverNearby)
@@ -127,7 +129,7 @@ public class EditMuchangActivity extends Activity {
                         .params("username", mUsername)
                         .params("ranchID", mLoginSuccess.getRanchID())
                         .params("imgUrl", mImgUrl)
-                        .params("name", mName)
+                        .params("name", etMuChangName.getText().toString())    //牧场名称
                         .params("acreage", mTvMianji.getText().toString())      //面积
                         .params("introduceAnimalCount", mTvNum.getText().toString())    //数量
                         .params("introduceRiver", mTvRiverNearby.getText().toString())   // 河流  0：无，1有

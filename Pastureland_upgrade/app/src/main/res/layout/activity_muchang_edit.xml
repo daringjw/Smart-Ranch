@@ -62,6 +62,13 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/variety_bg">
 
+                <EditText
+                    android:id="@+id/etMuChangName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:hint="牧场名称"
+                    android:textColorHint="#fff"/>
 
             </RelativeLayout>
 

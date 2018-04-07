@@ -94,6 +94,8 @@ public class YangDetailActivity extends Activity {
                             Uri uri = Uri.parse(imgUrl);
                             mSdvYang.setImageURI(uri);
 
+                            String deviceNo = lives.getDeviceNo();
+                            tvDevcieNO.setText("设备号："+deviceNo);
 
                             String variety = lives.getVariety();
                             if (variety.equals("100")) {
@@ -121,6 +123,9 @@ public class YangDetailActivity extends Activity {
                                 //草原黑毛猪
                                 tvVariety.setText("品种名称：草原黑毛猪");
 
+                            } else if (variety.equals("701")) {
+                                //骆驼
+                                tvVariety.setText("品种名称：骆驼");
                             }
 
                             String livestockDetails = lives.livestockDetails;

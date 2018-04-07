@@ -8,47 +8,31 @@ public class SelectLivestock {
 
 
     /**
-     * LivestockType : 1
-     * code : true
-     * createTime : 2018-02-01 16:04:54
-     * imgUrl : /jkimg/20180401/a629b15b143be61bb6b04ba58d8d58cb.jpg
      * msg : 此牲畜已经发布过
-     * typeList : {"牛":2,"猪":4,"羊":1,"马":3,"鸡":5,"鹿":6}
-     * variety : 100
-     * weight : 100.0
+     * imgUrl : /jkimg/20180404/e3832ea45989219b00ec952c3be99dd0.jpg
+     * code : true
+     * typeList : {"鸡":5,"骆驼":7,"羊":1,"猪":4,"牛":2,"马":3,"鹿":6}
+     * variety : 301
+     * createTime : 2018-02-04 20:31:10
+     * LivestockType : 3
+     * weight : 10.0
      */
 
-    private int LivestockType;
-    private boolean code;
-    private String createTime;
-    private String imgUrl;
     private String msg;
+    private String imgUrl;
+    private boolean code;
     private TypeListBean typeList;
     private int variety;
+    private String createTime;
+    private int LivestockType;
     private double weight;
 
-    public int getLivestockType() {
-        return LivestockType;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setLivestockType(int LivestockType) {
-        this.LivestockType = LivestockType;
-    }
-
-    public boolean isCode() {
-        return code;
-    }
-
-    public void setCode(boolean code) {
-        this.code = code;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
     public String getImgUrl() {
@@ -59,12 +43,12 @@ public class SelectLivestock {
         this.imgUrl = imgUrl;
     }
 
-    public String getMsg() {
-        return msg;
+    public boolean isCode() {
+        return code;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setCode(boolean code) {
+        this.code = code;
     }
 
     public TypeListBean getTypeList() {
@@ -83,6 +67,22 @@ public class SelectLivestock {
         this.variety = variety;
     }
 
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public int getLivestockType() {
+        return LivestockType;
+    }
+
+    public void setLivestockType(int LivestockType) {
+        this.LivestockType = LivestockType;
+    }
+
     public double getWeight() {
         return weight;
     }
@@ -93,35 +93,37 @@ public class SelectLivestock {
 
     public static class TypeListBean {
         /**
-         * 牛 : 2
-         * 猪 : 4
-         * 羊 : 1
-         * 马 : 3
          * 鸡 : 5
+         * 骆驼 : 7
+         * 羊 : 1
+         * 猪 : 4
+         * 牛 : 2
+         * 马 : 3
          * 鹿 : 6
          */
 
-        private int 牛;
-        private int 猪;
-        private int 羊;
-        private int 马;
         private int 鸡;
+        private int 骆驼;
+        private int 羊;
+        private int 猪;
+        private int 牛;
+        private int 马;
         private int 鹿;
 
-        public int get牛() {
-            return 牛;
+        public int get鸡() {
+            return 鸡;
         }
 
-        public void set牛(int 牛) {
-            this.牛 = 牛;
+        public void set鸡(int 鸡) {
+            this.鸡 = 鸡;
         }
 
-        public int get猪() {
-            return 猪;
+        public int get骆驼() {
+            return 骆驼;
         }
 
-        public void set猪(int 猪) {
-            this.猪 = 猪;
+        public void set骆驼(int 骆驼) {
+            this.骆驼 = 骆驼;
         }
 
         public int get羊() {
@@ -132,20 +134,28 @@ public class SelectLivestock {
             this.羊 = 羊;
         }
 
+        public int get猪() {
+            return 猪;
+        }
+
+        public void set猪(int 猪) {
+            this.猪 = 猪;
+        }
+
+        public int get牛() {
+            return 牛;
+        }
+
+        public void set牛(int 牛) {
+            this.牛 = 牛;
+        }
+
         public int get马() {
             return 马;
         }
 
         public void set马(int 马) {
             this.马 = 马;
-        }
-
-        public int get鸡() {
-            return 鸡;
-        }
-
-        public void set鸡(int 鸡) {
-            this.鸡 = 鸡;
         }
 
         public int get鹿() {

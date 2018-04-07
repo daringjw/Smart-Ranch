@@ -120,7 +120,7 @@ public class RegisterActivity extends Activity {
                                     SweetAlertDialog.PROGRESS_TYPE);
                             mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
                             mDialog.setTitleText("图片正在上传...");
-                            mDialog.setCancelable(false);
+                            mDialog.setCancelable(true);
                             mDialog.show();
 
                             OkGo.<String>post(Constants.HEADIMGURL)
@@ -143,7 +143,9 @@ public class RegisterActivity extends Activity {
                                             mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
                                             Log.d(TAG1, mImgUrl);
 
-                                            mDialog.cancel();
+                                            if (mDialog != null) {
+                                                mDialog.cancel();
+                                            }
 
 
                                         }
@@ -152,7 +154,9 @@ public class RegisterActivity extends Activity {
                                         public void onError(Response<String> response) {
                                             super.onError(response);
 
-                                            mDialog.cancel();
+                                            if (mDialog != null) {
+                                                mDialog.cancel();
+                                            }
 
                                             new SweetAlertDialog(RegisterActivity.this,
                                                     SweetAlertDialog.ERROR_TYPE)
@@ -337,6 +341,13 @@ public class RegisterActivity extends Activity {
                         tvVariety.setText("草原黑毛猪");
                         break;
 
+                    case 701:
+
+                        tvVariety.setText("骆驼");
+                        break;
+
+
+
 
                 }
 
@@ -402,7 +413,7 @@ public class RegisterActivity extends Activity {
                         .tag(this)
                         .params("token", mLoginSuccess.getToken())
                         .params("username", mUsername)
-                        .params("livestockType", pos + 1)
+                        .params("livestockType", pos == 4 ? 7 : pos + 1)
                         .execute(new StringCallback() {
                             @Override
                             public void onSuccess(Response<String> response) {
@@ -585,6 +596,9 @@ public class RegisterActivity extends Activity {
                 } else if (mType1.equals("鹿")) {
 
                     type = 6;
+                }else if (mType1.equals("骆驼")){
+
+                    type = 7;
                 }
 
                 if (!TextUtils.isEmpty(mImgUrl)) {

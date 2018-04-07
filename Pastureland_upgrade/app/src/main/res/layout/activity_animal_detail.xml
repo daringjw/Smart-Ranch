@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="认领详情"
+            android:text="牲畜详情"
             android:textColor="#fff"/>
 
     </RelativeLayout>

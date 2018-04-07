@@ -17,6 +17,7 @@ import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.MuqunSum;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.YangListActivity;
+import com.jinkun_innovation.pastureland.ui.activity.CamelListActivity;
 import com.jinkun_innovation.pastureland.ui.activity.MaListActivity;
 import com.jinkun_innovation.pastureland.ui.activity.NiuListActivity;
 import com.jinkun_innovation.pastureland.ui.activity.PigListActivity;
@@ -46,6 +47,8 @@ public class MuqunFragment extends Fragment {
     ImageView mIvMa;
     @BindView(R.id.ivPig)
     ImageView mIvPig;
+    @BindView(R.id.ivCamel)
+    ImageView ivCamel;
 
     @BindView(R.id.tvYangNo)
     TextView tvYangNo;
@@ -58,7 +61,7 @@ public class MuqunFragment extends Fragment {
 
     private TextView mTvNiuNo;
     private TextView mTvMaNo;
-    private TextView mTvDeerNo;
+    private TextView mTvDeerNo, tvCamelNo;
 
     @Nullable
     @Override
@@ -73,6 +76,7 @@ public class MuqunFragment extends Fragment {
         mTvNiuNo = view.findViewById(R.id.tvNiuNo);
         mTvMaNo = view.findViewById(R.id.tvMaNo);
         mTvDeerNo = view.findViewById(R.id.tvDeerNo);
+        tvCamelNo = view.findViewById(R.id.tvCamelNo);
 
 
         mLogin_success = PrefUtils.getString(getActivity(), "login_success", null);
@@ -100,19 +104,18 @@ public class MuqunFragment extends Fragment {
                             MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
                             MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
 
-                            if (typeMap!=null){
+                            if (typeMap != null) {
+
                                 tvYangNo.setText(typeMap.get_$1() + "头");
                                 mTvNiuNo.setText(typeMap.get_$2() + "头");
                                 mTvMaNo.setText(typeMap.get_$3() + "头");
                                 mTvDeerNo.setText(typeMap.get_$4() + "头");
+                                tvCamelNo.setText(typeMap.get_$7() + "头");
+
                             }
 
 
-
-
-
                         } else {
-
 
 
                         }
@@ -133,7 +136,7 @@ public class MuqunFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.ivYang, R.id.ivNiu, R.id.ivMa ,R.id.ivPig})
+    @OnClick({R.id.ivYang, R.id.ivNiu, R.id.ivMa, R.id.ivPig, R.id.ivCamel})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ivYang:
@@ -160,7 +163,11 @@ public class MuqunFragment extends Fragment {
 
                 break;
 
+            case R.id.ivCamel:
 
+                startActivity(new Intent(getActivity(), CamelListActivity.class));
+
+                break;
 
 
         }
