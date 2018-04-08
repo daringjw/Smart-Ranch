@@ -117,7 +117,7 @@ public class UpLoadActivity extends BaseActivity {
         if (FileUtils.createOrExistsDir(file)) {
             LogUtils.e(file.getAbsolutePath());
             Luban.with(this)
-                    .load(FileUtils.getFileByPath(imgUrl))                                   // 传人要压缩的图片列表
+                    .load(FileUtils.getFileByPath(imgUrl))      // 传人要压缩的图片列表
                     .ignoreBy(100)                                  // 忽略不压缩图片的大小
                     .setTargetDir(file.getAbsolutePath())
                     .setCompressListener(new OnCompressListener() { //设置回调

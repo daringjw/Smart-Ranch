@@ -1,8 +1,13 @@
 package com.jinkun_innovation.pastureland.ui;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -17,12 +22,20 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.DeviceMsg;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.ui.activity.QuPaizhaoActivity;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.File;
 import java.util.List;
+
+import static com.jinkun_innovation.pastureland.R.id.ivQupaizhao;
+
 
 /**
  * Created by Guan on 2018/3/21.
@@ -35,6 +48,67 @@ public class DeviceMsgActivity extends Activity {
     String mLogin_success;
     LoginSuccess mLoginSuccess;
     String mUsername;
+
+    File file;
+    private static final int REQUEST_CAMERA = 1001;
+    private String mDeviceNo;
+    private ImageView mIvQupaizhao;
+
+    /**
+     * 使用相机
+     */
+    private void useCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/test/" + System.currentTimeMillis() + ".jpg");
+        file.getParentFile().mkdirs();
+
+        //改变Uri  com.xykj.customview.fileprovider注意和xml中的一致
+        Uri uri = FileProvider.getUriForFile(this, "com.jinkun_innovation.pastureland.fileProvider", file);
+        //添加权限
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+
+//            Log.e("TAG", "---------" + FileProvider.getUriForFile(this, "com.xykj.customview.fileprovider", file));
+//            imageView.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
+
+            switch (requestCode) {
+
+                case REQUEST_CAMERA:
+
+                    Intent intent = new Intent(this, QuPaizhaoActivity.class);
+                    intent.putExtra("qupaizhao", file.getAbsolutePath());
+                    intent.putExtra("mDeviceNo", mDeviceNo);
+
+                    startActivityForResult(intent, 1002);
+
+                    break;
+
+                case 1002:
+
+
+                    mIvQupaizhao.setImageResource(R.mipmap.done);
+                    mIvQupaizhao.setClickable(false);
+
+                    break;
+
+
+            }
+
+
+        }
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,26 +164,25 @@ public class DeviceMsgActivity extends Activity {
 
                         TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
                         TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
-                        ImageView ivQupaizhao = (ImageView) findViewById(R.id.ivQupaizhao);
+                        mIvQupaizhao = (ImageView) findViewById(ivQupaizhao);
 
                         TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
                         TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
                         ImageView ivQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
 
-                        TextView tvTime4 = (TextView) findViewById(R.id.tvTime4);
-                        TextView tvDone = (TextView) findViewById(R.id.tvDone);
-                        ImageView ivDone = (ImageView) findViewById(R.id.ivDone);
-
 
                         tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
-                        tvQuPaizhao.setText("用户 "+livestockClaimList.get(0).getCellphone()+
-                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）拍照" +
+                        tvQuPaizhao.setText("用户 " + livestockClaimList.get(0).getCellphone() +
+                                " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）拍照" +
                                 "，请及时处理");
-                        ivQupaizhao.setOnClickListener(new View.OnClickListener() {
+                        mDeviceNo = livestockClaimList.get(0).getDeviceNo();
+
+
+                        mIvQupaizhao.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 //去拍照
-                                
+                                useCamera();
 
 
                             }
@@ -117,8 +190,8 @@ public class DeviceMsgActivity extends Activity {
 
 
                         tvTime3.setText(livestockClaimList.get(0).getVideoTime());
-                        tvQuLuxiang.setText("用户 "+livestockClaimList.get(0).getCellphone()+
-                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）摄像" +
+                        tvQuLuxiang.setText("用户 " + livestockClaimList.get(0).getCellphone() +
+                                " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）摄像" +
                                 "，请及时处理");
                         ivQuluxiang.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -130,34 +203,27 @@ public class DeviceMsgActivity extends Activity {
                         });
 
 
-                        tvTime4.setText(livestockClaimList.get(0).getPhotographicTime());
-                        tvDone.setText("用户 "+livestockClaimList.get(0).getCellphone()+
-                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）拍照" +
-                                "，请及时处理");
-
-
-
-
-
-
-
                     }
                 });
 
 
-        TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
-        TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
-        ImageView ivQupaizhao = (ImageView) findViewById(R.id.ivQupaizhao);
+        RefreshLayout refreshLayout = (RefreshLayout) findViewById(R.id.refreshLayout);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
 
-        TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
-        TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
-        ImageView ivQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+                refreshlayout.finishRefresh(2000/*,false*/);//传入false表示刷新失败
+            }
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(RefreshLayout refreshlayout) {
 
-        TextView tvTime4 = (TextView) findViewById(R.id.tvTime4);
-        TextView tvDone = (TextView) findViewById(R.id.tvDone);
-        ImageView ivDone = (ImageView) findViewById(R.id.ivDone);
+                refreshlayout.finishLoadMore(500/*,false*/);//传入false表示加载失败
 
 
+            }
+        });
 
 
     }
