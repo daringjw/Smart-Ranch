@@ -650,7 +650,8 @@ public class RegisterActivity extends Activity {
                 } else {
 
 
-                    Toast.makeText(getApplicationContext(), "网络不稳定，图片上传失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "亲，请拍照",
+                            Toast.LENGTH_SHORT).show();
 
                 }
 

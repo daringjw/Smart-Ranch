@@ -19,8 +19,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
-            fresco:placeholderImage="@mipmap/heitouyang"
-
+            android:layout_marginTop="15dp"
 
             />
 
