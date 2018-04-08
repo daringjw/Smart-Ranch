@@ -105,11 +105,30 @@ public class DeviceMsgActivity extends Activity {
                         tvQuPaizhao.setText("用户 "+livestockClaimList.get(0).getCellphone()+
                                 " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）拍照" +
                                 "，请及时处理");
+                        ivQupaizhao.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //去拍照
+                                
+
+
+                            }
+                        });
+
 
                         tvTime3.setText(livestockClaimList.get(0).getVideoTime());
                         tvQuLuxiang.setText("用户 "+livestockClaimList.get(0).getCellphone()+
                                 " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）摄像" +
                                 "，请及时处理");
+                        ivQuluxiang.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                //去录像
+
+
+                            }
+                        });
+
 
                         tvTime4.setText(livestockClaimList.get(0).getPhotographicTime());
                         tvDone.setText("用户 "+livestockClaimList.get(0).getCellphone()+
