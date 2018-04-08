@@ -89,73 +89,82 @@ public class RenlingDetailActivity extends Activity {
                         Gson gson1 = new Gson();
                         LiveStock liveStock = gson1.fromJson(s, LiveStock.class);
                         String msg = liveStock.getMsg();
-                        if (msg.equals("获取牲畜详情成功")) {
+                        if (TextUtils.isEmpty(msg)) {
+                            ToastUtils.showShort("抱歉，服务器的数据为空");
+                        }
+                        {
 
-                            LiveStock.LivestockBean lives = liveStock.getLivestock();
+                            if (msg.equals("获取牲畜详情成功")) {
 
-                            String deviceNo = lives.getDeviceNo();
-                            tvDevcieNO.setText("设备号："+deviceNo);
+                                LiveStock.LivestockBean lives = liveStock.getLivestock();
 
-                            String variety = lives.getVariety();
-                            if (variety.equals("100")) {
+                                String deviceNo = lives.getDeviceNo();
+                                tvDevcieNO.setText("设备号：" + deviceNo);
 
-                                //乌珠木漆黑头羊
-                                tvVariety.setText("品种名称：乌珠木漆黑头羊");
+                                String variety = lives.getVariety();
+                                if (variety.equals("100")) {
 
-
-                            } else if (variety.equals("101")) {
-
-                                //山羊
-                                tvVariety.setText("品种名称：山羊");
-
-                            } else if (variety.equals("201")) {
-
-                                //西门塔尔牛
-                                tvVariety.setText("品种名称：西门塔尔牛");
-
-                            } else if (variety.equals("301")) {
-                                //蒙古马
-                                tvVariety.setText("品种名称：蒙古马");
+                                    //乌珠木漆黑头羊
+                                    tvVariety.setText("品种名称：乌珠木漆黑头羊");
 
 
-                            } else if (variety.equals("401")) {
-                                //草原黑毛猪
-                                tvVariety.setText("品种名称：草原黑毛猪");
+                                } else if (variety.equals("101")) {
 
-                            } else if (variety.equals("701")) {
-                                //骆驼
-                                tvVariety.setText("品种名称：骆驼");
+                                    //山羊
+                                    tvVariety.setText("品种名称：山羊");
+
+                                } else if (variety.equals("201")) {
+
+                                    //西门塔尔牛
+                                    tvVariety.setText("品种名称：西门塔尔牛");
+
+                                } else if (variety.equals("301")) {
+                                    //蒙古马
+                                    tvVariety.setText("品种名称：蒙古马");
+
+
+                                } else if (variety.equals("401")) {
+                                    //草原黑毛猪
+                                    tvVariety.setText("品种名称：草原黑毛猪");
+
+                                } else if (variety.equals("701")) {
+                                    //骆驼
+                                    tvVariety.setText("品种名称：骆驼");
+                                }
+
+                                String livestockDetails = lives.livestockDetails;
+                                PrefUtils.setString(getApplicationContext(), "introduce", livestockDetails);
+                                tvDetail.setText(livestockDetails);
+
+                                //homeImgUrl
+                                String homeImgUrl = lives.homeImgUrl;
+                                if (!TextUtils.isEmpty(homeImgUrl)) {
+                                    homeImgUrl = Constants.BASE_URL + homeImgUrl;
+                                    Uri uri1 = Uri.parse(homeImgUrl);
+                                    mSdvYang.setImageURI(uri1);
+                                }
+
+                                String createTime = lives.getCreateTime();
+
+                                long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
+                                int age = (int) timeSpanByNow / 30;
+                                if (age == 1) {
+                                    age = 2;
+                                }
+                                tvAge.setText("年龄：" + age + "个月");
+
+                                tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
+                                tvMuchangName.setText("牧场：" + lives.getName());
+                                tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
+
+
+                            } else {
+
+
+
                             }
 
-                            String livestockDetails = lives.livestockDetails;
-                            PrefUtils.setString(getApplicationContext(), "introduce", livestockDetails);
-                            tvDetail.setText(livestockDetails);
 
-                            //homeImgUrl
-                            String homeImgUrl = lives.homeImgUrl;
-                            if (!TextUtils.isEmpty(homeImgUrl)) {
-                                homeImgUrl = Constants.BASE_URL + homeImgUrl;
-                                Uri uri1 = Uri.parse(homeImgUrl);
-                                mSdvYang.setImageURI(uri1);
-                            }
-
-                            String createTime = lives.getCreateTime();
-
-                            long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
-                            int age = (int) timeSpanByNow / 30 ;
-                            if (age == 1) {
-                                age = 2;
-                            }
-                            tvAge.setText("年龄：" + age + "个月");
-
-                            tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
-                            tvMuchangName.setText("牧场：" + lives.getName());
-                            tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
-
-
-                        } else {
-
-                            ToastUtils.showShort("获取牲畜详情失败，请检查网络");
                         }
 
 
