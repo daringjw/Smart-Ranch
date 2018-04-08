@@ -656,7 +656,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
                                                             } else if (s1.contains("重新发布认领表成功")) {
 
-                                                                ToastUtils.showShort("重新发布成功");
+                                                                ToastUtils.showShort("重新发布认领成功");
                                                                 setResult(RESULT_OK);
                                                                 finish();
 
