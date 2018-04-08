@@ -56,6 +56,12 @@ public class DeviceMsgActivity extends Activity {
             }
         });
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        //创建默认的线性LayoutManager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
 
         OkGo.<String>post(Constants.DEVICEMSG)
                 .tag(this)
@@ -63,7 +69,7 @@ public class DeviceMsgActivity extends Activity {
                 .params("username", mUsername)
                 .params("ranchID", mLoginSuccess.getRanchID())
                 .params("current", 0)
-                .params("pagesize", 3)
+                .params("pagesize", 15)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -78,21 +84,61 @@ public class DeviceMsgActivity extends Activity {
                                 = deviceMsg.getLivestockClaimList();
 
 
+                        //创建并设置Adapter
+                        mAdapter = new MyAdapter(batteryList);
+                        mRecyclerView.setAdapter(mAdapter);
+
+                        TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
+                        TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
+                        ImageView ivQupaizhao = (ImageView) findViewById(R.id.ivQupaizhao);
+
+                        TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
+                        TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
+                        ImageView ivQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+
+                        TextView tvTime4 = (TextView) findViewById(R.id.tvTime4);
+                        TextView tvDone = (TextView) findViewById(R.id.tvDone);
+                        ImageView ivDone = (ImageView) findViewById(R.id.ivDone);
+
+
+                        tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
+                        tvQuPaizhao.setText("用户 "+livestockClaimList.get(0).getCellphone()+
+                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）拍照" +
+                                "，请及时处理");
+
+                        tvTime3.setText(livestockClaimList.get(0).getVideoTime());
+                        tvQuLuxiang.setText("用户 "+livestockClaimList.get(0).getCellphone()+
+                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）摄像" +
+                                "，请及时处理");
+
+                        tvTime4.setText(livestockClaimList.get(0).getPhotographicTime());
+                        tvDone.setText("用户 "+livestockClaimList.get(0).getCellphone()+
+                                " 请求 牲畜（设备号"+livestockClaimList.get(0).getDeviceNo()+"）拍照" +
+                                "，请及时处理");
+
+
+
+
+
 
 
                     }
                 });
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        //创建默认的线性LayoutManager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
-        mRecyclerView.setHasFixedSize(true);
-        //创建并设置Adapter
-        mAdapter = new MyAdapter(getDummyDatas());
-        mRecyclerView.setAdapter(mAdapter);
+        TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
+        TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
+        ImageView ivQupaizhao = (ImageView) findViewById(R.id.ivQupaizhao);
+
+        TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
+        TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
+        ImageView ivQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+
+        TextView tvTime4 = (TextView) findViewById(R.id.tvTime4);
+        TextView tvDone = (TextView) findViewById(R.id.tvDone);
+        ImageView ivDone = (ImageView) findViewById(R.id.ivDone);
+
+
 
 
     }
@@ -110,9 +156,9 @@ public class DeviceMsgActivity extends Activity {
     MyAdapter mAdapter;
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        public String[] datas = null;
+        public List<DeviceMsg.BatteryListBean> datas = null;
 
-        public MyAdapter(String[] datas) {
+        public MyAdapter(List<DeviceMsg.BatteryListBean> datas) {
             this.datas = datas;
         }
 
@@ -132,13 +178,17 @@ public class DeviceMsgActivity extends Activity {
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
 
 //            viewHolder.mTextView.setText(datas[position]);
+            viewHolder.tvTime1.setText(datas.get(position).getCreateTime());
+            viewHolder.tvLowPower.setText("设备" + datas.get(position).getDeviceNo() + "于" +
+                    datas.get(position).getCreateTime() + "发出了低电报警，请尽快去确认，及时充电");
+
 
         }
 
         //获取数据的数量
         @Override
         public int getItemCount() {
-            return 20;
+            return datas.size();
         }
 
         //自定义的ViewHolder，持有每个Item的的所有界面元素
@@ -147,9 +197,6 @@ public class DeviceMsgActivity extends Activity {
             //            public TextView mTextView;
             TextView tvTime1;
             TextView tvLowPower;
-            TextView tvTime2;
-            TextView tvQuPaizhao;
-            ImageView ivQupaizhao;
 
 
             public ViewHolder(View view) {
@@ -158,13 +205,6 @@ public class DeviceMsgActivity extends Activity {
 //                mTextView = (TextView) view.findViewById(R.id.text);
                 tvTime1 = view.findViewById(R.id.tvTime1);
                 tvLowPower = view.findViewById(R.id.tvLowPower);
-                tvTime2 = view.findViewById(R.id.tvTime2);
-                tvQuPaizhao = view.findViewById(R.id.tvQuPaizhao);
-                ivQupaizhao = view.findViewById(R.id.ivQupaizhao);
-
-
-
-
 
 
             }
