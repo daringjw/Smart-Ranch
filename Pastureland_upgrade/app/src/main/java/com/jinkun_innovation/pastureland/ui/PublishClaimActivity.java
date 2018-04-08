@@ -607,7 +607,6 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         final String s = response.body().toString();
                                         if (s.contains("发布牲畜到认领表成功")) {
 
-
                                             //发布认领成功
                                             Toast.makeText(getApplicationContext(), "发布牲畜到认领表成功",
                                                     Toast.LENGTH_SHORT).show();

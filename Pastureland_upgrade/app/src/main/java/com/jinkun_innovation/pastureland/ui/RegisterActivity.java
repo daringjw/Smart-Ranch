@@ -427,6 +427,7 @@ public class RegisterActivity extends Activity {
                                     List<Integer> mVariety = selectVariety.getVariety();
 
 
+
                                     for (int i = 0; i < mVariety.size(); i++) {
 
                                         Log.d(TAG1, mVariety.get(i) + "");
