@@ -147,7 +147,7 @@ public class RenlingFragment1 extends Fragment {
                                                         .show();
 
 
-                                            } else if (result.contains("此牲畜未发布过")) {
+                                            } else {
 
                                                 //没有发布过
 
@@ -165,7 +165,7 @@ public class RenlingFragment1 extends Fragment {
 
                         } else if (StrLengthUtil.length(isbn) == 15) {
 
-                           final String str = Stringinsert(isbn, "1", 7);
+                            final String str = Stringinsert(isbn, "1", 7);
                             Log.d(TAG1, "15位isbn=" + str);
                             Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
                             /*Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
@@ -216,15 +216,12 @@ public class RenlingFragment1 extends Fragment {
                                                         .show();
 
 
-                                            } else if (result.contains("此牲畜未发布过")) {
+                                            } else {
 
                                                 //没有发布过
-
                                                 Intent intent = new Intent(getActivity(), PublishClaimActivity.class);
                                                 intent.putExtra("isbn", str);
                                                 startActivityForResult(intent, 1001);
-
-
                                             }
 
 
