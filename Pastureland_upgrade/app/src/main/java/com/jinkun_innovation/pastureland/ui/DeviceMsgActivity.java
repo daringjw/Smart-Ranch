@@ -1,10 +1,12 @@
 package com.jinkun_innovation.pastureland.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
@@ -14,15 +16,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.DeviceMsg;
+import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.activity.QuPaizhaoActivity;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
@@ -32,6 +38,8 @@ import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import static com.jinkun_innovation.pastureland.R.id.ivQupaizhao;
@@ -53,6 +61,7 @@ public class DeviceMsgActivity extends Activity {
     private static final int REQUEST_CAMERA = 1001;
     private String mDeviceNo;
     private ImageView mIvQupaizhao;
+    private ImageView mIvQuluxiang;
 
     /**
      * 使用相机
@@ -74,7 +83,7 @@ public class DeviceMsgActivity extends Activity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
@@ -99,6 +108,69 @@ public class DeviceMsgActivity extends Activity {
 
                     mIvQupaizhao.setImageResource(R.mipmap.done);
                     mIvQupaizhao.setClickable(false);
+
+                    break;
+
+
+                case CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE:
+
+                    Toast.makeText(this, "Video saved to:\n" +
+                            data.getData(), Toast.LENGTH_LONG).show();
+
+                    Log.d(TAG1, "data.getDATA=" + data.getData());
+                    filename = data.getData().toString();
+
+
+
+                    File file = new File(filename);
+                    Log.d(TAG1, file.exists() + "xxxxxxx");
+
+                    /*filename = filename.substring(7, filename.length() - 1);
+                    Log.d(TAG1, "filename=" + filename);*/
+
+                    OkGo.<String>post(Constants.HEADIMGURL)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("uploadFile", new File(filename))
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    String result = response.body().toString();
+                                    Gson gson = new Gson();
+                                    ImgUrlBean imgUrlBean = gson.fromJson(result, ImgUrlBean.class);
+                                    String videoUrl = imgUrlBean.getImgUrl();
+
+                                    OkGo.<String>get(Constants.updLivestockClaim)
+                                            .tag(this)
+                                            .params("token", mLoginSuccess.getToken())
+                                            .params("username", mUsername)
+                                            .params("deviceNO", mDeviceNo)
+                                            .params("businessType", 2)
+//                                            .params("livestockImgUrl",)
+                                            .params("videoUrl", videoUrl)
+                                            .execute(new StringCallback() {
+                                                @Override
+                                                public void onSuccess(Response<String> response) {
+
+                                                    String result = response.body().toString();
+                                                    if (result.contains("success")) {
+
+                                                        ToastUtils.showShort("视频上传成功");
+
+                                                    }
+
+                                                }
+                                            });
+
+
+                                }
+                            });
+
+                    mIvQuluxiang.setImageResource(R.mipmap.done);
+                    mIvQuluxiang.setClickable(false);
+
 
                     break;
 
@@ -168,7 +240,7 @@ public class DeviceMsgActivity extends Activity {
 
                         TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
                         TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
-                        ImageView ivQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+                        mIvQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
 
 
                         tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
@@ -193,10 +265,20 @@ public class DeviceMsgActivity extends Activity {
                         tvQuLuxiang.setText("用户 " + livestockClaimList.get(0).getCellphone() +
                                 " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）摄像" +
                                 "，请及时处理");
-                        ivQuluxiang.setOnClickListener(new View.OnClickListener() {
+                        mIvQuluxiang.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 //去录像
+
+                                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                                StrictMode.setVmPolicy(builder.build());
+
+                                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
+                                fileUri = getOutputMediaFileUri();  // create a file to save the video
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
+                                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
+                                // 开始视频录制Intent
+                                startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 
 
                             }
@@ -227,6 +309,50 @@ public class DeviceMsgActivity extends Activity {
 
 
     }
+
+    private Uri fileUri;
+    private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
+    Button btn1;
+    Button btn2;
+    String filename = "";
+
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private static Uri getOutputMediaFileUri() {
+        return Uri.fromFile(getOutputMediaFile());
+    }
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private static File getOutputMediaFile() {
+        // To be safe, you should check that the SDCard is mounted
+        // using Environment.getExternalStorageState() before doing this.
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DCIM), "MyCameraApp");
+        // This location works best if you want the created images to be shared
+        // between applications and persist after your app has been uninstalled.
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("MyCameraApp", "failed to create directory");
+                return null;
+            }
+        }
+        // Create a media file name
+        @SuppressLint("SimpleDateFormat") String timeStamp = new
+                SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(new Date());
+        File mediaFile;
+
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                "VID_" + timeStamp + ".mp4");
+
+
+        return mediaFile;
+    }
+
 
     private String[] getDummyDatas() {
 

@@ -74,14 +74,14 @@ public class QuPaizhaoActivity extends Activity {
                     ToastUtils.showShort("正在上传图片，请稍后点击");
                 } else {
 
-                    OkGo.<String>post(Constants.UPDLIVESTOCKCLAIM)
+                    OkGo.<String>post(Constants.updLivestockClaim)
                             .tag(this)
                             .params("token", mLoginSuccess.getToken())
                             .params("username", mUsername)
                             .params("deviceNO", mDeviceNo)
                             .params("businessType", 1)
                             .params("livestockImgUrl", mImgUrl1)
-                            .params("videoUrl", "")
+//                            .params("videoUrl", "")
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {

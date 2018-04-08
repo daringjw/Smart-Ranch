@@ -90,9 +90,14 @@ public class UpLoadActivity extends BaseActivity {
         mDeviceNo = getIntent().getStringExtra(getString(R.string.scan_Message));
         cropImage(getIntent().getStringExtra(getString(R.string.img_Url)));
 
-
         TextView tvDeviceNo = (TextView) findViewById(R.id.tvDeviceNo);
-        tvDeviceNo.setText("设备号："+mDeviceNo);
+        if (mPhase == 3) {
+            tvDeviceNo.setText("设备号：" + mDeviceNo);
+            tvDeviceNo.setVisibility(View.VISIBLE);
+        } else {
+            tvDeviceNo.setVisibility(View.GONE);
+        }
+
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();

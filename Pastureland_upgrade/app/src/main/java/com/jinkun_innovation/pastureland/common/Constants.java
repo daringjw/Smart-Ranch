@@ -96,7 +96,9 @@ public class Constants {
     public static final String DEVICEMSG = BASE_URL + "/releaseLivestocks/deviceMsg.do";
 
     //牧场主处理拍照和视频请求
-    public static final String UPDLIVESTOCKCLAIM = BASE_URL + "/releaseLivestocks/updLivestockClaim.do";
+    public static final String updLivestockClaim = BASE_URL + "/releaseLivestocks/updLivestockClaim.do";
+
+
 
     //设备解绑（解绑之前要弹出确认提示框）
     public static final String DOUNBINDDEVICE = BASE_URL + "/releaseLivestocks/doUnBindDevice.do";

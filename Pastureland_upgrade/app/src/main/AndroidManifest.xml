@@ -18,6 +18,14 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
+    <uses-feature android:name="android.hardware.camera"/>
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -85,6 +93,17 @@
             android:name=".ui.PublishClaimActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.QuluxiangActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.PlayVideoActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
 
         <activity
             android:name=".ui.YangListActivity"
@@ -190,8 +209,6 @@
             android:screenOrientation="portrait"/>
 
 
-
-
         <activity
             android:name="com.jinkun_innovation.pastureland.ui.activity.ClipImageActivity"
             android:launchMode="singleInstance"
@@ -207,8 +224,6 @@
             android:name=".ui.activity.QuPaizhaoActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
-
-
 
 
         <activity

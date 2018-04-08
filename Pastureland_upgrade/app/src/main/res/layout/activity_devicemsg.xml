@@ -139,7 +139,6 @@
                 android:background="#000"
                 ></View>
 
-
         </LinearLayout>
 
     </ScrollView>
