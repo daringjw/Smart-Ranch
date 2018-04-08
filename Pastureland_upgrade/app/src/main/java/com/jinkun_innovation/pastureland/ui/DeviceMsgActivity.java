@@ -78,6 +78,8 @@ public class DeviceMsgActivity extends Activity {
                                 = deviceMsg.getLivestockClaimList();
 
 
+
+
                     }
                 });
 
@@ -117,9 +119,12 @@ public class DeviceMsgActivity extends Activity {
         //创建新View，被LayoutManager所调用
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_device_msg, viewGroup, false);
+
+            View view = LayoutInflater.from(viewGroup.getContext()).
+                    inflate(R.layout.item_device_msg, viewGroup, false);
             ViewHolder vh = new ViewHolder(view);
             return vh;
+
         }
 
         //将数据与界面进行绑定的操作
