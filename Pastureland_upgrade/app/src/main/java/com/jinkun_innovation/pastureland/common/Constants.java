@@ -121,8 +121,4 @@ public class Constants {
     public static final String DianziDangan = BASE_URL + "/claimLivestock/getArchivesElectronicURL.do";
 
 
-
-
-
-
 }

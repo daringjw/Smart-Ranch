@@ -682,8 +682,12 @@ public class RenlingFragment1 extends Fragment {
             String isClaimed = datas.get(position).getIsClaimed();
             if (isClaimed.contains("1")) {
 
+                String claimTime = datas.get(position).getClaimTime();
+                claimTime = claimTime.substring(0, 10);
+                String finishTime = datas.get(position).getFinishTime();
+                finishTime = finishTime.substring(0, 10);
                 //已认领
-                viewHolder.tvClaimTime.setText("认领时间：" + datas.get(position).getClaimTime());
+                viewHolder.tvClaimTime.setText("认领时间：" + claimTime + "至" + finishTime);
 
                 String price = datas.get(position).getPrice();
                 int price1 = (int) Double.parseDouble(price);

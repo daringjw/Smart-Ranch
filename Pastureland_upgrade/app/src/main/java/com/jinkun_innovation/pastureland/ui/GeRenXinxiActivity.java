@@ -97,6 +97,14 @@ public class GeRenXinxiActivity extends AppCompatActivity {
     private String mSex;
     private String mHeadImgUrl;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +121,10 @@ public class GeRenXinxiActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 finish();
+
             }
         });
 

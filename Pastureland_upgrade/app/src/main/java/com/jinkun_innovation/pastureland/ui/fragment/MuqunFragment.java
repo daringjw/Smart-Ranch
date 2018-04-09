@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,11 +107,16 @@ public class MuqunFragment extends Fragment {
 
                             if (typeMap != null) {
 
-                                tvYangNo.setText(typeMap.get_$1() + "只");
-                                mTvNiuNo.setText(typeMap.get_$2() + "头");
-                                mTvMaNo.setText(typeMap.get_$3() + "匹");
-                                mTvDeerNo.setText(typeMap.get_$4() + "头");
-                                tvCamelNo.setText(typeMap.get_$7() + "匹");
+                                String type1 = typeMap.get_$1() + "";
+                                if (TextUtils.isEmpty(type1)) {
+
+                                } else {
+                                    tvYangNo.setText(typeMap.get_$1() + "只");
+                                    mTvNiuNo.setText(typeMap.get_$2() + "头");
+                                    mTvMaNo.setText(typeMap.get_$3() + "匹");
+                                    mTvDeerNo.setText(typeMap.get_$4() + "头");
+                                    tvCamelNo.setText(typeMap.get_$7() + "匹");
+                                }
 
                             }
 

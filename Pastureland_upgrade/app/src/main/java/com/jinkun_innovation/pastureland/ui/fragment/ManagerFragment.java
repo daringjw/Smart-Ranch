@@ -33,9 +33,6 @@ import com.jinkun_innovation.pastureland.ui.GrassActivity;
 import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
-import com.jinkun_innovation.pastureland.ui.activity.Muchang201Activity;
-import com.jinkun_innovation.pastureland.ui.activity.Muchang202Activity;
-import com.jinkun_innovation.pastureland.ui.activity.Muchang203Activity;
 import com.jinkun_innovation.pastureland.ui.activity.Muchang2Activity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
@@ -141,7 +138,7 @@ public class ManagerFragment extends Fragment {
             @Override
             public void onSliderClick(BaseSliderView slider) {
 
-                startActivity(new Intent(getActivity(),Muchang201Activity.class));
+                startActivity(new Intent(getActivity(),Muchang2Activity.class));
 
             }
         });
@@ -156,7 +153,7 @@ public class ManagerFragment extends Fragment {
             @Override
             public void onSliderClick(BaseSliderView slider) {
 
-                startActivity(new Intent(getActivity(),Muchang202Activity.class));
+                startActivity(new Intent(getActivity(),Muchang2Activity.class));
 
             }
         });
@@ -170,7 +167,7 @@ public class ManagerFragment extends Fragment {
             @Override
             public void onSliderClick(BaseSliderView slider) {
 
-                startActivity(new Intent(getActivity(), Muchang203Activity.class));
+                startActivity(new Intent(getActivity(), Muchang2Activity.class));
 
             }
         });

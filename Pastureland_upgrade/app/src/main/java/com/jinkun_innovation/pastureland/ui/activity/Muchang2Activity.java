@@ -156,9 +156,9 @@ public class Muchang2Activity extends Activity {
                         String msg = muqunDetail.getMsg();
                         if (msg.equals("获取牧场详情成功")) {
 
-                            String ranchImgUrl = muqunDetail.getRanch().getRanchImgUrl();
-                            ranchImgUrl = Constants.BASE_URL + ranchImgUrl;
-                            mSdvYang.setImageURI(Uri.parse("http://s16.sinaimg.cn/large/4c74484dx738034dca2ef&690"));
+                            String imgUrl = muqunDetail.getRanch().getImgUrl();
+                            imgUrl = Constants.BASE_URL + imgUrl;
+                            mSdvYang.setImageURI(Uri.parse(imgUrl));
 
                             mTvRancher.setText("牧场：" + muqunDetail.getRanch().getName());
                             mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());
