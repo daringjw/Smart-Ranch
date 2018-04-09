@@ -97,7 +97,7 @@ public class MuqunFragment extends Fragment {
                         String s = response.body().toString();
                         Log.d(TAG1, s);
                         if (s.contains("牧场无牲畜")) {
-                            tvYangNo.setText(0 + "头");
+//                            tvYangNo.setText("0头");
 
                         } else if (s.contains("获取牲畜类型和数量成功")) {
 

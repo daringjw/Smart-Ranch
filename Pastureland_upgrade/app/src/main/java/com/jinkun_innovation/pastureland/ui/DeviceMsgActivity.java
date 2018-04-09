@@ -121,7 +121,6 @@ public class DeviceMsgActivity extends Activity {
                     filename = data.getData().toString();
 
 
-
                     File file = new File(filename);
                     Log.d(TAG1, file.exists() + "xxxxxxx");
 
@@ -229,60 +228,65 @@ public class DeviceMsgActivity extends Activity {
                         List<DeviceMsg.LivestockClaimListBean> livestockClaimList
                                 = deviceMsg.getLivestockClaimList();
 
+                        if (batteryList.size() != 0) {
+                            //创建并设置Adapter
+                            mAdapter = new MyAdapter(batteryList);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
 
-                        //创建并设置Adapter
-                        mAdapter = new MyAdapter(batteryList);
-                        mRecyclerView.setAdapter(mAdapter);
+                        if (livestockClaimList.size() != 0) {
+                            TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
+                            TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
+                            mIvQupaizhao = (ImageView) findViewById(ivQupaizhao);
 
-                        TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
-                        TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
-                        mIvQupaizhao = (ImageView) findViewById(ivQupaizhao);
+                            TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
+                            TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
+                            mIvQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
 
-                        TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
-                        TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
-                        mIvQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+                            mIvQupaizhao.setVisibility(View.VISIBLE);
+                            mIvQuluxiang.setVisibility(View.VISIBLE);
 
-
-                        tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
-                        tvQuPaizhao.setText("用户 " + livestockClaimList.get(0).getCellphone() +
-                                " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）拍照" +
-                                "，请及时处理");
-                        mDeviceNo = livestockClaimList.get(0).getDeviceNo();
-
-
-                        mIvQupaizhao.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //去拍照
-                                useCamera();
+                            tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
+                            tvQuPaizhao.setText("用户 " + livestockClaimList.get(0).getCellphone() +
+                                    " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）拍照" +
+                                    "，请及时处理");
+                            mDeviceNo = livestockClaimList.get(0).getDeviceNo();
 
 
-                            }
-                        });
+                            mIvQupaizhao.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //去拍照
+                                    useCamera();
 
 
-                        tvTime3.setText(livestockClaimList.get(0).getVideoTime());
-                        tvQuLuxiang.setText("用户 " + livestockClaimList.get(0).getCellphone() +
-                                " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）摄像" +
-                                "，请及时处理");
-                        mIvQuluxiang.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                //去录像
-
-                                StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                                StrictMode.setVmPolicy(builder.build());
-
-                                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
-                                fileUri = getOutputMediaFileUri();  // create a file to save the video
-                                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
-                                intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
-                                // 开始视频录制Intent
-                                startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+                                }
+                            });
 
 
-                            }
-                        });
+                            tvTime3.setText(livestockClaimList.get(0).getVideoTime());
+                            tvQuLuxiang.setText("用户 " + livestockClaimList.get(0).getCellphone() +
+                                    " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）摄像" +
+                                    "，请及时处理");
+                            mIvQuluxiang.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    //去录像
+
+                                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+                                    StrictMode.setVmPolicy(builder.build());
+
+                                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
+                                    fileUri = getOutputMediaFileUri();  // create a file to save the video
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
+                                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
+                                    // 开始视频录制Intent
+                                    startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+
+
+                                }
+                            });
+                        }
 
 
                     }

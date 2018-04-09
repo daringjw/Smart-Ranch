@@ -16,6 +16,7 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.MuqunDetail;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.ui.HomeActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -88,11 +89,11 @@ public class EditMuchangActivity extends Activity {
                         String msg = muqunDetail.getMsg();
                         if (msg.equals("获取牧场详情成功")) {
 
-                            mRanchImgUrl = muqunDetail.getRanch().getRanchImgUrl();
-                            mRanchurl = mRanchImgUrl;
-                            mRanchImgUrl = Constants.BASE_URL + mRanchImgUrl;
+                            String imgUrl = muqunDetail.getRanch().getImgUrl();
+                            imgUrl = Constants.BASE_URL + imgUrl;
+                            mSdvYang.setImageURI(Uri.parse(imgUrl));
 
-                            mSdvYang.setImageURI(Uri.parse(mRanchImgUrl));
+                            mSdvYang.setImageURI(Uri.parse(imgUrl));
 
                             mImgUrl = muqunDetail.getRanch().getImgUrl();
 
@@ -147,7 +148,7 @@ public class EditMuchangActivity extends Activity {
                                 if (result.contains("success")) {
 
                                     ToastUtils.showShort("牧场信息更新成功");
-                                    startActivity(new Intent(getApplicationContext(), Muchang2Activity.class));
+                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                     finish();
 
                                 } else {

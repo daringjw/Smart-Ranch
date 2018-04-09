@@ -54,7 +54,7 @@
                 android:id="@+id/sdvYang"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                fresco:actualImageScaleType="centerInside"
+                fresco:actualImageScaleType="fitXY"
                 fresco:placeholderImage="@mipmap/detail_yang"/>
 
             <RelativeLayout
@@ -62,39 +62,107 @@
                 android:layout_height="wrap_content"
                 android:background="@mipmap/variety_bg">
 
+                <TextView
+                    android:id="@+id/tvMuchangName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="牧场名称:"
+                    android:textColor="#fff"/>
+
                 <EditText
                     android:id="@+id/etMuChangName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/tvMuchangName"
                     android:hint="牧场名称"
                     android:textColorHint="#fff"/>
 
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/tvMianji"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:hint="面积：4万平方公里"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/tvRiverNearby"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:hint="附近河流："/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="面积："/>
 
-            <EditText
-                android:id="@+id/tvNum"
+                <EditText
+                    android:id="@+id/tvMianji"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="面积：4万平方公里"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="附近河流："/>
+
+                <EditText
+                    android:id="@+id/tvRiverNearby"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="附近河流"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="数量："/>
+
+                <EditText
+                    android:id="@+id/tvNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:hint="数量：200头"/>
+
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:hint="数量：200头"/>
+                android:layout_marginTop="5dp"
+                android:text="种类："/>
 
             <EditText
                 android:id="@+id/tvVariety"
@@ -104,7 +172,11 @@
                 android:layout_marginTop="10dp"
                 android:hint="种类：牛、羊、马"/>
 
+
+        </LinearLayout>
+
             <EditText
+                android:visibility="gone"
                 android:id="@+id/tvWeilan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

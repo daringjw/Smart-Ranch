@@ -123,7 +123,7 @@ public class RenlingFragment1 extends Fragment {
 
                                                 //已经发布过,是否重新发布认领
                                                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-//                                                        .setTitleText("是否重新发布认领?")
+                                                        .setTitleText("")
                                                         .setContentText("已经发布过,是否重新发布认领?")
                                                         .setCancelText("否")
                                                         .setConfirmText("是")
@@ -191,7 +191,7 @@ public class RenlingFragment1 extends Fragment {
 
                                                 //已经发布过,是否重新发布认领
                                                 new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                                                        .setTitleText("是否重新发布认领?")
+                                                        .setTitleText("")
                                                         .setContentText("已经发布过,是否重新发布认领")
                                                         .setCancelText("否")
                                                         .setConfirmText("是")
