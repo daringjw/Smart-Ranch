@@ -53,7 +53,7 @@
                 android:id="@+id/sdvYang"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                fresco:actualImageScaleType="centerInside"
+                fresco:actualImageScaleType="fitXY"
                 fresco:placeholderImage="@mipmap/detail_yang"/>
 
             <RelativeLayout
@@ -130,15 +130,33 @@
                 android:background="#edeeee">
 
                 <TextView
-                    android:padding="10dp"
                     android:id="@+id/tvDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
+                    android:padding="10dp"
                     ></TextView>
 
             </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tvMuchangLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:text="牧场位置："/>
+
+            <WebView
+                android:layout_marginTop="20dp"
+                android:id="@+id/wvMap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </WebView>
 
         </LinearLayout>
 

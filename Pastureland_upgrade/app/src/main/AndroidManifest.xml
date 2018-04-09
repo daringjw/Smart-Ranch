@@ -26,6 +26,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name=".BaseApplication"
         android:allowBackup="true"
@@ -101,6 +104,21 @@
 
         <activity
             android:name=".ui.activity.PlayVideoActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.Muchang201Activity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.Muchang202Activity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.activity.Muchang203Activity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"/>
 

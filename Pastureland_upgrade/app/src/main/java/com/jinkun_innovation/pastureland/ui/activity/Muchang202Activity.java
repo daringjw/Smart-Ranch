@@ -1,17 +1,11 @@
 package com.jinkun_innovation.pastureland.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,13 +25,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.jinkun_innovation.pastureland.R.id.tvDetail;
-
 /**
  * Created by Guan on 2018/4/4.
  */
 
-public class Muchang2Activity extends Activity {
+public class Muchang202Activity extends Activity {
 
     @BindView(R.id.ivBack)
     ImageView mIvBack;
@@ -58,74 +50,15 @@ public class Muchang2Activity extends Activity {
     @BindView(R.id.tvVariety)
     TextView mTvVariety;
 
-    @BindView(tvDetail)
+    @BindView(R.id.tvDetail)
     TextView mTvDetail;
+
+    @BindView(R.id.tvMuchangLoc)
+    TextView tvMuchangLoc;
 
     private LoginSuccess mLoginSuccess;
     private String mLogin_success;
     private String mUsername;
-
-
-    WebView webView;
-
-    public void webmap() {//地图定位
-
-
-        webView = (WebView) findViewById(R.id.wvMap);
-
-        webView.getSettings().setDatabaseEnabled(true);//开启数据库
-
-        webView.setFocusable(true);//获取焦点
-
-        webView.requestFocus();
-
-        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();//设置数据库路径
-
-        webView.getSettings().setCacheMode(webView.getSettings().LOAD_CACHE_ELSE_NETWORK);//本地缓存
-
-        webView.getSettings().setBlockNetworkImage(false);//显示网络图像
-
-        webView.getSettings().setLoadsImagesAutomatically(true);//显示网络图像
-
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);//插件支持
-
-        webView.getSettings().setSupportZoom(false);//设置是否支持变焦
-
-        webView.getSettings().setJavaScriptEnabled(true);//支持JavaScriptEnabled
-
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//支持JavaScriptEnabled
-
-        webView.getSettings().setGeolocationEnabled(true);//定位
-
-        webView.getSettings().setGeolocationDatabasePath(dir);//数据库
-
-        webView.getSettings().setDomStorageEnabled(true);//缓存 （ 远程web数据的本地化存储）
-
-        WebViewClient myWebViewClient = new WebViewClient();//建立对象
-
-        webView.setWebViewClient(myWebViewClient);//调用
-
-        webView.loadUrl("https://map.baidu.com/");//百度地图地址
-
-        webView.setWebChromeClient(new WebChromeClient() {
-
-//重写WebChromeClient的onGeolocationPermissionsShowPrompt
-
-            public void onGeolocationPermissionsShowPrompt(String origin,
-
-                                                           GeolocationPermissions.Callback callback) {
-
-                callback.invoke(origin, true, false);
-
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
-
-            }
-
-        });
-
-
-    }
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,7 +67,9 @@ public class Muchang2Activity extends Activity {
         setContentView(R.layout.activity_muchang2);
         ButterKnife.bind(this);
 
-        webmap();
+        mIvEdit.setVisibility(View.GONE);
+        tvMuchangLoc.setVisibility(View.GONE);
+
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();
@@ -158,7 +93,7 @@ public class Muchang2Activity extends Activity {
 
                             String ranchImgUrl = muqunDetail.getRanch().getRanchImgUrl();
                             ranchImgUrl = Constants.BASE_URL + ranchImgUrl;
-                            mSdvYang.setImageURI(Uri.parse("http://s16.sinaimg.cn/large/4c74484dx738034dca2ef&690"));
+                            mSdvYang.setImageURI(Uri.parse("https://goss2.vcg.com/creative/vcg/800/version23/VCG41544531487.jpg"));
 
                             mTvRancher.setText("牧场：" + muqunDetail.getRanch().getName());
                             mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());

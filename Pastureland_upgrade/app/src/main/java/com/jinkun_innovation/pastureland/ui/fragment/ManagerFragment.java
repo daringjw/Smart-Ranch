@@ -33,6 +33,9 @@ import com.jinkun_innovation.pastureland.ui.GrassActivity;
 import com.jinkun_innovation.pastureland.ui.RegisterActivity;
 import com.jinkun_innovation.pastureland.ui.ToolsActivity;
 import com.jinkun_innovation.pastureland.ui.UpLoadActivity;
+import com.jinkun_innovation.pastureland.ui.activity.Muchang201Activity;
+import com.jinkun_innovation.pastureland.ui.activity.Muchang202Activity;
+import com.jinkun_innovation.pastureland.ui.activity.Muchang203Activity;
 import com.jinkun_innovation.pastureland.ui.activity.Muchang2Activity;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
@@ -132,17 +135,45 @@ public class ManagerFragment extends Fragment {
         textSliderView
                 .description("智慧牧场")
                 .setScaleType(BaseSliderView.ScaleType.Fit)//图片缩放类型
-                .image("http://imgsrc.baidu.com/image/c0%3Dshijue1%2C0%2C0%2C294%2C40/sign=8cc5e60fb91bb0519b29bb6b5e13b0c1/f9198618367adab46f5ff16e81d4b31c8701e414.jpg");
+                .image("http://s16.sinaimg.cn/large/4c74484dx738034dca2ef&690");
+
+        textSliderView.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+            @Override
+            public void onSliderClick(BaseSliderView slider) {
+
+                startActivity(new Intent(getActivity(),Muchang201Activity.class));
+
+            }
+        });
+
 
         TextSliderView textSliderView1 = new TextSliderView(getActivity());
         textSliderView1
                 .description("科技点亮牧场")
                 .image("https://goss2.vcg.com/creative/vcg/800/version23/VCG41544531487.jpg");
 
+        textSliderView1.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+            @Override
+            public void onSliderClick(BaseSliderView slider) {
+
+                startActivity(new Intent(getActivity(),Muchang202Activity.class));
+
+            }
+        });
+
         TextSliderView textSliderView2 = new TextSliderView(getActivity());
         textSliderView2
                 .description("金坤技术")
                 .image("https://goss1.vcg.com/creative/vcg/800/version23/VCG41544521221.jpg");
+
+        textSliderView2.setOnSliderClickListener(new BaseSliderView.OnSliderClickListener() {
+            @Override
+            public void onSliderClick(BaseSliderView slider) {
+
+                startActivity(new Intent(getActivity(), Muchang203Activity.class));
+
+            }
+        });
 
 
         mSliderShow.addSlider(textSliderView);

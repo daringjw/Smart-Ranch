@@ -100,6 +100,12 @@ public class LoginActivity1 extends AppCompatActivity {
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+
+
 
         if (permissions.size() > 0) {
             ActivityCompat.requestPermissions(LoginActivity1.this, permissions.toArray(new String[permissions.size()]),

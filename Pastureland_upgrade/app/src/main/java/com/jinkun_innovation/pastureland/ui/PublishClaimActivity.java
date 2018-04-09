@@ -731,7 +731,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                     }
                 } else {
 
-                    Toast.makeText(getApplicationContext(), "图片上传失败，请重新拍照",
+                    Toast.makeText(getApplicationContext(), "亲，图片未上传，请拍照",
                             Toast.LENGTH_SHORT).show();
                 }
 

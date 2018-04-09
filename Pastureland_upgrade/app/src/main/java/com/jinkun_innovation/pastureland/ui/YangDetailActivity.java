@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -170,6 +171,10 @@ public class YangDetailActivity extends Activity {
 
                     }
                 });
+
+
+        WebView wvElectronicDangan = (WebView) findViewById(R.id.wvElectronicDangan);
+        wvElectronicDangan.loadUrl(Constants.DianziDangan+"?deviceNo="+getDeviceNo);
 
 
     }

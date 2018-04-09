@@ -24,7 +24,6 @@ public class Constants {
 //    public static final String PORT = ":10100";
 
 
-
     //测试服务器
     public static final String BASE_URL = "http://" + IP + PORT;
 
@@ -99,7 +98,6 @@ public class Constants {
     public static final String updLivestockClaim = BASE_URL + "/releaseLivestocks/updLivestockClaim.do";
 
 
-
     //设备解绑（解绑之前要弹出确认提示框）
     public static final String DOUNBINDDEVICE = BASE_URL + "/releaseLivestocks/doUnBindDevice.do";
 
@@ -118,6 +116,13 @@ public class Constants {
 
     //通过牲畜类型查询所有牲畜
     public static final String QUERYLIVESTOCKVARIETYLIST = BASE_URL + "/releaseLivestocks/queryLivestockVarietyList.do";
+
+    //电子档案
+    public static final String DianziDangan = BASE_URL + "/claimLivestock/getArchivesElectronicURL.do";
+
+
+
+
 
 
 }

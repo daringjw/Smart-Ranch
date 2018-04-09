@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -152,7 +153,6 @@ public class RenlingDetailActivity extends Activity {
                                     age = 2;
                                 }
                                 tvAge.setText("年龄：" + age + "个月");
-
                                 tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
                                 tvMuchangName.setText("牧场：" + lives.getName());
                                 tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
@@ -170,6 +170,25 @@ public class RenlingDetailActivity extends Activity {
 
                     }
                 });
+
+
+        /*OkGo.<String>get(Constants.DianziDangan)
+                .tag(this)
+                .params("deviceNo",getDeviceNo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+
+                        String result = response.body().toString();
+
+
+                    }
+                });*/
+
+        WebView wvElectronicDangan = (WebView) findViewById(R.id.wvElectronicDangan);
+        wvElectronicDangan.loadUrl(Constants.DianziDangan+"?deviceNo="+getDeviceNo);
+
+
 
 
     }
