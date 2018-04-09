@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +41,6 @@ import top.zibin.luban.OnCompressListener;
 
 public class UpLoadActivity extends BaseActivity {
     private static final String TAG1 = UpLoadActivity.class.getSimpleName();
-    @BindView(R.id.pb_loading)
-    ProgressBar mPbLoading;
     private File mPhotoFile;
     private int mPhase;
     private String mDeviceNo;
@@ -131,7 +128,6 @@ public class UpLoadActivity extends BaseActivity {
                             // TODO 压缩开始前调用，可以在方法内启动 loading UI
                             LogUtils.e("onStart");
 
-                            mPbLoading.setVisibility(View.VISIBLE);
 
                         }
 
@@ -181,7 +177,6 @@ public class UpLoadActivity extends BaseActivity {
 
                             Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
 //                            FileUtils.deleteFile(imgUrl);
-                            mPbLoading.setVisibility(View.GONE);
 
 
                         }
@@ -192,7 +187,7 @@ public class UpLoadActivity extends BaseActivity {
                             LogUtils.e(e.getMessage());
                             ToastUtils.showShort("压缩出现问题，请重新拍摄");
 
-                            mPbLoading.setVisibility(View.GONE);
+
                         }
                     }).launch();
         }
@@ -321,92 +316,6 @@ public class UpLoadActivity extends BaseActivity {
 
         }
 
-
-
-
-
-       /* RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), mPhotoFile);
-        MultipartBody.Part photo = MultipartBody.Part.createFormData("imgUrl", mPhotoFile.getName(), photoRequestBody);
-//        RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/jpg"), FileUtils.getFileByPath(url));
-//        MultipartBody.Part photo = MultipartBody.Part.createFormData("imgUrl", FileUtils.getFileByPath(url).getName(), photoRequestBody);
-
-
-        if (mPhase == 0) {
-            RetrofitManger.getInstance().createReq(ApiCall.class)
-                    .livephoto(photo, RequestBody.create(null, SpUtil.getAccount()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<ConfirmClaimBean>() {
-                        @Override
-                        public void onStart() {
-                            showProgress("正在上传");
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                            hiddenProgress();
-
-                        }
-
-                        @Override
-                        public void onError(ExceptionHandle.ResponseThrowable throwable) {
-                            hiddenProgress();
-                            ToastUtils.showShort(throwable.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(ConfirmClaimBean confirmClaimBean) {
-                            if (confirmClaimBean.getCode().equals("200")) {
-                                AppManager.getAppManager().finishActivity();
-                                ToastUtils.showShort("上传成功");
-                            } else {
-                                ToastUtils.showShort("上传失败，" + confirmClaimBean.getMsg());
-                            }
-                        }
-                    });
-
-        } else {
-
-
-            RetrofitManger.getInstance().createReq(ApiCall.class)
-                    .uploadPhoto(photo, RequestBody.create(null, mDeviceNo),
-                            RequestBody.create(null, ""),
-                            RequestBody.create(null, String.valueOf(mPhase)),
-                            RequestBody.create(null, SpUtil.getToken()),
-                            RequestBody.create(null, SpUtil.getUserId()),
-                            RequestBody.create(null, SpUtil.getAccount()),
-                            RequestBody.create(null, SpUtil.getCompanyId()))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<ConfirmClaimBean>() {
-                        @Override
-                        public void onStart() {
-                            showProgress("正在上传");
-                        }
-
-                        @Override
-                        public void onCompleted() {
-                            hiddenProgress();
-
-                        }
-
-                        @Override
-                        public void onError(ExceptionHandle.ResponseThrowable throwable) {
-                            hiddenProgress();
-                            ToastUtils.showShort(throwable.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(ConfirmClaimBean confirmClaimBean) {
-                            if (confirmClaimBean.getCode().equals("200")) {
-                                AppManager.getAppManager().finishActivity();
-                                ToastUtils.showShort("上传成功");
-                            } else {
-                                ToastUtils.showShort("上传失败，" + confirmClaimBean.getMsg());
-                            }
-                        }
-                    });
-        } */
 
     }
 
