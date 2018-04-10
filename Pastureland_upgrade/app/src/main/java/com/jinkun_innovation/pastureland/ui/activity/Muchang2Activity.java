@@ -1,20 +1,21 @@
 package com.jinkun_innovation.pastureland.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.webkit.GeolocationPermissions;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
@@ -66,66 +67,10 @@ public class Muchang2Activity extends Activity {
     private String mUsername;
 
 
-    WebView webView;
+    private MapView mMapView = null;
+    private BitmapDescriptor mCurrentMarker;
 
-    public void webmap() {//地图定位
-
-
-        webView = (WebView) findViewById(R.id.wvMap);
-
-        webView.getSettings().setDatabaseEnabled(true);//开启数据库
-
-        webView.setFocusable(true);//获取焦点
-
-        webView.requestFocus();
-
-        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();//设置数据库路径
-
-        webView.getSettings().setCacheMode(webView.getSettings().LOAD_CACHE_ELSE_NETWORK);//本地缓存
-
-        webView.getSettings().setBlockNetworkImage(false);//显示网络图像
-
-        webView.getSettings().setLoadsImagesAutomatically(true);//显示网络图像
-
-        webView.getSettings().setPluginState(WebSettings.PluginState.ON);//插件支持
-
-        webView.getSettings().setSupportZoom(false);//设置是否支持变焦
-
-        webView.getSettings().setJavaScriptEnabled(true);//支持JavaScriptEnabled
-
-        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);//支持JavaScriptEnabled
-
-        webView.getSettings().setGeolocationEnabled(true);//定位
-
-        webView.getSettings().setGeolocationDatabasePath(dir);//数据库
-
-        webView.getSettings().setDomStorageEnabled(true);//缓存 （ 远程web数据的本地化存储）
-
-        WebViewClient myWebViewClient = new WebViewClient();//建立对象
-
-        webView.setWebViewClient(myWebViewClient);//调用
-
-        webView.loadUrl("https://map.baidu.com/");//百度地图地址
-
-        webView.setWebChromeClient(new WebChromeClient() {
-
-//重写WebChromeClient的onGeolocationPermissionsShowPrompt
-
-            public void onGeolocationPermissionsShowPrompt(String origin,
-
-                                                           GeolocationPermissions.Callback callback) {
-
-                callback.invoke(origin, true, false);
-
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
-
-            }
-
-        });
-
-
-    }
-
+    BaiduMap map;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -134,12 +79,17 @@ public class Muchang2Activity extends Activity {
         setContentView(R.layout.activity_muchang2);
         ButterKnife.bind(this);
 
-        webmap();
+        //获取地图控件引用
+        mMapView = (MapView) findViewById(R.id.bmapView);
+
+        map = mMapView.getMap();
+
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
+
 
         OkGo.<String>get(Constants.RANCH)
                 .tag(this)
@@ -171,6 +121,40 @@ public class Muchang2Activity extends Activity {
 
                             mTvDetail.setText(muqunDetail.getRanch().getIntroduce());
 
+                            String lantitudeBaidu = muqunDetail.getRanch().getLantitudeBaidu();
+                            String longtitudeBaidu = muqunDetail.getRanch().getLongtitudeBaidu();
+
+                            BDLocation bdLocation = new BDLocation();
+                            bdLocation.setLongitude(Double.parseDouble(longtitudeBaidu));
+                            bdLocation.setLatitude(Double.parseDouble(lantitudeBaidu));
+
+
+                            // 开启定位图层
+                            map.setMyLocationEnabled(true);
+
+// 构造定位数据
+                            MyLocationData locData = new MyLocationData.Builder()
+                                    .accuracy(bdLocation.getRadius())
+                                    // 此处设置开发者获取到的方向信息，顺时针0-360
+//                                    .direction(100)
+                                    .latitude(bdLocation.getLatitude())
+                                    .longitude(bdLocation.getLongitude()).build();
+
+// 设置定位数据
+                            map.setMyLocationData(locData);
+
+// 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
+                            mCurrentMarker = BitmapDescriptorFactory
+                                    .fromResource(R.mipmap.icon_location_3);
+                            MyLocationConfiguration config = new MyLocationConfiguration(
+                                    MyLocationConfiguration.LocationMode.FOLLOWING,
+                                    true, mCurrentMarker);
+
+                            map.setMyLocationConfiguration(config);
+
+
+
+
                         } else {
 
                             ToastUtils.showShort("获取牧场详情失败");
@@ -181,6 +165,28 @@ public class Muchang2Activity extends Activity {
                     }
                 });
 
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
+        mMapView.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //在activity执行onPause时执行mMapView. onPause ()，实现地图生命周期管理
+        mMapView.onPause();
     }
 
 

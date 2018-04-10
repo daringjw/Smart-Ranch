@@ -27,3 +27,6 @@
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
 
+-keep class com.baidu.** {*;}
+-keep class vi.com.** {*;}
+-dontwarn com.baidu.**

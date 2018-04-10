@@ -111,6 +111,7 @@ public class MuqunFragment extends Fragment {
                                 if (TextUtils.isEmpty(type1)) {
 
                                 } else {
+
                                     tvYangNo.setText(typeMap.get_$1() + "只");
                                     mTvNiuNo.setText(typeMap.get_$2() + "头");
                                     mTvMaNo.setText(typeMap.get_$3() + "匹");

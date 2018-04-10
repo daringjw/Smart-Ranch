@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.ui.fragment.ManagerFragment;
 import com.jinkun_innovation.pastureland.ui.fragment.MuqunFragment;
@@ -31,6 +32,10 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //在使用SDK各组件之前初始化context信息，传入ApplicationContext
+        //注意该方法要再setContentView方法之前实现
+        SDKInitializer.initialize(getApplicationContext());
 
         setContentView(R.layout.activity_home);
 
