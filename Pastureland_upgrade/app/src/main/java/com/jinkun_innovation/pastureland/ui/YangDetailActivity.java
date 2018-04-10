@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +60,6 @@ public class YangDetailActivity extends Activity {
     BaiduMap map;
 
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +70,6 @@ public class YangDetailActivity extends Activity {
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.bmapView);
         map = mMapView.getMap();
-
 
 
         tvVariety = (TextView) findViewById(R.id.tvVariety);
@@ -105,11 +104,11 @@ public class YangDetailActivity extends Activity {
                         Gson gson1 = new Gson();
                         LiveStock liveStock = gson1.fromJson(s, LiveStock.class);
                         String msg = liveStock.getMsg();
-                        if (TextUtils.isEmpty(msg)){
+                        if (TextUtils.isEmpty(msg)) {
 
                             ToastUtils.showShort("抱歉，服务器的数据为空");
 
-                        }else {
+                        } else {
                             if (msg.equals("获取牲畜详情成功")) {
 
                                 LiveStock.LivestockBean lives = liveStock.getLivestock();
@@ -120,7 +119,7 @@ public class YangDetailActivity extends Activity {
                                 mSdvYang.setImageURI(uri);
 
                                 String deviceNo = lives.getDeviceNo();
-                                tvDevcieNO.setText("设备号："+deviceNo);
+                                tvDevcieNO.setText("设备号：" + deviceNo);
 
                                 String variety = lives.getVariety();
                                 if (variety.equals("100")) {
@@ -209,14 +208,24 @@ public class YangDetailActivity extends Activity {
                                 map.setMyLocationConfiguration(config);
 
 
+                                SimpleDraweeView sdvAsk = (SimpleDraweeView) findViewById(R.id.sdvAsk);
+                                sdvAsk.setImageURI(Uri.parse(imgUrl));
+
+                                String livestockImgUrl = lives.livestockImgUrl;
+                                if (!TextUtils.isEmpty(livestockImgUrl)) {
+                                    livestockImgUrl = Constants.BASE_URL + livestockImgUrl;
+                                    sdvAsk.setImageURI(Uri.parse(livestockImgUrl));
+                                }
+
+
 
                             } else {
 
 
                             }
+
+
                         }
-
-
 
 
                     }
@@ -224,7 +233,11 @@ public class YangDetailActivity extends Activity {
 
 
         WebView wvElectronicDangan = (WebView) findViewById(R.id.wvElectronicDangan);
-        wvElectronicDangan.loadUrl(Constants.DianziDangan+"?deviceNo="+getDeviceNo);
+        WebSettings settings = wvElectronicDangan.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        wvElectronicDangan.loadUrl(Constants.DianziDangan + "?deviceNo=" + getDeviceNo
+                +"&ranchID="+mLoginSuccess.getRanchID());
 
         OkGo.<String>get(Constants.DianziDangan)
                 .tag(this)

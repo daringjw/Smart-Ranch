@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -203,6 +204,15 @@ public class RenlingDetailActivity extends Activity {
 
                                 map.setMyLocationConfiguration(config);
 
+                                SimpleDraweeView sdvAsk = (SimpleDraweeView) findViewById(R.id.sdvAsk);
+                                sdvAsk.setImageURI(Uri.parse(homeImgUrl));
+
+                                String livestockImgUrl = lives.livestockImgUrl;
+                                if (!TextUtils.isEmpty(livestockImgUrl)) {
+                                    livestockImgUrl = Constants.BASE_URL + livestockImgUrl;
+                                    sdvAsk.setImageURI(Uri.parse(livestockImgUrl));
+                                }
+
 
                             } else {
 
@@ -231,7 +241,11 @@ public class RenlingDetailActivity extends Activity {
                 });*/
 
         WebView wvElectronicDangan = (WebView) findViewById(R.id.wvElectronicDangan);
-        wvElectronicDangan.loadUrl(Constants.DianziDangan + "?deviceNo=" + getDeviceNo);
+        WebSettings settings = wvElectronicDangan.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
+        wvElectronicDangan.loadUrl(Constants.DianziDangan + "?deviceNo=" + getDeviceNo
+                + "&ranchID=" + mLoginSuccess.getRanchID());
 
         OkGo.<String>get(Constants.DianziDangan)
                 .tag(this)
