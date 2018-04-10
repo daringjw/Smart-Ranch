@@ -32,7 +32,8 @@
             android:id="@+id/ivYang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/yang"/>
+            android:src="@mipmap/yang"
+            android:visibility="gone"/>
 
 
         <ImageView
@@ -40,7 +41,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/niu"/>
+            android:src="@mipmap/niu"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -56,7 +58,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 只"/>
+            android:visibility="gone"
+            />
 
         <TextView
             android:id="@+id/tvNiuNo"
@@ -64,7 +67,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 头"/>
+            android:text="0 头"
+            android:visibility="gone"
+            />
 
 
     </LinearLayout>
@@ -81,7 +86,8 @@
             android:id="@+id/ivMa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ma"/>
+            android:src="@mipmap/ma"
+            android:visibility="gone"/>
 
 
         <ImageView
@@ -89,7 +95,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/pig"/>
+            android:src="@mipmap/pig"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -105,7 +112,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 匹"/>
+            android:text="0 匹"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tvDeerNo"
@@ -113,7 +121,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 头"/>
+            android:text="0 头"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -131,7 +140,8 @@
             android:id="@+id/ivCamel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/camel"/>
+            android:src="@mipmap/camel"
+            android:visibility="gone"/>
 
 
         <ImageView
@@ -139,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/pig"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -155,7 +165,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="0 头"/>
+            android:text="0 头"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -163,7 +174,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="0 匹"
-            android:visibility="invisible"/>
+            android:visibility="gone"/>
 
 
     </LinearLayout>

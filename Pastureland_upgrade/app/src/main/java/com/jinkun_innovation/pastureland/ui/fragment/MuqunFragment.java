@@ -105,20 +105,61 @@ public class MuqunFragment extends Fragment {
                             MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
                             MuqunSum.TypeMapBean typeMap = muqunSum.getTypeMap();
 
-                            if (typeMap != null) {
+                            String s1 = typeMap.get_$1() + "";
+                            String s2 = typeMap.get_$2() + "";
+                            String s3 = typeMap.get_$3() + "";
+                            String s4 = typeMap.get_$4() + "";
+                            String s7 = typeMap.get_$7() + "";
 
-                                String type1 = typeMap.get_$1() + "";
-                                if (TextUtils.isEmpty(type1)) {
+                            //羊
+                            if (!TextUtils.isEmpty(s1)) {
+                                tvYangNo.setText(s1 + "只");
+                                mIvYang.setVisibility(View.VISIBLE);
+                                tvYangNo.setVisibility(View.VISIBLE);
+                            } else {
+                                mIvYang.setVisibility(View.GONE);
+                                tvYangNo.setVisibility(View.GONE);
+                            }
 
-                                } else {
+                            //牛
+                            if (!s2.equals("0")) {
+                                mTvNiuNo.setText(s2 + "头");
+                                mIvNiu.setVisibility(View.VISIBLE);
+                                mTvNiuNo.setVisibility(View.VISIBLE);
+                            } else {
+                                mIvNiu.setVisibility(View.GONE);
+                                mTvNiuNo.setVisibility(View.GONE);
+                            }
 
-                                    tvYangNo.setText(typeMap.get_$1() + "只");
-                                    mTvNiuNo.setText(typeMap.get_$2() + "头");
-                                    mTvMaNo.setText(typeMap.get_$3() + "匹");
-                                    mTvDeerNo.setText(typeMap.get_$4() + "头");
-                                    tvCamelNo.setText(typeMap.get_$7() + "匹");
-                                }
+                            //马
+                            if (!s3.equals("0")) {
+                                mTvMaNo.setText(s3 + "匹");
+                                mIvMa.setVisibility(View.VISIBLE);
+                                mTvMaNo.setVisibility(View.VISIBLE);
+                            } else {
+                                mIvMa.setVisibility(View.GONE);
+                                mTvMaNo.setVisibility(View.GONE);
+                            }
 
+                            //猪
+                            if (!s4.equals("0")) {
+                                mTvDeerNo.setText(s4 + "头");
+                                mTvDeerNo.setVisibility(View.VISIBLE);
+                                mIvPig.setVisibility(View.VISIBLE);
+                            } else {
+                                mIvPig.setVisibility(View.GONE);
+                                mTvDeerNo.setVisibility(View.GONE);
+                            }
+
+                            //骆驼
+                            if (!s7.equals("0")) {
+                                tvCamelNo.setText(s7 + "头");
+                                ivCamel.setVisibility(View.VISIBLE);
+                                tvCamelNo.setVisibility(View.VISIBLE);
+
+                            } else {
+                                ivCamel.setVisibility(View.GONE);
+                                tvCamelNo.setVisibility(View.GONE);
                             }
 
 
