@@ -69,7 +69,6 @@ public class Muchang2Activity extends Activity {
 
     private MapView mMapView = null;
     private BitmapDescriptor mCurrentMarker;
-
     BaiduMap map;
 
     @Override
@@ -132,18 +131,18 @@ public class Muchang2Activity extends Activity {
                             // 开启定位图层
                             map.setMyLocationEnabled(true);
 
-// 构造定位数据
+                            // 构造定位数据
                             MyLocationData locData = new MyLocationData.Builder()
                                     .accuracy(bdLocation.getRadius())
                                     // 此处设置开发者获取到的方向信息，顺时针0-360
-//                                    .direction(100)
+                                    //.direction(100)
                                     .latitude(bdLocation.getLatitude())
                                     .longitude(bdLocation.getLongitude()).build();
 
-// 设置定位数据
+                            // 设置定位数据
                             map.setMyLocationData(locData);
 
-// 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
+                            // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
                             mCurrentMarker = BitmapDescriptorFactory
                                     .fromResource(R.mipmap.icon_location_3);
                             MyLocationConfiguration config = new MyLocationConfiguration(

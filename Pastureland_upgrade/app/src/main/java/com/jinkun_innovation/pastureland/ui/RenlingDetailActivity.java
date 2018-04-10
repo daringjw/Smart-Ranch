@@ -11,6 +11,13 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.MyLocationData;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.jinkun_innovation.pastureland.R;
@@ -49,6 +56,10 @@ public class RenlingDetailActivity extends Activity {
 
     TextView tvVariety, tvDevcieNO, tvDetail, tvAge, tvLifeTime, tvMuchangName, tvPublishTime;
 
+    private MapView mMapView = null;
+    private BitmapDescriptor mCurrentMarker;
+    BaiduMap map;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +67,10 @@ public class RenlingDetailActivity extends Activity {
         setContentView(R.layout.activity_renling_detail);
         ButterKnife.bind(this);
 
+        //获取地图控件引用
+        mMapView = (MapView) findViewById(R.id.bmapView);
+
+        map = mMapView.getMap();
 
         tvVariety = (TextView) findViewById(R.id.tvVariety);
         tvDevcieNO = (TextView) findViewById(R.id.tvDeviceNo);
@@ -156,6 +171,37 @@ public class RenlingDetailActivity extends Activity {
                                 tvLifeTime.setText("一般寿命：" + lives.getLifeTime() + "个月");
                                 tvMuchangName.setText("牧场：" + lives.getName());
                                 tvPublishTime.setText("发布时间：" + lives.getUpdateTime());
+
+
+                                String lantitudeBaidu = lives.getLantitudeBaidu();
+                                String longtitudeBaidu = lives.getLongtitudeBaidu();
+
+                                BDLocation bdLocation = new BDLocation();
+                                bdLocation.setLongitude(Double.parseDouble(longtitudeBaidu));
+                                bdLocation.setLatitude(Double.parseDouble(lantitudeBaidu));
+
+                                // 开启定位图层
+                                map.setMyLocationEnabled(true);
+
+                                // 构造定位数据
+                                MyLocationData locData = new MyLocationData.Builder()
+                                        .accuracy(bdLocation.getRadius())
+                                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                                        //.direction(100)
+                                        .latitude(bdLocation.getLatitude())
+                                        .longitude(bdLocation.getLongitude()).build();
+
+                                // 设置定位数据
+                                map.setMyLocationData(locData);
+
+                                // 设置定位图层的配置（定位模式，是否允许方向信息，用户自定义定位图标）
+                                mCurrentMarker = BitmapDescriptorFactory
+                                        .fromResource(R.mipmap.icon_location_3);
+                                MyLocationConfiguration config = new MyLocationConfiguration(
+                                        MyLocationConfiguration.LocationMode.FOLLOWING,
+                                        true, mCurrentMarker);
+
+                                map.setMyLocationConfiguration(config);
 
 
                             } else {
