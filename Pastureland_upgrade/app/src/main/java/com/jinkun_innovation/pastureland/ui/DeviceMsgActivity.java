@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,6 +67,8 @@ public class DeviceMsgActivity extends Activity {
     private ImageView mIvQupaizhao;
     private ImageView mIvQuluxiang;
     private SweetAlertDialog mDialog;
+    private LinearLayout mLlQuPaizhao;
+    private LinearLayout mLlQuLuxiang;
 
     /**
      * 使用相机
@@ -194,6 +197,10 @@ public class DeviceMsgActivity extends Activity {
 
         setContentView(R.layout.activity_devicemsg);
 
+        mLlQuPaizhao = (LinearLayout) findViewById(R.id.llQuPaizhao);
+        mLlQuLuxiang = (LinearLayout) findViewById(R.id.llQuLuxiang);
+
+
         mLogin_success = PrefUtils.getString(this, "login_success", null);
         Gson gson = new Gson();
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
@@ -250,8 +257,6 @@ public class DeviceMsgActivity extends Activity {
                             TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
                             mIvQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
 
-                            mIvQupaizhao.setVisibility(View.VISIBLE);
-                            mIvQuluxiang.setVisibility(View.VISIBLE);
 
                             tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
                             tvQuPaizhao.setText("用户 " + livestockClaimList.get(0).getCellphone() +
@@ -294,6 +299,35 @@ public class DeviceMsgActivity extends Activity {
 
                                 }
                             });
+
+
+                            String isPhotographic = livestockClaimList.get(0).getIsPhotographic();
+                            String isVideo = livestockClaimList.get(0).getIsVideo();
+
+                            if (isPhotographic.equals("0")) {
+                                mLlQuPaizhao.setVisibility(View.VISIBLE);
+                                mIvQupaizhao.setImageResource(R.mipmap.qupaizhao);
+                                mIvQupaizhao.setClickable(true);
+                            } else if (isPhotographic.equals("1")) {
+                                mLlQuPaizhao.setVisibility(View.VISIBLE);
+                                mIvQupaizhao.setImageResource(R.mipmap.done);
+                                mIvQupaizhao.setClickable(false);
+                            } else {
+                                mLlQuPaizhao.setVisibility(View.GONE);
+
+                            }
+
+                            if (isVideo.equals("0")) {
+                                mLlQuLuxiang.setVisibility(View.VISIBLE);
+                                mIvQuluxiang.setImageResource(R.mipmap.quluxiang);
+                                mIvQuluxiang.setClickable(true);
+                            } else if (isVideo.equals("1")) {
+                                mLlQuLuxiang.setVisibility(View.VISIBLE);
+                                mIvQuluxiang.setImageResource(R.mipmap.done);
+                                mIvQuluxiang.setClickable(false);
+                            } else {
+                                mLlQuLuxiang.setVisibility(View.GONE);
+                            }
                         }
 
 
