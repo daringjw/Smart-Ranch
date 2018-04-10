@@ -46,8 +46,6 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import static com.jinkun_innovation.pastureland.R.id.ivQupaizhao;
-
 
 /**
  * Created by Guan on 2018/3/21.
@@ -64,11 +62,10 @@ public class DeviceMsgActivity extends Activity {
     File file;
     private static final int REQUEST_CAMERA = 1001;
     private String mDeviceNo;
-    private ImageView mIvQupaizhao;
-    private ImageView mIvQuluxiang;
+
+
     private SweetAlertDialog mDialog;
-    private LinearLayout mLlQuPaizhao;
-    private LinearLayout mLlQuLuxiang;
+
 
     /**
      * 使用相机
@@ -112,9 +109,6 @@ public class DeviceMsgActivity extends Activity {
 
                 case 1002:
 
-
-                    mIvQupaizhao.setImageResource(R.mipmap.done);
-                    mIvQupaizhao.setClickable(false);
 
                     break;
 
@@ -168,8 +162,7 @@ public class DeviceMsgActivity extends Activity {
 
                                                         mDialog.cancel();
                                                         ToastUtils.showShort("视频上传成功");
-                                                        mIvQuluxiang.setImageResource(R.mipmap.done);
-                                                        mIvQuluxiang.setClickable(false);
+
 
                                                     }
 
@@ -191,14 +184,15 @@ public class DeviceMsgActivity extends Activity {
 
     }
 
+    RecyclerView rcvQupaizhao;
+    QuPaizhaoAdapter mQuPaizhaoAdapter;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_devicemsg);
-
-        mLlQuPaizhao = (LinearLayout) findViewById(R.id.llQuPaizhao);
-        mLlQuLuxiang = (LinearLayout) findViewById(R.id.llQuLuxiang);
 
 
         mLogin_success = PrefUtils.getString(this, "login_success", null);
@@ -215,12 +209,21 @@ public class DeviceMsgActivity extends Activity {
             }
         });
 
+
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         //创建默认的线性LayoutManager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         mRecyclerView.setHasFixedSize(true);
+
+        rcvQupaizhao = (RecyclerView) findViewById(R.id.rcvQupaizhao);
+        //创建默认的线性LayoutManager
+        LinearLayoutManager mLayoutManager1 = new LinearLayoutManager(this);
+        rcvQupaizhao.setLayoutManager(mLayoutManager1);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        rcvQupaizhao.setHasFixedSize(true);
+
 
         OkGo.<String>post(Constants.DEVICEMSG)
                 .tag(this)
@@ -249,85 +252,11 @@ public class DeviceMsgActivity extends Activity {
                         }
 
                         if (livestockClaimList.size() != 0) {
-                            TextView tvTime2 = (TextView) findViewById(R.id.tvTime2);
-                            TextView tvQuPaizhao = (TextView) findViewById(R.id.tvQuPaizhao);
-                            mIvQupaizhao = (ImageView) findViewById(ivQupaizhao);
 
-                            TextView tvTime3 = (TextView) findViewById(R.id.tvTime3);
-                            TextView tvQuLuxiang = (TextView) findViewById(R.id.tvQuLuxiang);
-                            mIvQuluxiang = (ImageView) findViewById(R.id.ivQuluxiang);
+                            mQuPaizhaoAdapter = new QuPaizhaoAdapter(livestockClaimList);
+                            rcvQupaizhao.setAdapter(mQuPaizhaoAdapter);
 
 
-                            tvTime2.setText(livestockClaimList.get(0).getPhotographicTime());
-                            tvQuPaizhao.setText("用户 " + livestockClaimList.get(0).getCellphone() +
-                                    " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）拍照" +
-                                    "，请及时处理");
-                            mDeviceNo = livestockClaimList.get(0).getDeviceNo();
-
-
-                            mIvQupaizhao.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    //去拍照
-                                    useCamera();
-
-
-                                }
-                            });
-
-
-                            tvTime3.setText(livestockClaimList.get(0).getVideoTime());
-                            tvQuLuxiang.setText("用户 " + livestockClaimList.get(0).getCellphone() +
-                                    " 请求 牲畜（设备号" + livestockClaimList.get(0).getDeviceNo() + "）摄像" +
-                                    "，请及时处理");
-                            mIvQuluxiang.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    //去录像
-
-                                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                                    StrictMode.setVmPolicy(builder.build());
-
-                                    Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
-                                    fileUri = getOutputMediaFileUri();  // create a file to save the video
-
-                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
-                                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
-                                    // 开始视频录制Intent
-                                    startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
-
-
-                                }
-                            });
-
-
-                            String isPhotographic = livestockClaimList.get(0).getIsPhotographic();
-                            String isVideo = livestockClaimList.get(0).getIsVideo();
-
-                            if (isPhotographic.equals("0")) {
-                                mLlQuPaizhao.setVisibility(View.VISIBLE);
-                                mIvQupaizhao.setImageResource(R.mipmap.qupaizhao);
-                                mIvQupaizhao.setClickable(true);
-                            } else if (isPhotographic.equals("1")) {
-                                mLlQuPaizhao.setVisibility(View.VISIBLE);
-                                mIvQupaizhao.setImageResource(R.mipmap.done);
-                                mIvQupaizhao.setClickable(false);
-                            } else {
-                                mLlQuPaizhao.setVisibility(View.GONE);
-
-                            }
-
-                            if (isVideo.equals("0")) {
-                                mLlQuLuxiang.setVisibility(View.VISIBLE);
-                                mIvQuluxiang.setImageResource(R.mipmap.quluxiang);
-                                mIvQuluxiang.setClickable(true);
-                            } else if (isVideo.equals("1")) {
-                                mLlQuLuxiang.setVisibility(View.VISIBLE);
-                                mIvQuluxiang.setImageResource(R.mipmap.done);
-                                mIvQuluxiang.setClickable(false);
-                            } else {
-                                mLlQuLuxiang.setVisibility(View.GONE);
-                            }
                         }
 
 
@@ -354,6 +283,19 @@ public class DeviceMsgActivity extends Activity {
         });
 
 
+    }
+
+    private void recordVideo() {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
+        fileUri = getOutputMediaFileUri();  // create a file to save the video
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
+        // 开始视频录制Intent
+        startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
     }
 
     private Uri fileUri;
@@ -464,6 +406,115 @@ public class DeviceMsgActivity extends Activity {
 //                mTextView = (TextView) view.findViewById(R.id.text);
                 tvTime1 = view.findViewById(R.id.tvTime1);
                 tvLowPower = view.findViewById(R.id.tvLowPower);
+
+
+            }
+
+
+        }
+    }
+
+
+    public class QuPaizhaoAdapter extends RecyclerView.Adapter<QuPaizhaoAdapter.ViewHolder> {
+
+        public List<DeviceMsg.LivestockClaimListBean> datas = null;
+
+        public QuPaizhaoAdapter(List<DeviceMsg.LivestockClaimListBean> datas) {
+            this.datas = datas;
+        }
+
+        //创建新View，被LayoutManager所调用
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+
+            View view = LayoutInflater.from(viewGroup.getContext()).
+                    inflate(R.layout.item_paizhao, viewGroup, false);
+            ViewHolder vh = new ViewHolder(view);
+            return vh;
+
+        }
+
+        //将数据与界面进行绑定的操作
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+
+//            viewHolder.mTextView.setText(datas[position]);
+            String isPhotographic = datas.get(position).getIsPhotographic();
+            String isVideo = datas.get(position).getIsVideo();
+            if (isPhotographic.equals("0")) {
+                //请求拍照
+                viewHolder.llQuPaizhao.setVisibility(View.VISIBLE);
+                viewHolder.ivQupaizhao.setImageResource(R.mipmap.qupaizhao);
+                viewHolder.tvPaizhaoTime.setText(datas.get(position).getPhotographicTime());
+
+            } else if (isPhotographic.equals("1")) {
+                //完成拍照
+                viewHolder.llQuPaizhao.setVisibility(View.VISIBLE);
+                viewHolder.ivQupaizhao.setImageResource(R.mipmap.done);
+                viewHolder.tvPaizhaoTime.setText(datas.get(position).getFinishTime());
+
+            } else {
+
+                viewHolder.llQuPaizhao.setVisibility(View.GONE);
+            }
+
+
+            viewHolder.tvQuPaizhao.setText("用户 " + datas.get(position).getCellphone() + " 请求 牲畜（设备号："
+                    + datas.get(position).getDeviceNo() + "）拍照，请及时处理");
+
+
+            if (isVideo.equals("0")) {
+                //请求录像
+                viewHolder.llQuLuxiang.setVisibility(View.VISIBLE);
+                viewHolder.ivQuluxiang.setImageResource(R.mipmap.quluxiang);
+                viewHolder.tvLuxiangTime.setText(datas.get(position).getVideoTime());
+
+
+            } else if (isVideo.equals("1")) {
+                //完成录像
+                viewHolder.llQuLuxiang.setVisibility(View.VISIBLE);
+                viewHolder.ivQuluxiang.setImageResource(R.mipmap.done);
+                viewHolder.tvLuxiangTime.setText(datas.get(position).getFinishTime());
+
+            } else {
+                viewHolder.llQuLuxiang.setVisibility(View.GONE);
+            }
+
+
+            viewHolder.tvQuLuxiang.setText("用户 " + datas.get(position).getCellphone() + " 请求 牲畜（设备号："
+                    + datas.get(position).getDeviceNo() + "）录像，请及时处理");
+
+
+        }
+
+        //获取数据的数量
+        @Override
+        public int getItemCount() {
+            return datas.size();
+        }
+
+        //自定义的ViewHolder，持有每个Item的的所有界面元素
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            //            public TextView mTextView;
+            LinearLayout llQuPaizhao, llQuLuxiang;
+            TextView tvPaizhaoTime, tvQuPaizhao, tvLuxiangTime, tvQuLuxiang;
+            ImageView ivQupaizhao, ivQuluxiang;
+
+
+            public ViewHolder(View view) {
+                super(view);
+
+//                mTextView = (TextView) view.findViewById(R.id.text);
+                llQuPaizhao = view.findViewById(R.id.llQuPaizhao);
+                tvPaizhaoTime = view.findViewById(R.id.tvPaizhaoTime);
+                tvQuPaizhao = view.findViewById(R.id.tvQuPaizhao);
+                ivQupaizhao = view.findViewById(R.id.ivQupaizhao);
+
+                llQuLuxiang = view.findViewById(R.id.llQuLuxiang);
+                tvLuxiangTime = view.findViewById(R.id.tvLuxiangTime);
+                tvQuLuxiang = view.findViewById(R.id.tvQuLuxiang);
+                ivQuluxiang = view.findViewById(R.id.ivQuluxiang);
 
 
             }
