@@ -3,6 +3,7 @@ package com.jinkun_innovation.pastureland.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +43,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.jinkun_innovation.pastureland.R.id.ivQupaizhao;
 
 
@@ -62,6 +65,7 @@ public class DeviceMsgActivity extends Activity {
     private String mDeviceNo;
     private ImageView mIvQupaizhao;
     private ImageView mIvQuluxiang;
+    private SweetAlertDialog mDialog;
 
     /**
      * 使用相机
@@ -119,13 +123,16 @@ public class DeviceMsgActivity extends Activity {
 
                     Log.d(TAG1, "data.getDATA=" + data.getData());
                     filename = data.getData().toString();
-
-
+                    filename = filename.substring(7, filename.length());
+                    Log.d(TAG1, "filename=" + filename);
                     File file = new File(filename);
-                    Log.d(TAG1, file.exists() + "xxxxxxx");
+                    Log.d(TAG1, "file.exists()=" + file.exists());
 
-                    /*filename = filename.substring(7, filename.length() - 1);
-                    Log.d(TAG1, "filename=" + filename);*/
+                    mDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+                    mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    mDialog.setTitleText("正在上传...");
+                    mDialog.setCancelable(true);
+                    mDialog.show();
 
                     OkGo.<String>post(Constants.HEADIMGURL)
                             .tag(this)
@@ -156,7 +163,10 @@ public class DeviceMsgActivity extends Activity {
                                                     String result = response.body().toString();
                                                     if (result.contains("success")) {
 
+                                                        mDialog.cancel();
                                                         ToastUtils.showShort("视频上传成功");
+                                                        mIvQuluxiang.setImageResource(R.mipmap.done);
+                                                        mIvQuluxiang.setClickable(false);
 
                                                     }
 
@@ -166,9 +176,6 @@ public class DeviceMsgActivity extends Activity {
 
                                 }
                             });
-
-                    mIvQuluxiang.setImageResource(R.mipmap.done);
-                    mIvQuluxiang.setClickable(false);
 
 
                     break;
@@ -278,6 +285,7 @@ public class DeviceMsgActivity extends Activity {
 
                                     Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
                                     fileUri = getOutputMediaFileUri();  // create a file to save the video
+
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
                                     intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
                                     // 开始视频录制Intent
@@ -324,7 +332,9 @@ public class DeviceMsgActivity extends Activity {
      * Create a file Uri for saving an image or video
      */
     private static Uri getOutputMediaFileUri() {
+
         return Uri.fromFile(getOutputMediaFile());
+
     }
 
     /**

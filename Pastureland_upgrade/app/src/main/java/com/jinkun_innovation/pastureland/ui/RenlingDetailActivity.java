@@ -207,7 +207,6 @@ public class RenlingDetailActivity extends Activity {
                             } else {
 
 
-
                             }
 
 
@@ -232,9 +231,19 @@ public class RenlingDetailActivity extends Activity {
                 });*/
 
         WebView wvElectronicDangan = (WebView) findViewById(R.id.wvElectronicDangan);
-        wvElectronicDangan.loadUrl(Constants.DianziDangan+"?deviceNo="+getDeviceNo);
+        wvElectronicDangan.loadUrl(Constants.DianziDangan + "?deviceNo=" + getDeviceNo);
+
+        OkGo.<String>get(Constants.DianziDangan)
+                .tag(this)
+                .params("deviceNo", getDeviceNo)
+                .params("ranchID", mLoginSuccess.getRanchID())
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
 
 
+                    }
+                });
 
 
     }
