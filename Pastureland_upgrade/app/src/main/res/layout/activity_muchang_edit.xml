@@ -73,11 +73,11 @@
 
                 <EditText
                     android:id="@+id/etMuChangName"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@id/tvMuchangName"
-                    android:hint="牧场名称"
+
                     android:textColorHint="#fff"/>
 
             </RelativeLayout>
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:hint="面积：4万平方公里"/>
+                    />
 
             </LinearLayout>
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:hint="附近河流"/>
+                    />
 
             </LinearLayout>
 
@@ -147,42 +147,42 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:hint="数量：200头"/>
+                    />
 
             </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="5dp"
-                android:text="种类："/>
-
-            <EditText
-                android:id="@+id/tvVariety"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:hint="种类：牛、羊、马"/>
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="种类："/>
+
+                <EditText
+                    android:id="@+id/tvVariety"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    />
 
 
-        </LinearLayout>
+            </LinearLayout>
 
             <EditText
-                android:visibility="gone"
                 android:id="@+id/tvWeilan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:hint="围栏封闭：开放（0：封闭，1开放）"/>
+                android:hint="围栏封闭：开放（0：封闭，1开放）"
+                android:visibility="gone"/>
 
 
             <TextView
@@ -198,7 +198,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:hint="牧场详细介绍"
                 ></EditText>
 
 

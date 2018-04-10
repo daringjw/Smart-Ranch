@@ -109,7 +109,7 @@ public class DeviceMsgActivity extends Activity {
 
                 case 1002:
 
-
+                    recreate();
                     break;
 
 
@@ -162,6 +162,8 @@ public class DeviceMsgActivity extends Activity {
 
                                                         mDialog.cancel();
                                                         ToastUtils.showShort("视频上传成功");
+                                                        recreate();
+
 
 
                                                     }

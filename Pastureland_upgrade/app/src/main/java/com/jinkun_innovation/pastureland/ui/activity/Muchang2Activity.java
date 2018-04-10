@@ -199,7 +199,8 @@ public class Muchang2Activity extends Activity {
                 break;
             case R.id.ivEdit:
 
-                startActivity(new Intent(getApplicationContext(), EditMuchangActivity.class));
+                Intent intent = new Intent(getApplicationContext(), EditMuchangActivity.class);
+                startActivityForResult(intent,1001);
 
                 break;
 
@@ -207,4 +208,26 @@ public class Muchang2Activity extends Activity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode ==RESULT_OK){
+
+            switch (requestCode){
+
+                case 1001:
+
+                    recreate();
+                    break;
+
+
+            }
+
+        }
+
+    }
+
+
 }

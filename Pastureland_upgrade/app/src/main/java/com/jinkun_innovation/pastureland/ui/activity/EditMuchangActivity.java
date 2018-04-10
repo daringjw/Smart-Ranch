@@ -1,7 +1,6 @@
 package com.jinkun_innovation.pastureland.ui.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.MuqunDetail;
 import com.jinkun_innovation.pastureland.common.Constants;
-import com.jinkun_innovation.pastureland.ui.HomeActivity;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -41,7 +39,7 @@ public class EditMuchangActivity extends Activity {
     SimpleDraweeView mSdvYang;
 
     @BindView(R.id.etMuChangName)
-    EditText  etMuChangName;
+    EditText etMuChangName;
     @BindView(R.id.tvMianji)
     EditText mTvMianji;
     @BindView(R.id.tvRiverNearby)
@@ -121,8 +119,6 @@ public class EditMuchangActivity extends Activity {
                 break;
             case R.id.tvSave:
 
-                // 43.7456692790,117.6039815171
-
                 //更新牧场
                 OkGo.<String>post(Constants.UPDRANCH)
                         .tag(this)
@@ -148,8 +144,9 @@ public class EditMuchangActivity extends Activity {
                                 if (result.contains("success")) {
 
                                     ToastUtils.showShort("牧场信息更新成功");
-                                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    setResult(RESULT_OK);
                                     finish();
+
 
                                 } else {
 
