@@ -447,11 +447,27 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQupaizhao.setImageResource(R.mipmap.qupaizhao);
                 viewHolder.tvPaizhaoTime.setText(datas.get(position).getPhotographicTime());
 
+                mDeviceNo= datas.get(position).getDeviceNo();
+
+
+                viewHolder.ivQupaizhao.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //去拍照
+                        useCamera();
+
+                    }
+                });
+
+
             } else if (isPhotographic.equals("1")) {
                 //完成拍照
                 viewHolder.llQuPaizhao.setVisibility(View.VISIBLE);
                 viewHolder.ivQupaizhao.setImageResource(R.mipmap.done);
                 viewHolder.tvPaizhaoTime.setText(datas.get(position).getFinishTime());
+
+                viewHolder.ivQupaizhao.setClickable(false);
+
 
             } else {
 
@@ -469,12 +485,26 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQuluxiang.setImageResource(R.mipmap.quluxiang);
                 viewHolder.tvLuxiangTime.setText(datas.get(position).getVideoTime());
 
+                mDeviceNo= datas.get(position).getDeviceNo();
+
+                viewHolder.ivQuluxiang.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        //去录像
+                        recordVideo();
+
+                    }
+                });
+
 
             } else if (isVideo.equals("1")) {
                 //完成录像
                 viewHolder.llQuLuxiang.setVisibility(View.VISIBLE);
                 viewHolder.ivQuluxiang.setImageResource(R.mipmap.done);
                 viewHolder.tvLuxiangTime.setText(datas.get(position).getFinishTime());
+
+                viewHolder.ivQuluxiang.setClickable(false);
 
             } else {
                 viewHolder.llQuLuxiang.setVisibility(View.GONE);
