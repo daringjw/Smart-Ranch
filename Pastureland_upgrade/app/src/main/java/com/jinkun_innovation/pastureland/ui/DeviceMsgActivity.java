@@ -165,7 +165,6 @@ public class DeviceMsgActivity extends Activity {
                                                         recreate();
 
 
-
                                                     }
 
                                                 }
@@ -449,7 +448,7 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQupaizhao.setImageResource(R.mipmap.qupaizhao);
                 viewHolder.tvPaizhaoTime.setText(datas.get(position).getPhotographicTime());
 
-                mDeviceNo= datas.get(position).getDeviceNo();
+                mDeviceNo = datas.get(position).getDeviceNo();
 
 
                 viewHolder.ivQupaizhao.setOnClickListener(new View.OnClickListener() {
@@ -473,7 +472,14 @@ public class DeviceMsgActivity extends Activity {
 
             } else {
 
-                viewHolder.llQuPaizhao.setVisibility(View.GONE);
+                if (!isVideo.equals("0") && !isVideo.equals("1")) {
+                    viewHolder.llPaiLu.setVisibility(View.GONE);
+                } else {
+                    viewHolder.llPaiLu.setVisibility(View.VISIBLE);
+                    viewHolder.llQuPaizhao.setVisibility(View.GONE);
+
+                }
+
             }
 
 
@@ -487,7 +493,7 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQuluxiang.setImageResource(R.mipmap.quluxiang);
                 viewHolder.tvLuxiangTime.setText(datas.get(position).getVideoTime());
 
-                mDeviceNo= datas.get(position).getDeviceNo();
+                mDeviceNo = datas.get(position).getDeviceNo();
 
                 viewHolder.ivQuluxiang.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -505,11 +511,17 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.llQuLuxiang.setVisibility(View.VISIBLE);
                 viewHolder.ivQuluxiang.setImageResource(R.mipmap.done);
                 viewHolder.tvLuxiangTime.setText(datas.get(position).getFinishTime());
-
                 viewHolder.ivQuluxiang.setClickable(false);
 
             } else {
-                viewHolder.llQuLuxiang.setVisibility(View.GONE);
+
+                if (!isPhotographic.equals("0") && !isPhotographic.equals("1")) {
+                    viewHolder.llPaiLu.setVisibility(View.GONE);
+                }else {
+                    viewHolder.llPaiLu.setVisibility(View.VISIBLE);
+                    viewHolder.llQuLuxiang.setVisibility(View.GONE);
+                }
+
             }
 
 
@@ -529,7 +541,7 @@ public class DeviceMsgActivity extends Activity {
         public class ViewHolder extends RecyclerView.ViewHolder {
 
             //            public TextView mTextView;
-            LinearLayout llQuPaizhao, llQuLuxiang;
+            LinearLayout llQuPaizhao, llQuLuxiang, llPaiLu;
             TextView tvPaizhaoTime, tvQuPaizhao, tvLuxiangTime, tvQuLuxiang;
             ImageView ivQupaizhao, ivQuluxiang;
 
@@ -547,6 +559,8 @@ public class DeviceMsgActivity extends Activity {
                 tvLuxiangTime = view.findViewById(R.id.tvLuxiangTime);
                 tvQuLuxiang = view.findViewById(R.id.tvQuLuxiang);
                 ivQuluxiang = view.findViewById(R.id.ivQuluxiang);
+
+                llPaiLu = view.findViewById(R.id.llPaiLu);
 
 
             }
