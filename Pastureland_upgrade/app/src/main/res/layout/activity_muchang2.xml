@@ -67,54 +67,71 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:text="牧场主：王刚"
-                    android:textColor="#fff"/>
-
-                <TextView
-                    android:id="@+id/tvPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:text="联系电话：13655556666"
+                    android:text="牧场名：王刚"
                     android:textColor="#fff"/>
 
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/tvMianji"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="面积：4万平方公里"/>
+                android:background="#edeeee"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvRiverNearby"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="附近河流：无"/>
+                <TextView
+                    android:id="@+id/tvMianji"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="面积：4万平方公里"/>
 
-            <TextView
-                android:id="@+id/tvNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="数量：200头"/>
+                <TextView
+                    android:id="@+id/tvRiverNearby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="附近河流：无"/>
 
-            <TextView
-                android:id="@+id/tvVariety"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="种类：牛、羊、马"/>
+                <TextView
+                    android:id="@+id/tvNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="数量：200头"/>
 
+                <TextView
+                    android:id="@+id/tvVariety"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="种类：牛、羊、马"/>
+
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="联系电话：13655556666"
+                    />
+
+                <TextView
+                    android:id="@+id/tvOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="牧场主：13655556666"
+                    />
+
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -151,8 +168,9 @@
 
             <com.baidu.mapapi.map.MapView
                 android:id="@+id/bmapView"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:clickable="true"/>
 

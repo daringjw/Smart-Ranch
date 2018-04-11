@@ -58,6 +58,8 @@ public class Muchang2Activity extends Activity {
     TextView mTvNum;
     @BindView(R.id.tvVariety)
     TextView mTvVariety;
+    @BindView(R.id.tvOwner)
+    TextView tvOwner;
 
     @BindView(tvDetail)
     TextView mTvDetail;
@@ -109,7 +111,7 @@ public class Muchang2Activity extends Activity {
                             imgUrl = Constants.BASE_URL + imgUrl;
                             mSdvYang.setImageURI(Uri.parse(imgUrl));
 
-                            mTvRancher.setText("牧场：" + muqunDetail.getRanch().getName());
+                            mTvRancher.setText("牧场名：" + muqunDetail.getRanch().getName());
                             mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());
 
                             mTvRiverNearby.setText("附近河流：" + muqunDetail.getRanch().getIntroduceRiver());
@@ -117,6 +119,8 @@ public class Muchang2Activity extends Activity {
 
                             mTvNum.setText("数量：" + muqunDetail.getRanch().getIntroduceAnimalCount() + "头");
                             mTvVariety.setText("种类：" + muqunDetail.getRanch().getIntroduceAnimalType());
+
+                            tvOwner.setText("牧场主："+muqunDetail.getRanch().getRancherName());
 
                             mTvDetail.setText(muqunDetail.getRanch().getIntroduce());
 

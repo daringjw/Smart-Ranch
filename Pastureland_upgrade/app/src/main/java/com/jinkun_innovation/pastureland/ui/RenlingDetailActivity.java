@@ -204,8 +204,10 @@ public class RenlingDetailActivity extends Activity {
 
                                 map.setMyLocationConfiguration(config);
 
+                                String imgUrl = lives.getImgUrl();
+                                imgUrl = Constants.BASE_URL + imgUrl;
                                 SimpleDraweeView sdvAsk = (SimpleDraweeView) findViewById(R.id.sdvAsk);
-                                sdvAsk.setImageURI(Uri.parse(homeImgUrl));
+                                sdvAsk.setImageURI(Uri.parse(imgUrl));
 
                                 String livestockImgUrl = lives.livestockImgUrl;
                                 if (!TextUtils.isEmpty(livestockImgUrl)) {

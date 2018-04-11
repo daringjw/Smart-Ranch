@@ -124,8 +124,9 @@
 
             <com.baidu.mapapi.map.MapView
                 android:id="@+id/bmapView"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="300dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:clickable="true"/>
 
@@ -156,7 +157,7 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/sdvAsk"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
                 android:layout_marginTop="10dp"
                 fresco:actualImageScaleType="fitXY"
                 fresco:placeholderImage="@mipmap/detail_yang"
