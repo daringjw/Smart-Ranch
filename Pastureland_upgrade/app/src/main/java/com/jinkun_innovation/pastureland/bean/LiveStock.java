@@ -84,7 +84,8 @@ public class LiveStock {
          */
 
         //请求拍照，照片放这里
-        public String livestockImgUrl;
+        public String livestock_img_url;
+        public String video_url;
 
         //homeImgUrl
         public String homeImgUrl;

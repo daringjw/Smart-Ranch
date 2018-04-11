@@ -211,7 +211,7 @@ public class YangDetailActivity extends Activity {
                                 SimpleDraweeView sdvAsk = (SimpleDraweeView) findViewById(R.id.sdvAsk);
                                 sdvAsk.setImageURI(Uri.parse(imgUrl));
 
-                                String livestockImgUrl = lives.livestockImgUrl;
+                                String livestockImgUrl = lives.livestock_img_url;
                                 if (!TextUtils.isEmpty(livestockImgUrl)) {
                                     livestockImgUrl = Constants.BASE_URL + livestockImgUrl;
                                     sdvAsk.setImageURI(Uri.parse(livestockImgUrl));

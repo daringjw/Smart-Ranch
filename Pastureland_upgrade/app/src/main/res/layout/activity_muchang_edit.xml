@@ -93,7 +93,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="面积："/>
+                    android:text="牧场面积（亩）："/>
 
                 <EditText
                     android:id="@+id/tvMianji"
@@ -139,7 +139,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="数量："/>
+                    android:text="牲畜数量："/>
 
                 <EditText
                     android:id="@+id/tvNum"
@@ -162,7 +162,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="种类："/>
+                    android:text="牲畜种类："/>
 
                 <EditText
                     android:id="@+id/tvVariety"

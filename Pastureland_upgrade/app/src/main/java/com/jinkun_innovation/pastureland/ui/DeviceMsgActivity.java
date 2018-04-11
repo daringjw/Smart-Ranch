@@ -101,7 +101,10 @@ public class DeviceMsgActivity extends Activity {
 
                     Intent intent = new Intent(this, QuPaizhaoActivity.class);
                     intent.putExtra("qupaizhao", file.getAbsolutePath());
+
+                    Log.d(TAG1, "mDeviceNo==拍照" + mDeviceNo);
                     intent.putExtra("mDeviceNo", mDeviceNo);
+
 
                     startActivityForResult(intent, 1002);
 
@@ -110,6 +113,7 @@ public class DeviceMsgActivity extends Activity {
                 case 1002:
 
                     recreate();
+
                     break;
 
 
@@ -145,6 +149,8 @@ public class DeviceMsgActivity extends Activity {
                                     ImgUrlBean imgUrlBean = gson.fromJson(result, ImgUrlBean.class);
                                     String videoUrl = imgUrlBean.getImgUrl();
 
+                                    Log.d(TAG1, "mDeviceNo视频==" + mDeviceNo);
+
                                     OkGo.<String>get(Constants.updLivestockClaim)
                                             .tag(this)
                                             .params("token", mLoginSuccess.getToken())
@@ -162,6 +168,7 @@ public class DeviceMsgActivity extends Activity {
 
                                                         mDialog.cancel();
                                                         ToastUtils.showShort("视频上传成功");
+
                                                         recreate();
 
 
@@ -437,7 +444,7 @@ public class DeviceMsgActivity extends Activity {
 
         //将数据与界面进行绑定的操作
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
 //            viewHolder.mTextView.setText(datas[position]);
             String isPhotographic = datas.get(position).getIsPhotographic();
@@ -448,13 +455,12 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQupaizhao.setImageResource(R.mipmap.qupaizhao);
                 viewHolder.tvPaizhaoTime.setText(datas.get(position).getPhotographicTime());
 
-                mDeviceNo = datas.get(position).getDeviceNo();
-
 
                 viewHolder.ivQupaizhao.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //去拍照
+                        mDeviceNo = datas.get(position).getDeviceNo();
                         useCamera();
 
                     }
@@ -493,12 +499,12 @@ public class DeviceMsgActivity extends Activity {
                 viewHolder.ivQuluxiang.setImageResource(R.mipmap.quluxiang);
                 viewHolder.tvLuxiangTime.setText(datas.get(position).getVideoTime());
 
-                mDeviceNo = datas.get(position).getDeviceNo();
 
                 viewHolder.ivQuluxiang.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
+                        mDeviceNo = datas.get(position).getDeviceNo();
                         //去录像
                         recordVideo();
 
@@ -517,7 +523,7 @@ public class DeviceMsgActivity extends Activity {
 
                 if (!isPhotographic.equals("0") && !isPhotographic.equals("1")) {
                     viewHolder.llPaiLu.setVisibility(View.GONE);
-                }else {
+                } else {
                     viewHolder.llPaiLu.setVisibility(View.VISIBLE);
                     viewHolder.llQuLuxiang.setVisibility(View.GONE);
                 }

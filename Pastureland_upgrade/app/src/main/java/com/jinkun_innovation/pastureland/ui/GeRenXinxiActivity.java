@@ -112,6 +112,7 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_gerenxinxi);
 
+
         tvName = (TextView) findViewById(R.id.tvName);
         tvSex = (TextView) findViewById(R.id.tvSex);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
@@ -245,7 +246,7 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
 
         LinearLayout llName = (LinearLayout) findViewById(R.id.llName);
-        LinearLayout llSex = (LinearLayout) findViewById(R.id.llSex);
+
         LinearLayout llPhone = (LinearLayout) findViewById(R.id.llPhone);
 
         llName.setOnClickListener(new View.OnClickListener() {
@@ -260,9 +261,96 @@ public class GeRenXinxiActivity extends AppCompatActivity {
             }
         });
 
+        LinearLayout llSex = (LinearLayout) findViewById(R.id.llSex);
+
         llSex.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new SweetAlertDialog(GeRenXinxiActivity.this)
+                        .setTitleText("修改性别?")
+                        .setContentText("你是GG还是MM?")
+                        .setCancelText("女")
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+
+                                OkGo.<String>get(Constants.ADMINLIST)
+                                        .tag(this)
+                                        .params("token", mLoginSuccess.getToken())
+                                        .params("username", mUsername)
+                                        .params("ranchID", mLoginSuccess.getRanchID())
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onSuccess(Response<String> response) {
+
+                                                Gson gson = new Gson();
+                                                AdminInfo adminInfo = gson.fromJson(response.body().toString(), AdminInfo.class);
+
+                                                OkGo.<String>get(Constants.UPDADMIN)
+                                                        .tag(this)
+                                                        .params("token", mLoginSuccess.getToken())
+                                                        .params("username", mUsername)
+                                                        .params("peopleName", adminInfo.getAdminInfo().getPeopleName())
+                                                        .params("sex", 0)
+                                                        .params("headImgUrl", adminInfo.getAdminInfo().headImgUrl)
+                                                        .execute(new StringCallback() {
+                                                            @Override
+                                                            public void onSuccess(Response<String> response) {
+
+                                                                recreate();
+
+                                                            }
+                                                        });
+
+
+                                            }
+                                        });
+
+                            }
+                        })
+                        .setConfirmText("男")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.cancel();
+
+                                OkGo.<String>get(Constants.ADMINLIST)
+                                        .tag(this)
+                                        .params("token", mLoginSuccess.getToken())
+                                        .params("username", mUsername)
+                                        .params("ranchID", mLoginSuccess.getRanchID())
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onSuccess(Response<String> response) {
+
+                                                Gson gson = new Gson();
+                                                AdminInfo adminInfo = gson.fromJson(response.body().toString(), AdminInfo.class);
+
+                                                OkGo.<String>get(Constants.UPDADMIN)
+                                                        .tag(this)
+                                                        .params("token", mLoginSuccess.getToken())
+                                                        .params("username", mUsername)
+                                                        .params("peopleName", adminInfo.getAdminInfo().getPeopleName())
+                                                        .params("sex", 1)
+                                                        .params("headImgUrl", adminInfo.getAdminInfo().headImgUrl)
+                                                        .execute(new StringCallback() {
+                                                            @Override
+                                                            public void onSuccess(Response<String> response) {
+
+                                                                recreate();
+
+                                                            }
+                                                        });
+
+
+                                            }
+                                        });
+
+
+                            }
+                        })
+                        .show();
 
 
             }
