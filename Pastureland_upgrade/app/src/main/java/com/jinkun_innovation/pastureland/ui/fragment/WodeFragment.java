@@ -108,24 +108,7 @@ public class WodeFragment extends Fragment {
         });
 
 
-        /**
-         * 升级
-         */
-        Button btnVersion = (Button) view.findViewById(R.id.btnVersion);
-        boolean appDebug = AppUtils.isAppDebug();
-        if (appDebug) {
-            btnVersion.setText("测试版本 1.0." + AppUtils.getAppVersionCode());
-        } else {
-            btnVersion.setText("正式版本 1.0." + AppUtils.getAppVersionCode());
-        }
 
-        btnVersion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Beta.checkUpgrade();
-            }
-        });
 
 
         final CircleImageView ivIcon = view.findViewById(R.id.ivIcon);

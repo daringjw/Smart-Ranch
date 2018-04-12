@@ -1024,13 +1024,25 @@ public class RenlingFragment1 extends Fragment {
 
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
-                                    Gson gson1 = new Gson();
-                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
-                                    mLivestockList = renLing.getLivestockList();
+                                    if (s.contains("未有发布牲畜")){
 
-                                    //创建并设置Adapter
-                                    mAdapter = new MyAdapter(mLivestockList);
-                                    mRecyclerView.setAdapter(mAdapter);
+                                        mLivestockList.clear();
+                                        mAdapter.notifyDataSetChanged();
+
+                                    }else {
+
+                                        Gson gson1 = new Gson();
+                                        RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                        mLivestockList = renLing.getLivestockList();
+
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                    }
+
+
+
 
 
                                 }
@@ -1059,13 +1071,25 @@ public class RenlingFragment1 extends Fragment {
 
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
-                                    Gson gson1 = new Gson();
-                                    RenLing renLing = gson1.fromJson(s, RenLing.class);
-                                    mLivestockList = renLing.getLivestockList();
+                                    if (s.contains("未有发布牲畜")){
 
-                                    //创建并设置Adapter
-                                    mAdapter = new MyAdapter(mLivestockList);
-                                    mRecyclerView.setAdapter(mAdapter);
+                                        mLivestockList.clear();
+                                        mAdapter.notifyDataSetChanged();
+
+                                    }else {
+
+                                        Gson gson1 = new Gson();
+                                        RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                        mLivestockList = renLing.getLivestockList();
+
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                    }
+
+
+
 
 
                                 }
@@ -1274,6 +1298,7 @@ public class RenlingFragment1 extends Fragment {
         //获取数据的数量
         @Override
         public int getItemCount() {
+
             return datas.size();
         }
 

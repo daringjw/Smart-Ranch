@@ -43,6 +43,7 @@ import com.jinkun_innovation.pastureland.ui.activity.ModifyPhoneActivity;
 import com.jinkun_innovation.pastureland.ui.view.CircleImageView;
 import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
+import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ImageUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.FileUtil;
@@ -51,6 +52,7 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.tencent.bugly.beta.Beta;
 
 import java.io.File;
 
@@ -112,6 +114,25 @@ public class GeRenXinxiActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_gerenxinxi);
 
+
+        /**
+         * 升级
+         */
+        Button btnVersion = (Button) findViewById(R.id.btnVersion);
+        boolean appDebug = AppUtils.isAppDebug();
+        if (appDebug) {
+            btnVersion.setText("测试版本 1.0." + AppUtils.getAppVersionCode());
+        } else {
+            btnVersion.setText("正式版本 1.0." + AppUtils.getAppVersionCode());
+        }
+
+        btnVersion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Beta.checkUpgrade();
+            }
+        });
 
         tvName = (TextView) findViewById(R.id.tvName);
         tvSex = (TextView) findViewById(R.id.tvSex);
