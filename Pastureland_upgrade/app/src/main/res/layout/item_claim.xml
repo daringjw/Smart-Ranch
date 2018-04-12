@@ -99,20 +99,20 @@
             android:background="@mipmap/bottom_bg">
 
             <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/tvOrderNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
+
                 android:textColor="#127c39"
-                android:text="￥200"
                 />
 
             <TextView
                 android:id="@+id/tvClaimPeople"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvPrice"
+                android:layout_below="@id/tvOrderNo"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
                 android:text="认领人：user12"
@@ -125,12 +125,11 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
+                android:text="已认领未支付"
                 android:textColor="#127c39"
-                android:text="已认领"
                 />
 
             <TextView
-                android:text="电话：13566663339"
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,10 +137,19 @@
                 android:layout_below="@id/tvState"
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
+                android:text="电话：13566663339"
                 />
 
         </RelativeLayout>
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnPayConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvState"
+        android:layout_gravity="center"
+        android:text="支付确认"/>
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.jinkun_innovation.pastureland.ui.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -689,17 +689,35 @@ public class RenlingFragment1 extends Fragment {
                 //已认领
                 viewHolder.tvClaimTime.setText("认领时间：" + claimTime + "至" + finishTime);
 
-                String price = datas.get(position).getPrice();
-                int price1 = (int) Double.parseDouble(price);
+                String tradeStatus = datas.get(position).getTradeStatus();
 
-                viewHolder.tvPrice.setText("￥" + price1);
-                viewHolder.tvPrice.setTextColor(Color.parseColor("#127c39"));
+                if (!TextUtils.isEmpty(tradeStatus)) {
+                    if (tradeStatus.contains("0")) {
 
-                viewHolder.tvState.setText("已认领");
-                viewHolder.tvState.setTextColor(Color.parseColor("#127c39"));
+                        //已认领未支付
+                        viewHolder.btnPayConfirm.setVisibility(View.VISIBLE);
+                        viewHolder.tvState.setText("已认领未支付");
+
+                        String orderNo = datas.get(position).getOrderNo();
+                        viewHolder.tvOrderNo.setText("支付订单号：" + orderNo);
+
+
+
+
+                    } else if (tradeStatus.contains("3")) {
+
+                        //已认领已支付
+                        viewHolder.btnPayConfirm.setVisibility(View.GONE);
+                        viewHolder.tvState.setText("已认领已支付");
+
+                        String orderNo = datas.get(position).getOrderNo();
+                        viewHolder.tvOrderNo.setText("支付订单号：" + orderNo);
+
+                    }
+                }
+
 
                 viewHolder.tvClaimPeople.setText("认领人：" + datas.get(position).getNickname());
-
                 viewHolder.tvPhone.setText("电话：" + datas.get(position).getCellphone());
 
 
@@ -709,12 +727,12 @@ public class RenlingFragment1 extends Fragment {
                 viewHolder.tvClaimTime.setText("发布时间：" + datas.get(position).getBirthTime());
 
                 viewHolder.tvState.setText("未认领");
-                viewHolder.tvState.setTextColor(Color.GRAY);
 
-                viewHolder.tvPrice.setText("");
+                viewHolder.tvOrderNo.setText("");
                 viewHolder.tvClaimPeople.setText("");
                 viewHolder.tvPhone.setText("");
 
+                viewHolder.btnPayConfirm.setVisibility(View.GONE);
 
             }
 
@@ -743,8 +761,10 @@ public class RenlingFragment1 extends Fragment {
             SimpleDraweeView ivGhoat;
 
             TextView tvAnimalName, tvId, tvAnimalAge, tvMuchangName,
-                    tvClaimTime, tvPrice, tvClaimPeople, tvState,
-                    tvPhone;
+                    tvClaimTime, tvClaimPeople, tvState,
+                    tvPhone, tvOrderNo;
+
+            Button btnPayConfirm;
 
 
             public ViewHolder(View view) {
@@ -756,10 +776,12 @@ public class RenlingFragment1 extends Fragment {
                 tvAnimalAge = view.findViewById(R.id.tvAnimalAge);
                 tvMuchangName = view.findViewById(R.id.tvMuchangName);
                 tvClaimTime = view.findViewById(R.id.tvClaimTime);
-                tvPrice = view.findViewById(R.id.tvPrice);
                 tvClaimPeople = view.findViewById(R.id.tvClaimPeople);
                 tvState = view.findViewById(R.id.tvState);
                 tvPhone = view.findViewById(R.id.tvPhone);
+
+                tvOrderNo = view.findViewById(R.id.tvOrderNo);
+                btnPayConfirm = view.findViewById(R.id.btnPayConfirm);
 
 
             }
