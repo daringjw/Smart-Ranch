@@ -257,12 +257,16 @@ public class DeviceMsgActivity extends Activity {
                             //创建并设置Adapter
                             mAdapter = new MyAdapter(batteryList);
                             mRecyclerView.setAdapter(mAdapter);
+
+
                         }
 
                         if (livestockClaimList.size() != 0) {
 
                             mQuPaizhaoAdapter = new QuPaizhaoAdapter(livestockClaimList);
                             rcvQupaizhao.setAdapter(mQuPaizhaoAdapter);
+
+
 
 
                         }
