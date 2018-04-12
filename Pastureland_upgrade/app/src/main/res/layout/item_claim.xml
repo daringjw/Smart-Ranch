@@ -105,6 +105,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
                 android:textColor="#127c39"
+                android:text="￥200"
                 />
 
             <TextView
@@ -114,11 +115,10 @@
                 android:layout_below="@id/tvPrice"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-
+                android:text="认领人：user12"
                 />
 
             <TextView
-
                 android:id="@+id/tvState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,11 +126,11 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="10dp"
                 android:textColor="#127c39"
-
+                android:text="已认领"
                 />
 
             <TextView
-
+                android:text="电话：13566663339"
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

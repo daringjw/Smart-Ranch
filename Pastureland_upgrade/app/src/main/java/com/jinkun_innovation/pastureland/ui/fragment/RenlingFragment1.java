@@ -672,7 +672,7 @@ public class RenlingFragment1 extends Fragment {
             }
             viewHolder.tvAnimalAge.setText("年龄：" + age + "个月");
 
-            String name = datas.get(position).name;
+            String name = datas.get(position).getName();
             if (TextUtils.isEmpty(name)) {
                 viewHolder.tvMuchangName.setText("牧场：无");
             } else {
@@ -698,7 +698,7 @@ public class RenlingFragment1 extends Fragment {
                 viewHolder.tvState.setText("已认领");
                 viewHolder.tvState.setTextColor(Color.parseColor("#127c39"));
 
-                viewHolder.tvClaimPeople.setText("认领人：" + datas.get(position).nickname);
+                viewHolder.tvClaimPeople.setText("认领人：" + datas.get(position).getNickname());
 
                 viewHolder.tvPhone.setText("电话：" + datas.get(position).getCellphone());
 

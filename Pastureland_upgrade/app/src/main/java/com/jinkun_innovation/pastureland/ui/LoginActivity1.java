@@ -65,6 +65,8 @@ public class LoginActivity1 extends AppCompatActivity {
         setContentView(R.layout.activity_login1);
         ButterKnife.bind(this);
 
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkRuntimePermissions();
         }

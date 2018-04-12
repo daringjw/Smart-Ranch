@@ -9,6 +9,7 @@ import com.jinkun_innovation.pastureland.utilcode.AppManager;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
 import com.jinkun_innovation.pastureland.utilcode.util.ActivityUtils;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 
 /**
  * Created by yangxing on 2018/1/21.
@@ -31,6 +32,8 @@ public class GuideActivity extends BaseActivity {
 
         //bugly  集成令人愉快的开发方式
         Bugly.init(getApplicationContext(), "19277f0293", false);
+        Beta.checkUpgrade();
+
 
 
         new CountDownTimer(1000, 3000) {
