@@ -108,8 +108,7 @@ public class RenlingDetailActivity extends Activity {
                         String msg = liveStock.getMsg();
                         if (TextUtils.isEmpty(msg)) {
                             ToastUtils.showShort("抱歉，服务器的数据为空");
-                        }
-                        {
+                        } else {
 
                             if (msg.equals("获取牲畜详情成功")) {
 

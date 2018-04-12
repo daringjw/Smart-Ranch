@@ -18,6 +18,7 @@ public class SelectLivestock {
      * weight : 10.0
      */
 
+    public String msg1;
     private String msg;
     private String imgUrl;
     private boolean code;

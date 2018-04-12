@@ -28,6 +28,7 @@ import com.jinkun_innovation.pastureland.bean.SelectLivestock;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.PublishClaimActivity;
 import com.jinkun_innovation.pastureland.ui.RenlingDetailActivity;
+import com.jinkun_innovation.pastureland.ui.activity.PayConfirmActivity;
 import com.jinkun_innovation.pastureland.utilcode.constant.TimeConstants;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
@@ -67,6 +68,7 @@ public class RenlingFragment1 extends Fragment {
     int index = 2;
 
     private List<RenLing.LivestockListBean> mLivestockList;
+    private String mDeviceNo;
 
 
     private void startScanActivity() {
@@ -118,6 +120,8 @@ public class RenlingFragment1 extends Fragment {
                                             Gson gson = new Gson();
                                             SelectLivestock selectLivestock = gson.fromJson(result, SelectLivestock.class);
                                             String msg = selectLivestock.getMsg();
+                                            String msg1 = selectLivestock.msg1;
+
                                             boolean code = selectLivestock.isCode();
                                             if (code) {
 
@@ -144,6 +148,15 @@ public class RenlingFragment1 extends Fragment {
                                                                 sDialog.cancel();
                                                             }
                                                         })
+                                                        .show();
+
+
+                                            }else if(msg.equals("false") && msg1.contains("此设备已经被牧场主为")){
+
+                                                ToastUtils.showShort("此设备已经被别的牧场主所登记");
+                                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                                        .setTitleText("无法发布认领")
+                                                        .setContentText("此设备已经被别的牧场主所登记")
                                                         .show();
 
 
@@ -255,7 +268,7 @@ public class RenlingFragment1 extends Fragment {
 
 
                                     String s = response.body().toString();
-                                    Log.d(TAG1, s);
+//                                    Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
@@ -303,6 +316,74 @@ public class RenlingFragment1 extends Fragment {
                                 }
                             });
 
+
+                    break;
+
+
+                case 1002:
+                    //支付成功，刷新界面
+                    //刷新数据
+                    OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+//                .params("isClaimed",)
+                            .params("current", 0)
+                            .params("pagesize", 5)
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+
+                                    String s = response.body().toString();
+//                                    Log.d(TAG1, s);
+                                    if (s.contains("livestockId")) {
+                                        Gson gson1 = new Gson();
+                                        RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                        mLivestockList = renLing.getLivestockList();
+
+                                        //创建并设置Adapter
+                                        mAdapter = new MyAdapter(mLivestockList);
+                                        mRecyclerView.setAdapter(mAdapter);
+
+                                        MoveToPosition(mLayoutManager, 0);
+
+
+                                        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int position) {
+
+                                                Log.d(TAG1, position + "被点击了");
+                                                RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
+
+                                                Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
+                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
+                                                intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
+                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
+                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
+                                                intent.putExtra("getPrice", livestockListBean.getPrice());
+                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
+                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
+                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
+                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
+
+                                                startActivity(intent);
+
+                                            }
+                                        });
+
+
+                                    } else {
+
+
+                                    }
+
+
+                                }
+                            });
 
                     break;
 
@@ -358,7 +439,7 @@ public class RenlingFragment1 extends Fragment {
 
 
                                 String s = response.body().toString();
-                                Log.d(TAG1, s);
+//                                Log.d(TAG1, s);
                                 if (s.contains("livestockId")) {
 
                                     index = 1;
@@ -428,7 +509,7 @@ public class RenlingFragment1 extends Fragment {
                             public void onSuccess(Response<String> response) {
 
                                 String s = response.body().toString();
-                                Log.d(TAG1, s);
+//                                Log.d(TAG1, s);
                                 if (s.contains("livestockId")) {
 
                                     index++;
@@ -528,7 +609,7 @@ public class RenlingFragment1 extends Fragment {
                     public void onSuccess(Response<String> response) {
 
                         String s = response.body().toString();
-                        Log.d(TAG1, s);
+//                        Log.d(TAG1, s);
                         if (s.contains("livestockId")) {
 
                             Gson gson1 = new Gson();
@@ -642,7 +723,7 @@ public class RenlingFragment1 extends Fragment {
 
         //将数据与界面进行绑定的操作
         @Override
-        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
 
 //            viewHolder.tvId.setText(datas.get(position).getDeviceNo());
             //将数据保存在itemView的Tag中，以便点击时进行获取
@@ -657,13 +738,13 @@ public class RenlingFragment1 extends Fragment {
             String livestockName = datas.get(position).getLivestockName();
             viewHolder.tvAnimalName.setText(livestockName);
 
-            String deviceNo = datas.get(position).getDeviceNo();
-            viewHolder.tvId.setText("设备号:" + deviceNo);
+            mDeviceNo = datas.get(position).getDeviceNo();
+            viewHolder.tvId.setText("设备号:" + mDeviceNo);
 
             String createTime = datas.get(position).getCreateTime();
             String nowString = TimeUtils.getNowString();
-            Log.d(TAG1, "createTime=" + createTime);
-            Log.d(TAG1, "nowString=" + nowString);
+//            Log.d(TAG1, "createTime=" + createTime);
+//            Log.d(TAG1, "nowString=" + nowString);
             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
             Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
             int age = (int) timeSpanByNow / 30;
@@ -691,6 +772,9 @@ public class RenlingFragment1 extends Fragment {
 
                 String tradeStatus = datas.get(position).getTradeStatus();
 
+                String orderNo = datas.get(position).getOrderNo();
+                viewHolder.tvOrderNo.setText("支付订单号：" + orderNo);
+
                 if (!TextUtils.isEmpty(tradeStatus)) {
                     if (tradeStatus.contains("0")) {
 
@@ -698,10 +782,18 @@ public class RenlingFragment1 extends Fragment {
                         viewHolder.btnPayConfirm.setVisibility(View.VISIBLE);
                         viewHolder.tvState.setText("已认领未支付");
 
-                        String orderNo = datas.get(position).getOrderNo();
-                        viewHolder.tvOrderNo.setText("支付订单号：" + orderNo);
+                        viewHolder.btnPayConfirm.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                Intent intent = new Intent(getActivity(), PayConfirmActivity.class);
+                                mDeviceNo = datas.get(position).getDeviceNo();
+                                intent.putExtra("mDeviceNo", mDeviceNo);
+                                startActivityForResult(intent, 1002);
 
 
+                            }
+                        });
 
 
                     } else if (tradeStatus.contains("3")) {
@@ -710,8 +802,6 @@ public class RenlingFragment1 extends Fragment {
                         viewHolder.btnPayConfirm.setVisibility(View.GONE);
                         viewHolder.tvState.setText("已认领已支付");
 
-                        String orderNo = datas.get(position).getOrderNo();
-                        viewHolder.tvOrderNo.setText("支付订单号：" + orderNo);
 
                     }
                 }

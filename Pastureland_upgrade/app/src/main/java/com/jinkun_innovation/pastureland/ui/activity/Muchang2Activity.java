@@ -115,7 +115,7 @@ public class Muchang2Activity extends Activity {
                             mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());
 
                             mTvRiverNearby.setText("附近河流：" + muqunDetail.getRanch().getIntroduceRiver());
-                            mTvMianji.setText("面积：" + muqunDetail.getRanch().getAcreage() + "平方公里");
+                            mTvMianji.setText("面积：" + muqunDetail.getRanch().getAcreage() + "亩");
 
                             mTvNum.setText("数量：" + muqunDetail.getRanch().getIntroduceAnimalCount() + "头");
                             mTvVariety.setText("种类：" + muqunDetail.getRanch().getIntroduceAnimalType());
