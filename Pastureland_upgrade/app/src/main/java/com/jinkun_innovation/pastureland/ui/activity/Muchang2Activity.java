@@ -120,7 +120,7 @@ public class Muchang2Activity extends Activity {
                             mTvNum.setText("数量：" + muqunDetail.getRanch().getIntroduceAnimalCount() + "头");
                             mTvVariety.setText("种类：" + muqunDetail.getRanch().getIntroduceAnimalType());
 
-                            tvOwner.setText("牧场主："+muqunDetail.getRanch().getRancherName());
+                            tvOwner.setText("牧场主：" + muqunDetail.getRanch().getRancherName());
 
                             mTvDetail.setText(muqunDetail.getRanch().getIntroduce());
 
@@ -154,8 +154,6 @@ public class Muchang2Activity extends Activity {
                                     true, mCurrentMarker);
 
                             map.setMyLocationConfiguration(config);
-
-
 
 
                         } else {
@@ -204,7 +202,7 @@ public class Muchang2Activity extends Activity {
             case R.id.ivEdit:
 
                 Intent intent = new Intent(getApplicationContext(), EditMuchangActivity.class);
-                startActivityForResult(intent,1001);
+                startActivityForResult(intent, 1001);
 
                 break;
 
@@ -217,13 +215,56 @@ public class Muchang2Activity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode ==RESULT_OK){
+        if (resultCode == RESULT_OK) {
 
-            switch (requestCode){
+            switch (requestCode) {
 
                 case 1001:
 
-                    recreate();
+                    OkGo.<String>get(Constants.RANCH)
+                            .tag(this)
+                            .params("token", mLoginSuccess.getToken())
+                            .params("username", mUsername)
+                            .params("ranchID", mLoginSuccess.getRanchID())
+                            .execute(new StringCallback() {
+                                @Override
+                                public void onSuccess(Response<String> response) {
+
+                                    String result = response.body().toString();
+                                    Gson gson1 = new Gson();
+                                    MuqunDetail muqunDetail = gson1.fromJson(result, MuqunDetail.class);
+                                    String msg = muqunDetail.getMsg();
+                                    if (msg.equals("获取牧场详情成功")) {
+
+                                        String imgUrl = muqunDetail.getRanch().getImgUrl();
+                                        imgUrl = Constants.BASE_URL + imgUrl;
+                                        mSdvYang.setImageURI(Uri.parse(imgUrl));
+
+                                        mTvRancher.setText("牧场名：" + muqunDetail.getRanch().getName());
+                                        mTvPhone.setText("联系电话：" + muqunDetail.getRanch().getRancherAccount());
+
+                                        mTvRiverNearby.setText("附近河流：" + muqunDetail.getRanch().getIntroduceRiver());
+                                        mTvMianji.setText("面积：" + muqunDetail.getRanch().getAcreage() + "亩");
+
+                                        mTvNum.setText("数量：" + muqunDetail.getRanch().getIntroduceAnimalCount() + "头");
+                                        mTvVariety.setText("种类：" + muqunDetail.getRanch().getIntroduceAnimalType());
+
+                                        tvOwner.setText("牧场主：" + muqunDetail.getRanch().getRancherName());
+
+                                        mTvDetail.setText(muqunDetail.getRanch().getIntroduce());
+
+
+                                    } else {
+
+                                        ToastUtils.showShort("获取牧场详情失败");
+
+                                    }
+
+
+                                }
+                            });
+
+
                     break;
 
 

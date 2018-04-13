@@ -97,7 +97,7 @@ public class MuqunFragment extends Fragment {
                         String s = response.body().toString();
                         Log.d(TAG1, s);
                         if (s.contains("牧场无牲畜")) {
-//                            tvYangNo.setText("0头");
+
 
                         } else if (s.contains("获取牲畜类型和数量成功")) {
 
@@ -112,54 +112,44 @@ public class MuqunFragment extends Fragment {
                             String s7 = typeMap.get_$7() + "";
 
                             //羊
-                            if (!TextUtils.isEmpty(s1)) {
+                            if (!s1.equals("0") && !TextUtils.isEmpty(s1)) {
                                 tvYangNo.setText(s1 + "只");
-                                mIvYang.setVisibility(View.VISIBLE);
-                                tvYangNo.setVisibility(View.VISIBLE);
+
                             } else {
-                                mIvYang.setVisibility(View.GONE);
-                                tvYangNo.setVisibility(View.GONE);
+
                             }
 
                             //牛
-                            if (!s2.equals("0")) {
+                            if (!s2.equals("0") && !TextUtils.isEmpty(s2)) {
                                 mTvNiuNo.setText(s2 + "头");
-                                mIvNiu.setVisibility(View.VISIBLE);
-                                mTvNiuNo.setVisibility(View.VISIBLE);
+
                             } else {
-                                mIvNiu.setVisibility(View.GONE);
-                                mTvNiuNo.setVisibility(View.GONE);
+
                             }
 
                             //马
-                            if (!s3.equals("0")) {
+                            if (!s3.equals("0") && !TextUtils.isEmpty(s3)) {
                                 mTvMaNo.setText(s3 + "匹");
-                                mIvMa.setVisibility(View.VISIBLE);
-                                mTvMaNo.setVisibility(View.VISIBLE);
+
                             } else {
-                                mIvMa.setVisibility(View.GONE);
-                                mTvMaNo.setVisibility(View.GONE);
+
                             }
 
                             //猪
-                            if (!s4.equals("0")) {
+                            if (!s4.equals("0") && !TextUtils.isEmpty(s4)) {
                                 mTvDeerNo.setText(s4 + "头");
-                                mTvDeerNo.setVisibility(View.VISIBLE);
-                                mIvPig.setVisibility(View.VISIBLE);
+
                             } else {
-                                mIvPig.setVisibility(View.GONE);
-                                mTvDeerNo.setVisibility(View.GONE);
+
                             }
 
                             //骆驼
-                            if (!s7.equals("0")) {
+                            if (!s7.equals("0") && !TextUtils.isEmpty(s7)) {
                                 tvCamelNo.setText(s7 + "头");
-                                ivCamel.setVisibility(View.VISIBLE);
-                                tvCamelNo.setVisibility(View.VISIBLE);
+
 
                             } else {
-                                ivCamel.setVisibility(View.GONE);
-                                tvCamelNo.setVisibility(View.GONE);
+
                             }
 
 

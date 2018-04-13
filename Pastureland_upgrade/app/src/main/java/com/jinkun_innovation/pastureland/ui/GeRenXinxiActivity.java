@@ -121,9 +121,9 @@ public class GeRenXinxiActivity extends AppCompatActivity {
         Button btnVersion = (Button) findViewById(R.id.btnVersion);
         boolean appDebug = AppUtils.isAppDebug();
         if (appDebug) {
-            btnVersion.setText("测试版本 1.0." + AppUtils.getAppVersionCode());
+            btnVersion.setText("版本检测   （版本 1.0." + AppUtils.getAppVersionCode() + ")");
         } else {
-            btnVersion.setText("正式版本 1.0." + AppUtils.getAppVersionCode());
+            btnVersion.setText("版本检测   （正式版本 1.0." + AppUtils.getAppVersionCode() + ")");
         }
 
         btnVersion.setOnClickListener(new View.OnClickListener() {
@@ -289,7 +289,7 @@ public class GeRenXinxiActivity extends AppCompatActivity {
             public void onClick(View view) {
                 new SweetAlertDialog(GeRenXinxiActivity.this)
                         .setTitleText("修改性别?")
-                        .setContentText("你是GG还是MM?")
+                        .setContentText("你是女人还是男人?")
                         .setCancelText("女")
                         .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                             @Override

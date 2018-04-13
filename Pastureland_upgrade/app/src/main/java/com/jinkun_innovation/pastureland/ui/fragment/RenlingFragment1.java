@@ -19,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
@@ -290,23 +289,11 @@ public class RenlingFragment1 extends Fragment {
                                             @Override
                                             public void onItemClick(View view, int position) {
 
-                                                Log.d(TAG1, position + "被点击了");
                                                 RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
-
                                                 Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
-                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
-                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
                                                 intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
-                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
-                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
-                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
-                                                intent.putExtra("getPrice", livestockListBean.getPrice());
-                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
-                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
-                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
-                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
-
                                                 startActivity(intent);
+
 
                                             }
                                         });
@@ -359,22 +346,9 @@ public class RenlingFragment1 extends Fragment {
                                             @Override
                                             public void onItemClick(View view, int position) {
 
-                                                Log.d(TAG1, position + "被点击了");
                                                 RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
-
                                                 Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
-                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
-                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
                                                 intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
-                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
-                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
-                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
-                                                intent.putExtra("getPrice", livestockListBean.getPrice());
-                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
-                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
-                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
-                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
-
                                                 startActivity(intent);
 
                                             }
@@ -978,8 +952,9 @@ public class RenlingFragment1 extends Fragment {
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
                                     if (s.contains("error")) {
-                                        Toast.makeText(getActivity(), "获取发布到认领输出信息异常", Toast.LENGTH_SHORT).show();
+
                                         return;
+
                                     } else if (s.contains("成功")) {
 
                                         Gson gson1 = new Gson();
@@ -990,10 +965,23 @@ public class RenlingFragment1 extends Fragment {
                                         mAdapter = new MyAdapter(mLivestockList);
                                         mRecyclerView.setAdapter(mAdapter);
 
+                                        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int data) {
+
+                                                Log.d(TAG1, data + "被点击了");
+                                                RenLing.LivestockListBean livestockListBean = mLivestockList.get(data);
+                                                Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                                intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                                startActivity(intent);
+
+                                            }
+                                        });
+
+
                                     } else {
 
-                                        Toast.makeText(getActivity(), "获取发布到认领输出信息异常",
-                                                Toast.LENGTH_SHORT).show();
+
                                         return;
                                     }
 
@@ -1024,12 +1012,15 @@ public class RenlingFragment1 extends Fragment {
 
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
-                                    if (s.contains("未有发布牲畜")){
+                                    if (s.contains("未有发布牲畜") || s.contains("获取发布到认领输出信息异常")) {
 
-                                        mLivestockList.clear();
-                                        mAdapter.notifyDataSetChanged();
+                                        if (mLivestockList != null) {
+                                            mLivestockList.clear();
+                                            mAdapter.notifyDataSetChanged();
+                                        }
 
-                                    }else {
+
+                                    } else if (s.contains("成功")) {
 
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
@@ -1039,10 +1030,20 @@ public class RenlingFragment1 extends Fragment {
                                         mAdapter = new MyAdapter(mLivestockList);
                                         mRecyclerView.setAdapter(mAdapter);
 
+                                        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int data) {
+
+                                                Log.d(TAG1, data + "被点击了");
+                                                RenLing.LivestockListBean livestockListBean = mLivestockList.get(data);
+                                                Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                                intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                                startActivity(intent);
+
+                                            }
+                                        });
+
                                     }
-
-
-
 
 
                                 }
@@ -1071,12 +1072,14 @@ public class RenlingFragment1 extends Fragment {
 
                                     String s = response.body().toString();
                                     Log.d(TAG1, s);
-                                    if (s.contains("未有发布牲畜")){
+                                    if (s.contains("未有发布牲畜") || s.contains("获取发布到认领输出信息异常")) {
 
-                                        mLivestockList.clear();
-                                        mAdapter.notifyDataSetChanged();
+                                        if (mLivestockList != null) {
+                                            mLivestockList.clear();
+                                            mAdapter.notifyDataSetChanged();
+                                        }
 
-                                    }else {
+                                    } else if (s.contains("成功")) {
 
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
@@ -1086,10 +1089,23 @@ public class RenlingFragment1 extends Fragment {
                                         mAdapter = new MyAdapter(mLivestockList);
                                         mRecyclerView.setAdapter(mAdapter);
 
+
+                                        mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                            @Override
+                                            public void onItemClick(View view, int data) {
+
+                                                Log.d(TAG1, data + "被点击了");
+                                                RenLing.LivestockListBean livestockListBean = mLivestockList.get(data);
+                                                Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                                intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                                startActivity(intent);
+
+
+                                            }
+                                        });
+
+
                                     }
-
-
-
 
 
                                 }
@@ -1103,6 +1119,8 @@ public class RenlingFragment1 extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // Another interface callback
+
+
             }
 
         });
