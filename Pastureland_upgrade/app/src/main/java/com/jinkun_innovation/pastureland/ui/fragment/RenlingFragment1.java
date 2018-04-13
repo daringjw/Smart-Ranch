@@ -644,21 +644,9 @@ public class RenlingFragment1 extends Fragment {
                                             @Override
                                             public void onItemClick(View view, int position) {
 
-                                                Log.d(TAG1, position + "被点击了");
                                                 RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
-
                                                 Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
                                                 intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
-                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
-                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
-                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
-                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
-                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
-                                                intent.putExtra("getPrice", livestockListBean.getPrice());
-                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
-                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
-                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
-                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
                                                 startActivity(intent);
 
 
@@ -719,27 +707,13 @@ public class RenlingFragment1 extends Fragment {
                                             @Override
                                             public void onItemClick(View view, int position) {
 
-                                                Log.d(TAG1, position + "被点击了");
                                                 RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
-
                                                 Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
                                                 intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
-                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
-                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
-                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
-                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
-                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
-                                                intent.putExtra("getPrice", livestockListBean.getPrice());
-                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
-                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
-                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
-                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
                                                 startActivity(intent);
-
 
                                             }
                                         });
-
 
                                     } else {
 
@@ -783,7 +757,6 @@ public class RenlingFragment1 extends Fragment {
                                             }
                                             MoveToPosition(mLayoutManager, 3 * (index - 1));
 
-
                                         }
 
                                         //创建并设置Adapter
@@ -795,21 +768,9 @@ public class RenlingFragment1 extends Fragment {
                                             @Override
                                             public void onItemClick(View view, int position) {
 
-                                                Log.d(TAG1, position + "被点击了");
                                                 RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
-
                                                 Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
                                                 intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
-                                                intent.putExtra("getImgUrl", livestockListBean.getImgUrl());
-                                                intent.putExtra("getLivestockName", livestockListBean.getLivestockName());
-                                                intent.putExtra("getCharacteristics", livestockListBean.getCharacteristics());
-                                                intent.putExtra("getCellphone", livestockListBean.getCellphone());
-                                                intent.putExtra("getCreateTime", livestockListBean.getCreateTime());
-                                                intent.putExtra("getPrice", livestockListBean.getPrice());
-                                                intent.putExtra("getIsClaimed", livestockListBean.getIsClaimed());
-                                                intent.putExtra("getLifeTime", livestockListBean.getLifeTime());
-                                                intent.putExtra("getBirthTime", livestockListBean.getBirthTime());
-                                                intent.putExtra("getClaimTime", livestockListBean.getClaimTime());
                                                 startActivity(intent);
 
 
@@ -823,9 +784,9 @@ public class RenlingFragment1 extends Fragment {
 
                                     }
 
-
                                 }
                             });
+
                 }
 
 

@@ -24,6 +24,7 @@ import com.jinkun_innovation.pastureland.R;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.utilcode.SpUtil;
 import com.jinkun_innovation.pastureland.utilcode.util.AppUtils;
+import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PhoneFormatCheckUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -66,7 +67,6 @@ public class LoginActivity1 extends AppCompatActivity {
         ButterKnife.bind(this);
 
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkRuntimePermissions();
         }
@@ -105,8 +105,6 @@ public class LoginActivity1 extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
-
-
 
 
         if (permissions.size() > 0) {
@@ -211,22 +209,23 @@ public class LoginActivity1 extends AppCompatActivity {
                         } else {
 
                             //非法电话号码
-                            Toast.makeText(getApplicationContext(),
-                                    "请输入正确的电话号码",
-                                    Toast.LENGTH_SHORT).show();
+
+                            ToastUtils.showShort("请输入正确的电话号码");
 
                         }
 
-                    } else {
-
-                        Toast.makeText(getApplicationContext(),
-                                "账号和密码不能为空",
-                                Toast.LENGTH_SHORT).show();
                     }
 
 
                     break;
+                } else {
+
+
+                    ToastUtils.showShort("账号和密码不能为空");
+
                 }
+
+
         }
     }
 

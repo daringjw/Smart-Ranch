@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="55dp"
         android:background="#127c3b">
 
         <TextView
@@ -15,11 +15,13 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="登录"
+            android:textSize="20sp"
             android:textColor="#fff"/>
 
     </RelativeLayout>
 
     <ScrollView
+        android:background="#fff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -28,10 +30,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:src="@mipmap/login_bg"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -89,6 +87,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="版本号："/>
+
+
+            <ImageView
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:src="@mipmap/login_bg"/>
 
 
         </LinearLayout>
