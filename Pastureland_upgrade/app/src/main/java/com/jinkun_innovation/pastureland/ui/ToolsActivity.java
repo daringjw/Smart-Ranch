@@ -18,10 +18,7 @@ import com.jinkun_innovation.pastureland.bean.ToolBean;
 import com.jinkun_innovation.pastureland.manager.ToolsManager;
 import com.jinkun_innovation.pastureland.ui.dialog.AddToolDialog;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
-import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -75,12 +72,12 @@ public class ToolsActivity extends Activity {
             }
         });
 
-        FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(this);
+        /*FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(this);
         //设置 Header 为 Material样式
         refreshLayout.setRefreshHeader(funGameHitBlockHeader);
         //设置 Footer 为 球脉冲
         refreshLayout.setRefreshFooter(new BallPulseFooter(this)
-                .setSpinnerStyle(SpinnerStyle.Scale));
+                .setSpinnerStyle(SpinnerStyle.Scale));*/
 
 
         mRecyclerView = findViewById(R.id.my_recycler_view);

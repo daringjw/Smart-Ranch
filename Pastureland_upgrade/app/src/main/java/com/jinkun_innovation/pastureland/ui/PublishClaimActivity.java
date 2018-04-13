@@ -459,28 +459,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
 
 
-        /*spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
 
-
-                String[] variety = getResources().getStringArray(R.array.variety);
-//                Log.d(TAG1, "品种：" + variety[pos]);
-
-
-                mVariety1 = variety[pos];
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
-
-            }
-
-        });*/
 
         Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
         spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

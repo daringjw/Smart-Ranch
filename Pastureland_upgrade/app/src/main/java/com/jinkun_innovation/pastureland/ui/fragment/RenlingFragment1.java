@@ -39,10 +39,7 @@ import com.jinkun_innovation.pastureland.utils.StrLengthUtil;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -387,11 +384,7 @@ public class RenlingFragment1 extends Fragment {
 
                 //扫描
                 checkedItem = 2;
-
                 startScanActivity();
-
-
-//                startActivity(new Intent(getActivity(), PublishClaimActivity.class));
 
 
             }
@@ -598,7 +591,7 @@ public class RenlingFragment1 extends Fragment {
                 }
 
 
-                refreshlayout.finishRefresh(2000);//传入false表示刷新失败
+                refreshlayout.finishRefresh(1000);//传入false表示刷新失败
 
 
             }
@@ -843,12 +836,6 @@ public class RenlingFragment1 extends Fragment {
 
         });
 
-
-        FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(getActivity());
-        //设置 Header 为 Material样式
-        refreshLayout.setRefreshHeader(funGameHitBlockHeader);
-        //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(getActivity()).setSpinnerStyle(SpinnerStyle.Scale));
 
         mRecyclerView = view.findViewById(R.id.my_recycler_view);
         //创建默认的线性LayoutManager

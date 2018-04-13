@@ -27,10 +27,7 @@ import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
-import com.scwang.smartrefresh.header.FunGameHitBlockHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
-import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
@@ -215,12 +212,7 @@ public class NiuListActivity extends AppCompatActivity {
             }
         });
 
-        FunGameHitBlockHeader funGameHitBlockHeader = new FunGameHitBlockHeader(this);
-        //设置 Header 为 Material样式
-        refreshLayout.setRefreshHeader(funGameHitBlockHeader);
-        //设置 Footer 为 球脉冲
-        refreshLayout.setRefreshFooter(new BallPulseFooter(this)
-                .setSpinnerStyle(SpinnerStyle.Scale));
+
 
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
