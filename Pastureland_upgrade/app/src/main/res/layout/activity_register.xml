@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -37,11 +38,11 @@
 
     <TextView
         android:id="@+id/tvDeviceNo"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center"
-        android:text="设备号："
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="设备号："/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -100,15 +101,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="重量"/>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="重量  "/>
 
-        <Spinner
-            android:id="@+id/spinner3"
-            android:layout_width="match_parent"
+        <com.jinkun_innovation.pastureland.ui.view.AmountView
+            android:id="@+id/avWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            app:btnTextSize="14sp"
+            app:btnWidth="36dp"
+            app:tvWidth="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:entries="@array/weight"
-            />
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="  kg"/>
 
 
     </LinearLayout>
@@ -123,16 +137,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="年龄"/>
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="年龄  "/>
 
-        <Spinner
-            android:id="@+id/spinner4"
-            android:layout_width="match_parent"
+        <com.jinkun_innovation.pastureland.ui.view.AmountView
+            android:id="@+id/avAge"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:layout_weight="1"
+            app:btnTextSize="14sp"
+            app:btnWidth="36dp"
+            app:tvWidth="50dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:entries="@array/age"
-            />
-
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="个月"/>
 
     </LinearLayout>
 
@@ -143,7 +169,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:background="@drawable/submit_selector"/>
-
 
 
 </LinearLayout>

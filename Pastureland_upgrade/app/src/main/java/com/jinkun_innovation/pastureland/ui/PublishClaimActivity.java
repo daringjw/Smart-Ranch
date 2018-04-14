@@ -31,6 +31,7 @@ import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.ui.view.AmountView;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -344,6 +345,8 @@ public class PublishClaimActivity extends AppCompatActivity {
         }
     }
 
+    private int mWeightAm;
+    private int mAgeAm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -458,52 +461,40 @@ public class PublishClaimActivity extends AppCompatActivity {
 
 
 
+        AmountView avWeight = findViewById(R.id.avWeight);
+        avWeight.setGoods_storage(10000);
 
-
-
-        Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
-        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        avWeight.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
+            public void onAmountChange(View view, int amount) {
 
+                /*Toast.makeText(getApplicationContext(), "Amount=>  " +
+                        amount, Toast.LENGTH_SHORT).show();*/
+                //重量
+                mWeightAm = amount;
 
-                String[] mWeight = getResources().getStringArray(R.array.weight);
-//                Log.d(TAG1, "重量：" + mWeight[pos]);
-                mWeight1 = mWeight[pos];
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
 
             }
 
         });
 
-        Spinner spinner4 = (Spinner) findViewById(R.id.spinner4);
-        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        AmountView avAge = findViewById(R.id.avAge);
+        avAge.setGoods_storage(10000);
+
+        avAge.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
+            public void onAmountChange(View view, int amount) {
 
+                /*Toast.makeText(getApplicationContext(), "Amount=>  " +
+                        amount, Toast.LENGTH_SHORT).show();*/
+                //年龄
+                mAgeAm = amount;
 
-                String[] mAge = getResources().getStringArray(R.array.age);
-//                Log.d(TAG1, "年龄：" + mAge[pos]);
-                mAge1 = mAge[pos];
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
 
             }
 
         });
+
 
 
         Button btnConfirm = (Button) findViewById(R.id.btnConfirm);
@@ -515,29 +506,7 @@ public class PublishClaimActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(mImgUrl)) {
                     if (!TextUtils.isEmpty(mDeviceNo)) {
 
-                        if (mAge1.contains("2")) {
-                            age = 2;
-                        } else if (mAge1.contains("5")) {
-                            age = 5;
-                        } else if (mAge1.contains("8")) {
-                            age = 8;
-                        }
 
-                        if (mWeight1.contains("10")) {
-                            weight = 10;
-                        } else if (mWeight1.contains("20")) {
-
-                            weight = 20;
-                        } else if (mWeight1.contains("30")) {
-
-                            weight = 30;
-                        } else if (mWeight1.contains("40")) {
-
-                            weight = 40;
-                        } else if (mWeight1.contains("50")) {
-
-                            weight = 50;
-                        }
 
 
                         if (mType1.equals("羊")) {
@@ -565,6 +534,7 @@ public class PublishClaimActivity extends AppCompatActivity {
 
 
                         Log.d(TAG1, "mImgUrl1==" + mImgUrl);
+                        Log.d(TAG1, "mWeightAm=" + mWeightAm + ",mAgeAm=" + mAgeAm);
 //
                         OkGo.<String>post(Constants.RELEASE)
                                 .tag(this)
@@ -574,8 +544,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                                 .params("ranchID", mLoginSuccess.getRanchID())
                                 .params("livestockType", type)
                                 .params("variety", mInteger == 0 ? 100 : mInteger)
-                                .params("weight", weight)
-                                .params("age", age)
+                                .params("weight", mWeightAm)
+                                .params("age", mAgeAm)
                                 .params("imgUrl", mImgUrl)
                                 .execute(new StringCallback() {
                                     @Override
@@ -604,8 +574,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                     .params("ranchID", mLoginSuccess.getRanchID())
                                                     .params("livestockType", type)
                                                     .params("variety", mInteger == 0 ? 100 : mInteger)
-                                                    .params("weight", weight)
-                                                    .params("age", age)
+                                                    .params("weight", mWeightAm)
+                                                    .params("age", mAgeAm)
                                                     .params("imgUrl", mImgUrl)
                                                     .execute(new StringCallback() {
                                                         @Override
@@ -674,8 +644,8 @@ public class PublishClaimActivity extends AppCompatActivity {
                                                                     .params("ranchID", mLoginSuccess.getRanchID())
                                                                     .params("livestockType", type)
                                                                     .params("variety", mInteger == 0 ? 100 : mInteger)
-                                                                    .params("weight", weight)
-                                                                    .params("age", age)
+                                                                    .params("weight", mWeightAm)
+                                                                    .params("age", mAgeAm)
                                                                     .params("imgUrl", mImgUrl)
                                                                     .execute(new StringCallback() {
                                                                         @Override

@@ -29,7 +29,7 @@ public class NumberAddSubView extends LinearLayout implements View.OnClickListen
      */
     private int value = 1;
     private int minValue = 1;
-    private int maxValue = 5;
+    private int maxValue = 150;
 
     public NumberAddSubView(Context context) {
         this(context, null);

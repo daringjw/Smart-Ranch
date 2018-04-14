@@ -31,6 +31,7 @@ import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.bean.RegisterBean;
 import com.jinkun_innovation.pastureland.bean.SelectVariety;
 import com.jinkun_innovation.pastureland.common.Constants;
+import com.jinkun_innovation.pastureland.ui.view.AmountView;
 import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.LogUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.TimeUtils;
@@ -77,6 +78,9 @@ public class RegisterActivity extends Activity {
     private ImageView mIvTakePhoto;
 
     SweetAlertDialog mDialog;
+
+    private int mWeightAm;
+    private int mAgeAm;
 
 
     private void cropImage(final String imgUrl) {
@@ -169,9 +173,6 @@ public class RegisterActivity extends Activity {
                                     });
 
 
-//                            Glide.with(UpLoadActivity.this).load(file).into(mImgUpload);
-//                            FileUtils.deleteFile(imgUrl);
-//                            mPbLoading.setVisibility(View.GONE);
                         }
 
                         @Override
@@ -215,28 +216,6 @@ public class RegisterActivity extends Activity {
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(this, "username", null);
 
-     /*   OkGo.<String>post(Constants.HEADIMGURL)
-                .tag(this)
-                .isMultipart(true)
-                .params("token", mLoginSuccess.getToken())
-                .params("username", mUsername)
-                .params("uploadFile", photoFile)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-
-                        String s = response.body().toString();
-                        Log.d(TAG1, s);
-                        Gson gson = new Gson();
-                        ImgUrlBean imgUrlBean = gson.fromJson(s, ImgUrlBean.class);
-                        mImgUrl = imgUrlBean.getImgUrl();
-                        int j = mImgUrl.indexOf("j");
-                        mImgUrl = mImgUrl.substring(j - 1, mImgUrl.length());
-                        Log.d(TAG1, mImgUrl);
-
-
-                    }
-                });*/
 
         Intent intent = new Intent();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -347,20 +326,13 @@ public class RegisterActivity extends Activity {
                         break;
 
 
-
-
                 }
 
-//                ImageView imageView = (ImageView)convertView.findViewById(R.id.image);
-//                imageView.setImageResource(R.drawable.ic_launcher);
-//                TextView _TextView1=(TextView)convertView.findViewById(R.id.textView1);
-//                TextView _TextView2=(TextView)convertView.findViewById(R.id.textView2);
-//                _TextView1.setText(mList.get(position).getPersonName());
-//                _TextView2.setText(mList.get(position).getPersonAddress());
             }
             return convertView;
         }
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -427,7 +399,6 @@ public class RegisterActivity extends Activity {
                                     List<Integer> mVariety = selectVariety.getVariety();
 
 
-
                                     for (int i = 0; i < mVariety.size(); i++) {
 
                                         Log.d(TAG1, mVariety.get(i) + "");
@@ -465,46 +436,35 @@ public class RegisterActivity extends Activity {
         });
 
 
+        AmountView avWeight = findViewById(R.id.avWeight);
+        avWeight.setGoods_storage(10000);
 
-        Spinner spinner3 = (Spinner) findViewById(R.id.spinner3);
-        spinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        avWeight.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
+            public void onAmountChange(View view, int amount) {
 
+                /*Toast.makeText(getApplicationContext(), "Amount=>  " +
+                        amount, Toast.LENGTH_SHORT).show();*/
+                //重量
+                mWeightAm = amount;
 
-                String[] mWeight = getResources().getStringArray(R.array.weight);
-//                Log.d(TAG1, "重量：" + mWeight[pos]);
-                mWeight1 = mWeight[pos];
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
 
             }
 
         });
 
-        Spinner spinner4 = (Spinner) findViewById(R.id.spinner4);
-        spinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        AmountView avAge = findViewById(R.id.avAge);
+        avAge.setGoods_storage(10000);
+
+        avAge.setOnAmountChangeListener(new AmountView.OnAmountChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
+            public void onAmountChange(View view, int amount) {
 
+                /*Toast.makeText(getApplicationContext(), "Amount=>  " +
+                        amount, Toast.LENGTH_SHORT).show();*/
+                //年龄
+                mAgeAm = amount;
 
-                String[] mAge = getResources().getStringArray(R.array.age);
-//                Log.d(TAG1, "年龄：" + mAge[pos]);
-                mAge1 = mAge[pos];
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
 
             }
 
@@ -534,31 +494,6 @@ public class RegisterActivity extends Activity {
             public void onClick(View view) {
 
 
-                if (mAge1.contains("2")) {
-                    age = 2;
-                } else if (mAge1.contains("5")) {
-                    age = 5;
-                } else if (mAge1.contains("8")) {
-                    age = 8;
-                }
-
-                if (mWeight1.contains("10")) {
-                    weight = 10;
-                } else if (mWeight1.contains("20")) {
-
-                    weight = 20;
-                } else if (mWeight1.contains("30")) {
-
-                    weight = 30;
-                } else if (mWeight1.contains("40")) {
-
-                    weight = 40;
-                } else if (mWeight1.contains("50")) {
-
-                    weight = 50;
-                }
-
-
                 if (mType1.equals("羊")) {
 
                     type = 1;
@@ -577,12 +512,15 @@ public class RegisterActivity extends Activity {
                 } else if (mType1.equals("鹿")) {
 
                     type = 6;
-                }else if (mType1.equals("骆驼")){
+                } else if (mType1.equals("骆驼")) {
 
                     type = 7;
                 }
 
                 if (!TextUtils.isEmpty(mImgUrl)) {
+
+                    Log.d(TAG1, "mWeightAm=" + mWeightAm + ",mAgeAm=" + mAgeAm);
+
                     OkGo.<String>post(Constants.SAVELIVESTOCK)
                             .tag(this)
                             .params("token", mLoginSuccess.getToken())
@@ -591,8 +529,8 @@ public class RegisterActivity extends Activity {
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("livestockType", type)
                             .params("variety", mInteger == 0 ? 100 : mInteger)
-                            .params("weight", weight)
-                            .params("age", age)
+                            .params("weight", mWeightAm)
+                            .params("age", mAgeAm)
                             .params("imgUrl", mImgUrl)
                             .execute(new StringCallback() {
                                 @Override
