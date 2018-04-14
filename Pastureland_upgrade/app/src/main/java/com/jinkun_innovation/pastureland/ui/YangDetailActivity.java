@@ -168,8 +168,13 @@ public class YangDetailActivity extends Activity {
 
                                 long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
                                 int age = (int) timeSpanByNow / 30;
+                                Log.d(TAG1, age + "个月");
                                 if (age == 1) {
                                     age = 2;
+                                } else if (age == 2) {
+                                    age = 3;
+                                } else if (age == 0) {
+                                    age = 1;
                                 }
                                 tvAge.setText("年龄：" + age + "个月");
 
@@ -218,7 +223,6 @@ public class YangDetailActivity extends Activity {
                                 }
 
 
-
                             } else {
 
 
@@ -237,7 +241,7 @@ public class YangDetailActivity extends Activity {
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         wvElectronicDangan.loadUrl(Constants.DianziDangan + "?deviceNo=" + getDeviceNo
-                +"&ranchID="+mLoginSuccess.getRanchID());
+                + "&ranchID=" + mLoginSuccess.getRanchID());
 
         OkGo.<String>get(Constants.DianziDangan)
                 .tag(this)

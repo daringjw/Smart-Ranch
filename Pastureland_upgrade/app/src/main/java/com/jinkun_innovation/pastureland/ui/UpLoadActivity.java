@@ -321,7 +321,7 @@ public class UpLoadActivity extends BaseActivity {
 
 
     private enum TypeEnum {
-        BIRTHDAY("接羔上传"), CROP("剪毛上传"), LIFE("生活上传"), PRIVATE("私人定制上传");
+        BIRTHDAY("接羔照上传"), CROP("剪毛照上传"), LIFE("生活照上传"), PRIVATE("私人定制上传");
 
         private final String name;
 

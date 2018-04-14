@@ -30,6 +30,7 @@ import com.jinkun_innovation.pastureland.bean.ImgUrlBean;
 import com.jinkun_innovation.pastureland.bean.LoginSuccess;
 import com.jinkun_innovation.pastureland.common.Constants;
 import com.jinkun_innovation.pastureland.ui.activity.QuPaizhaoActivity;
+import com.jinkun_innovation.pastureland.utilcode.util.FileUtils;
 import com.jinkun_innovation.pastureland.utilcode.util.ToastUtils;
 import com.jinkun_innovation.pastureland.utils.PrefUtils;
 import com.lzy.okgo.OkGo;
@@ -105,7 +106,6 @@ public class DeviceMsgActivity extends Activity {
                     Log.d(TAG1, "mDeviceNo==拍照" + mDeviceNo);
                     intent.putExtra("mDeviceNo", mDeviceNo);
 
-
                     startActivityForResult(intent, 1002);
 
                     break;
@@ -128,6 +128,10 @@ public class DeviceMsgActivity extends Activity {
                     Log.d(TAG1, "filename=" + filename);
                     File file = new File(filename);
                     Log.d(TAG1, "file.exists()=" + file.exists());
+                    long length = file.length();
+                    String result = FileUtils.byte2FitMemorySize(length);
+                    Log.d(TAG1, "大小=" + result);
+
 
                     mDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
                     mDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
@@ -214,6 +218,7 @@ public class DeviceMsgActivity extends Activity {
             public void onClick(View view) {
 
                 finish();
+
             }
         });
 
@@ -267,8 +272,6 @@ public class DeviceMsgActivity extends Activity {
                             rcvQupaizhao.setAdapter(mQuPaizhaoAdapter);
 
 
-
-
                         }
 
 
@@ -302,12 +305,16 @@ public class DeviceMsgActivity extends Activity {
         StrictMode.setVmPolicy(builder.build());
 
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
+        //设置视频录制的最长时间
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 50);//限制录制时间(10秒=10)
+
         fileUri = getOutputMediaFileUri();  // create a file to save the video
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0); // set the video image quality to high
         // 开始视频录制Intent
         startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
+
     }
 
     private Uri fileUri;

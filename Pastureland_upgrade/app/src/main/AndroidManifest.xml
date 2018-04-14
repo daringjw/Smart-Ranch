@@ -50,6 +50,7 @@
     //使用步行AR导航，配置Camera权限
 
     <application
+        android:hardwareAccelerated ="true"
         android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -236,7 +237,9 @@
         <activity
             android:name=".ui.RenlingDetailActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"/>
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:hardwareAccelerated="true"
+            />
 
         <activity
             android:name=".ui.activity.MuchangDetailActivity"
@@ -268,7 +271,7 @@
         <activity
             android:name=".ui.YangDetailActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"/>
+            />
 
         <activity
             android:name=".ui.activity.QuPaizhaoActivity"

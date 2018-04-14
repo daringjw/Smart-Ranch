@@ -1171,8 +1171,13 @@ public class RenlingFragment1 extends Fragment {
             long timeSpanByNow = TimeUtils.getTimeSpanByNow(createTime, TimeConstants.DAY);
             Log.d(TAG1, timeSpanByNow + "天=timeSpanByNow");
             int age = (int) timeSpanByNow / 30;
+            Log.d(TAG1, age + "个月");
             if (age == 1) {
                 age = 2;
+            } else if (age == 2) {
+                age = 3;
+            } else if (age == 0) {
+                age = 1;
             }
             viewHolder.tvAnimalAge.setText("年龄：" + age + "个月");
 
