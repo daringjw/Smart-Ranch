@@ -261,8 +261,8 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                            .params("current", 0)
-                            .params("pagesize", 5)
+                            .params("current", 1)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -318,8 +318,8 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                            .params("current", 0)
-                            .params("pagesize", 5)
+                            .params("current", 1)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -404,8 +404,8 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                            .params("current", 0)
-                            .params("pagesize", 5)
+                            .params("current", 1)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -415,7 +415,7 @@ public class RenlingFragment1 extends Fragment {
 //                                Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
 
-                                        index = 1;
+                                        index = 2;
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
                                         mLivestockList = renLing.getLivestockList();
@@ -469,8 +469,8 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 0)
-                            .params("current", 0)
-                            .params("pagesize", 5)
+                            .params("current", 1)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -480,7 +480,7 @@ public class RenlingFragment1 extends Fragment {
 //                                Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
 
-                                        index = 1;
+                                        index = 2;
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
                                         mLivestockList = renLing.getLivestockList();
@@ -533,8 +533,8 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 1)
-                            .params("current", 0)
-                            .params("pagesize", 5)
+                            .params("current", 1)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -544,7 +544,7 @@ public class RenlingFragment1 extends Fragment {
 //                                Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
 
-                                        index = 1;
+                                        index = 2;
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
                                         mLivestockList = renLing.getLivestockList();
@@ -610,7 +610,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("current", index)
-                            .params("pagesize", 3)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -630,7 +630,7 @@ public class RenlingFragment1 extends Fragment {
                                             for (int i = 0; i < mylist.size(); i++) {
                                                 mLivestockList.add(mylist.get(i));
                                             }
-                                            MoveToPosition(mLayoutManager, 3 * (index - 1));
+                                            MoveToPosition(mLayoutManager, 10 * (index - 1));
 
 
                                         }
@@ -671,9 +671,9 @@ public class RenlingFragment1 extends Fragment {
                             .params("token", mLoginSuccess.getToken())
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
-                            .params("current", index)
                             .params("isClaimed", 0)
-                            .params("pagesize", 3)
+                            .params("current", index)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -693,7 +693,7 @@ public class RenlingFragment1 extends Fragment {
                                             for (int i = 0; i < mylist.size(); i++) {
                                                 mLivestockList.add(mylist.get(i));
                                             }
-                                            MoveToPosition(mLayoutManager, 3 * (index - 1));
+                                            MoveToPosition(mLayoutManager, 10 * (index - 1));
 
 
                                         }
@@ -735,7 +735,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("current", index)
                             .params("isClaimed", 1)
-                            .params("pagesize", 3)
+                            .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
                                 public void onSuccess(Response<String> response) {
@@ -755,7 +755,7 @@ public class RenlingFragment1 extends Fragment {
                                             for (int i = 0; i < mylist.size(); i++) {
                                                 mLivestockList.add(mylist.get(i));
                                             }
-                                            MoveToPosition(mLayoutManager, 3 * (index - 1));
+                                            MoveToPosition(mLayoutManager, 10 * (index - 1));
 
                                         }
 
@@ -816,8 +816,8 @@ public class RenlingFragment1 extends Fragment {
                 .params("username", mUsername)
                 .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                .params("current", 0)
-                .params("pagesize", 5)
+                .params("current", 1)
+                .params("pagesize", 10)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -889,7 +889,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
 //                .params("isClaimed",)
-                            .params("current", 0)
+                            .params("current", 1)
                             .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
@@ -950,7 +950,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 0)  //未认领
-                            .params("current", 0)
+                            .params("current", 1)
                             .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
@@ -1010,7 +1010,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
                             .params("isClaimed", 1)
-                            .params("current", 0)
+                            .params("current", 1)
                             .params("pagesize", 10)
                             .execute(new StringCallback() {
                                 @Override
