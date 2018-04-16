@@ -668,7 +668,18 @@ public class PublishClaimActivity extends AppCompatActivity {
                                         }
 
                                     }
+
+                                    @Override
+                                    public void onError(Response<String> response) {
+                                        super.onError(response);
+
+                                        ToastUtils.showShort("没有网络，请检查网络");
+
+
+                                    }
+
                                 });
+
 
 
                     } else {

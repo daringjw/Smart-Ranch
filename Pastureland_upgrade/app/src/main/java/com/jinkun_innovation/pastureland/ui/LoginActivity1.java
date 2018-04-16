@@ -203,13 +203,20 @@ public class LoginActivity1 extends AppCompatActivity {
 
 
                                         }
+
+                                        @Override
+                                        public void onError(Response<String> response) {
+                                            super.onError(response);
+
+                                            ToastUtils.showShort("没有网络，请检查网络");
+
+                                        }
                                     });
 
 
                         } else {
 
                             //非法电话号码
-
                             ToastUtils.showShort("请输入正确的电话号码");
 
                         }

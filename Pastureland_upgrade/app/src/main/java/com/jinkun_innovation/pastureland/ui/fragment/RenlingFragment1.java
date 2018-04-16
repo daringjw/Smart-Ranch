@@ -260,7 +260,7 @@ public class RenlingFragment1 extends Fragment {
                             .params("token", mLoginSuccess.getToken())
                             .params("username", mUsername)
                             .params("ranchID", mLoginSuccess.getRanchID())
-//                .params("isClaimed",)
+                            .params("isClaimed", 0)
                             .params("current", 1)
                             .params("pagesize", 10)
                             .execute(new StringCallback() {
@@ -271,6 +271,9 @@ public class RenlingFragment1 extends Fragment {
                                     String s = response.body().toString();
 //                                    Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
+
+                                        index = 2;
+
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
                                         mLivestockList = renLing.getLivestockList();
@@ -294,9 +297,6 @@ public class RenlingFragment1 extends Fragment {
 
                                             }
                                         });
-
-
-                                    } else {
 
 
                                     }
@@ -328,6 +328,9 @@ public class RenlingFragment1 extends Fragment {
                                     String s = response.body().toString();
 //                                    Log.d(TAG1, s);
                                     if (s.contains("livestockId")) {
+
+                                        index = 2;
+
                                         Gson gson1 = new Gson();
                                         RenLing renLing = gson1.fromJson(s, RenLing.class);
                                         mLivestockList = renLing.getLivestockList();
@@ -1152,6 +1155,7 @@ public class RenlingFragment1 extends Fragment {
             //将数据保存在itemView的Tag中，以便点击时进行获取
             viewHolder.itemView.setTag(position);
 
+
             String imgUrl = datas.get(position).getImgUrl();
             imgUrl = Constants.BASE_URL + imgUrl;
             Log.d(TAG1, imgUrl);
@@ -1191,6 +1195,8 @@ public class RenlingFragment1 extends Fragment {
             String isClaimed = datas.get(position).getIsClaimed();
             if (isClaimed.contains("1")) {
 
+                viewHolder.tvDel.setText("");
+
                 String claimTime = datas.get(position).getClaimTime();
                 claimTime = claimTime.substring(0, 10);
                 String finishTime = datas.get(position).getFinishTime();
@@ -1207,8 +1213,16 @@ public class RenlingFragment1 extends Fragment {
                     if (tradeStatus.contains("0")) {
 
                         //已认领未支付
-                        viewHolder.btnPayConfirm.setVisibility(View.VISIBLE);
+                        viewHolder.btnPayConfirm.setVisibility(View.INVISIBLE);
                         viewHolder.tvState.setText("已认领未支付");
+
+
+
+                    } else if (tradeStatus.contains("1")) {
+
+                        //已认领未支付
+                        viewHolder.btnPayConfirm.setVisibility(View.VISIBLE);
+                        viewHolder.tvState.setText("已认领已支付");
 
                         viewHolder.btnPayConfirm.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -1220,6 +1234,7 @@ public class RenlingFragment1 extends Fragment {
                                 startActivityForResult(intent, 1002);
 
 
+
                             }
                         });
 
@@ -1228,7 +1243,7 @@ public class RenlingFragment1 extends Fragment {
 
                         //已认领已支付
                         viewHolder.btnPayConfirm.setVisibility(View.GONE);
-                        viewHolder.tvState.setText("已认领已支付");
+                        viewHolder.tvState.setText("交易成功");
 
 
                     }
@@ -1251,6 +1266,123 @@ public class RenlingFragment1 extends Fragment {
                 viewHolder.tvPhone.setText("");
 
                 viewHolder.btnPayConfirm.setVisibility(View.GONE);
+
+                viewHolder.tvDel.setText("删除");
+
+                viewHolder.tvDel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
+                                .setTitleText("删除?")
+                                .setContentText("删除此条目")
+                                .setConfirmText("确定")
+                                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+
+                                        sDialog.cancel();
+                                        OkGo.<String>get(Constants.delLivestock)
+                                                .tag(this)
+                                                .params("token", mLoginSuccess.getToken())
+                                                .params("username", mUsername)
+                                                .params("deviceNo", datas.get(position).getDeviceNo())
+                                                .params("ranchID", mLoginSuccess.getRanchID())
+                                                .execute(new StringCallback() {
+                                                    @Override
+                                                    public void onSuccess(Response<String> response) {
+
+                                                        String result = response.body().toString();
+                                                        if (result.contains("删除成功")) {
+
+                                                            ToastUtils.showShort("删除成功");
+                                                            //刷新数据
+                                                            OkGo.<String>post(Constants.LIVE_STOCK_CLAIM_LIST)
+                                                                    .tag(this)
+                                                                    .params("token", mLoginSuccess.getToken())
+                                                                    .params("username", mUsername)
+                                                                    .params("ranchID", mLoginSuccess.getRanchID())
+                                                             //.params("isClaimed",0)
+                                                                    .params("current", 1)
+                                                                    .params("pagesize", 10)
+                                                                    .execute(new StringCallback() {
+                                                                        @Override
+                                                                        public void onSuccess(Response<String> response) {
+
+
+                                                                            String s = response.body().toString();
+
+                                                                            if (s.contains("livestockId")) {
+
+                                                                                index = 2;
+                                                                                Gson gson1 = new Gson();
+                                                                                RenLing renLing = gson1.fromJson(s, RenLing.class);
+                                                                                mLivestockList = renLing.getLivestockList();
+
+                                                                                //创建并设置Adapter
+                                                                                mAdapter = new MyAdapter(mLivestockList);
+                                                                                mRecyclerView.setAdapter(mAdapter);
+
+                                                                                MoveToPosition(mLayoutManager, 0);
+
+
+                                                                                mAdapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                                                                                    @Override
+                                                                                    public void onItemClick(View view, int position) {
+
+                                                                                        RenLing.LivestockListBean livestockListBean = mLivestockList.get(position);
+                                                                                        Intent intent = new Intent(getActivity(), RenlingDetailActivity.class);
+                                                                                        intent.putExtra("getDeviceNo", livestockListBean.getDeviceNo());
+                                                                                        startActivity(intent);
+
+
+                                                                                    }
+                                                                                });
+
+
+                                                                            }
+
+
+                                                                        }
+                                                                    });
+
+
+                                                        } else if (result.contains("删除失败")) {
+
+
+                                                            ToastUtils.showShort("删除失败");
+
+
+                                                        } else if (result.contains("已被认领不可删除")) {
+
+                                                            ToastUtils.showShort("已被认领不可删除");
+
+                                                        } else {
+
+                                                            ToastUtils.showShort("删除异常");
+
+                                                        }
+
+                                                    }
+                                                });
+
+
+                                    }
+                                })
+                                .setCancelText("取消")
+                                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sDialog) {
+                                        sDialog.cancel();
+
+
+                                    }
+                                })
+                                .show();
+
+
+                    }
+                });
 
             }
 
@@ -1281,7 +1413,7 @@ public class RenlingFragment1 extends Fragment {
 
             TextView tvAnimalName, tvId, tvAnimalAge, tvMuchangName,
                     tvClaimTime, tvClaimPeople, tvState,
-                    tvPhone, tvOrderNo;
+                    tvPhone, tvOrderNo, tvDel;
 
             Button btnPayConfirm;
 
@@ -1301,6 +1433,8 @@ public class RenlingFragment1 extends Fragment {
 
                 tvOrderNo = view.findViewById(R.id.tvOrderNo);
                 btnPayConfirm = view.findViewById(R.id.btnPayConfirm);
+
+                tvDel = view.findViewById(R.id.tvDel);
 
 
             }

@@ -17,11 +17,11 @@ public class Constants {
 //    public static final String IP = "192.168.50.215";
 //    public static final String PORT = ":8080";
 
-//    public static final String IP = "182.92.3.109";
-//    public static final String PORT = ":10100";
-
-    public static final String IP = "116.95.255.211";
+    public static final String IP = "182.92.3.109";
     public static final String PORT = ":10100";
+
+//    public static final String IP = "116.95.255.211";
+//    public static final String PORT = ":10100";
 
 
     //测试服务器
@@ -123,6 +123,8 @@ public class Constants {
     //牧场主确认订单支付
     public static final String orderPay = BASE_URL + "/releaseLivestocks/orderPay.do";
 
+    //牲畜删除
+    public static final String delLivestock= BASE_URL + "/releaseLivestocks/delLivestock.do";
 
 
 

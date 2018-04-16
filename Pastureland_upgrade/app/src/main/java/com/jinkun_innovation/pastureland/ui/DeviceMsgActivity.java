@@ -306,12 +306,12 @@ public class DeviceMsgActivity extends Activity {
 
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);//Intent action type for requesting a video from an existing camera application.
         //设置视频录制的最长时间
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 50);//限制录制时间(10秒=10)
+        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);//限制录制时间(10秒=10)
 
         fileUri = getOutputMediaFileUri();  // create a file to save the video
 
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);  // set the image file name
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0); // set the video image quality to high
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1); // set the video image quality to high
         // 开始视频录制Intent
         startActivityForResult(intent, CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE);
 

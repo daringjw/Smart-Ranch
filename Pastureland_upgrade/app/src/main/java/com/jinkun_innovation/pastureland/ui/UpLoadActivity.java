@@ -202,7 +202,7 @@ public class UpLoadActivity extends BaseActivity {
         final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialog.setTitleText("上传中...");
-        pDialog.setCancelable(false);
+        pDialog.setCancelable(true);
         pDialog.show();
 
         String imgUrl = mPhotoFile.getAbsolutePath();
@@ -250,6 +250,14 @@ public class UpLoadActivity extends BaseActivity {
                                     }
 
                                 }
+
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+
+                                    ToastUtils.showShort("没有网络，请检查网络");
+
+                                }
                             });
 
                 } else {
@@ -293,6 +301,13 @@ public class UpLoadActivity extends BaseActivity {
 
                                     }
 
+                                }
+
+                                @Override
+                                public void onError(Response<String> response) {
+                                    super.onError(response);
+
+                                    ToastUtils.showShort("没有网络，请检查网络");
                                 }
                             });
                 } else {
