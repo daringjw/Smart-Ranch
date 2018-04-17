@@ -154,21 +154,7 @@
 
             </FrameLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="牲畜靓照："/>
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/sdvAsk"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_marginTop="10dp"
-                fresco:actualImageScaleType="fitXY"
-                fresco:placeholderImage="@mipmap/detail_yang"
-                />
 
 
         </LinearLayout>

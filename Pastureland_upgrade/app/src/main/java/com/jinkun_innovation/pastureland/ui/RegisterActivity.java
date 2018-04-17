@@ -369,6 +369,9 @@ public class RegisterActivity extends Activity {
         });
 
 
+
+
+
         Spinner spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -377,8 +380,8 @@ public class RegisterActivity extends Activity {
                                        int pos, long id) {
 
                 String[] type = getResources().getStringArray(R.array.type);
-//                Log.d(TAG1, "种类" + type[pos]);
                 mType1 = type[pos];
+
 
                 //根据type1 访问接口
                 OkGo.<String>get(Constants.SELECTVARIETY)

@@ -99,7 +99,7 @@ public class QuPaizhaoActivity extends Activity {
                                     String result = response.body().toString();
                                     if (result.contains("success")) {
 
-                                        ToastUtils.showShort("拍照完成");
+                                        ToastUtils.showShort("上传成功");
                                         setResult(RESULT_OK);
                                         finish();
 

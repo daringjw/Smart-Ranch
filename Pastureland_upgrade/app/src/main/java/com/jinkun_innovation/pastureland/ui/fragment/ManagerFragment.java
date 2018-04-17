@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
@@ -97,7 +96,7 @@ public class ManagerFragment extends Fragment {
 
     private SliderLayout mSliderShow;
     private LoginSuccess mLoginSuccess;
-    private TextView mTvMuchangName;
+
     private String mLogin_success;
     private String mUsername;
 
@@ -120,11 +119,7 @@ public class ManagerFragment extends Fragment {
         mUsername = PrefUtils.getString(getActivity(), "username", null);
 
 
-        //牧场名
-        mTvMuchangName = view.findViewById(R.id.tvMuchangName);
-        if (!TextUtils.isEmpty(mLogin_success)) {
-            mTvMuchangName.setText(mLoginSuccess.getName());
-        }
+
 
         mSliderShow = view.findViewById(R.id.slider);
         TextSliderView textSliderView = new TextSliderView(getActivity());
@@ -260,13 +255,17 @@ public class ManagerFragment extends Fragment {
 
                         if (StrLengthUtil.length(isbn) == 16) {
                             scanMessage = isbn;
+
                             register(isbn);
+
                         } else if (StrLengthUtil.length(isbn) == 15) {
+
                             String str = Stringinsert(isbn, "1", 7);
                             Log.d(TAG1, "15位isbn=" + str);
                             Log.d(TAG1, "新的长度" + StrLengthUtil.length(str));
                             scanMessage = str;
                             register(str);
+
 
                         } else {
                             ToastUtils.showShort("设备号必须是16位数字");

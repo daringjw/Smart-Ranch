@@ -94,6 +94,7 @@ public class MuqunFragment extends Fragment {
     }
 
     private void initData() {
+
         OkGo.<String>get(Constants.QUERYTYPEANDSUM)
                 .tag(this)
                 .params("token", mLoginSuccess.getToken())
@@ -105,10 +106,7 @@ public class MuqunFragment extends Fragment {
 
                         String s = response.body().toString();
                         Log.d(TAG1, s);
-                        if (s.contains("牧场无牲畜")) {
-
-
-                        } else if (s.contains("获取牲畜类型和数量成功")) {
+                        if (s.contains("获取牲畜类型和数量成功")) {
 
                             Gson gson1 = new Gson();
                             MuqunSum muqunSum = gson1.fromJson(s, MuqunSum.class);
@@ -119,6 +117,7 @@ public class MuqunFragment extends Fragment {
                             String s3 = typeMap.get_$3() + "";
                             String s4 = typeMap.get_$4() + "";
                             String s7 = typeMap.get_$7() + "";
+
 
                             //羊
                             if (!s1.equals("0") && !TextUtils.isEmpty(s1)) {
@@ -147,7 +146,6 @@ public class MuqunFragment extends Fragment {
                             if (!s7.equals("0") && !TextUtils.isEmpty(s7)) {
                                 tvCamelNo.setText(s7 + "头");
 
-
                             }
 
 
@@ -156,6 +154,7 @@ public class MuqunFragment extends Fragment {
 
                     }
                 });
+
     }
 
 

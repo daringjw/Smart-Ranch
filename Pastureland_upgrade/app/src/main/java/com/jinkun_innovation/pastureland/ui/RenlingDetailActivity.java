@@ -228,32 +228,6 @@ public class RenlingDetailActivity extends Activity {
 
                                 map.setMyLocationConfiguration(config);
 
-                                String imgUrl = lives.getImgUrl();
-                                imgUrl = Constants.BASE_URL + imgUrl;
-                                SimpleDraweeView sdvAsk = (SimpleDraweeView) findViewById(R.id.sdvAsk);
-                                sdvAsk.setImageURI(Uri.parse(imgUrl));
-
-                                /*String livestock_img_url = lives.livestock_img_url;
-                                if (!TextUtils.isEmpty(livestock_img_url)) {
-                                    livestock_img_url = Constants.BASE_URL + livestock_img_url;
-                                    Log.d(TAG1, "livestockImgUrl=" + livestock_img_url);
-                                    sdvAsk.setImageURI(Uri.parse(livestock_img_url));
-
-                                }*/
-
-                                /*String video_url = lives.video_url;
-                                if (!TextUtils.isEmpty(video_url)) {
-                                    video_url = Constants.BASE_URL + video_url;
-                                    Log.d(TAG1, "video_url=" + video_url);
-                                    VideoView videoView = (VideoView) findViewById(R.id.videoView);
-
-                                    videoView.setMediaController(new MediaController(getApplicationContext()));
-
-                                    videoView.setVideoURI(Uri.parse(video_url));
-                                    videoView.start();
-
-                                }*/
-
 
                             } else {
 
