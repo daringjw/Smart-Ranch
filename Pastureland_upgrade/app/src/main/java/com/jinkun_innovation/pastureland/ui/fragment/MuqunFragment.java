@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,6 +86,14 @@ public class MuqunFragment extends Fragment {
         mLoginSuccess = gson.fromJson(mLogin_success, LoginSuccess.class);
         mUsername = PrefUtils.getString(getActivity(), "username", null);
 
+        initData();
+
+        return view;
+
+
+    }
+
+    private void initData() {
         OkGo.<String>get(Constants.QUERYTYPEANDSUM)
                 .tag(this)
                 .params("token", mLoginSuccess.getToken())
@@ -114,16 +123,11 @@ public class MuqunFragment extends Fragment {
                             //羊
                             if (!s1.equals("0") && !TextUtils.isEmpty(s1)) {
                                 tvYangNo.setText(s1 + "只");
-
-                            } else {
-
                             }
 
                             //牛
                             if (!s2.equals("0") && !TextUtils.isEmpty(s2)) {
                                 mTvNiuNo.setText(s2 + "头");
-
-                            } else {
 
                             }
 
@@ -131,15 +135,11 @@ public class MuqunFragment extends Fragment {
                             if (!s3.equals("0") && !TextUtils.isEmpty(s3)) {
                                 mTvMaNo.setText(s3 + "匹");
 
-                            } else {
-
                             }
 
                             //猪
                             if (!s4.equals("0") && !TextUtils.isEmpty(s4)) {
                                 mTvDeerNo.setText(s4 + "头");
-
-                            } else {
 
                             }
 
@@ -148,12 +148,7 @@ public class MuqunFragment extends Fragment {
                                 tvCamelNo.setText(s7 + "头");
 
 
-                            } else {
-
                             }
-
-
-                        } else {
 
 
                         }
@@ -161,10 +156,40 @@ public class MuqunFragment extends Fragment {
 
                     }
                 });
+    }
 
-        return view;
 
+    private boolean isGetData = false;
 
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //   进入当前Fragment
+        if (enter && !isGetData) {
+            isGetData = true;
+            //   这里可以做网络请求或者需要的数据刷新操作
+            initData();
+
+        } else {
+            isGetData = false;
+        }
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!isGetData) {
+            //   这里可以做网络请求或者需要的数据刷新操作
+            initData();
+
+            isGetData = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        isGetData = false;
     }
 
 
